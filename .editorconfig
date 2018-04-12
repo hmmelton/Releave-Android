@@ -1,0 +1,4 @@
+[*.{kt,kts}]
+indent_size=4
+continuation_indent_size=unset
+insert_final_newline=true

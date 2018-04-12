@@ -21,7 +21,9 @@ ext.libraries = [
         'firebase'          : '12.0.1',
         'jUnit'             : '4.12',
         'runner'            : '1.0.1',
-        'espresso'          : '3.0.1'
+        'espresso'          : '3.0.1',
+        'ktlint'            : '0.20.0',
+        'kotlin'            : '1.2.31'
 ]
 
 allprojects {

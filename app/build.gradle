@@ -18,15 +18,44 @@ android {
     }
 }
 
+repositories {
+    jcenter()
+}
+
+configurations {
+    ktlint
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation "com.android.support.constraint:constraint-layout:${libraries.constraintLayout}"
     implementation "com.google.firebase:firebase-database:${libraries.firebase}"
+
+    // Kotlin
+    ktlint "com.github.shyiko:ktlint:${libraries.ktlint}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${libraries.kotlin}"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:${libraries.kotlin}"
+
     testImplementation "junit:junit:${libraries.jUnit}"
+
     androidTestImplementation "com.android.support.test:runner:${libraries.runner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${libraries.espresso}"
 }
 
+task('ktlint', type: JavaExec, group: 'verification') {
+    description = 'Check Kotlin code style.'
+    classpath = configurations.ktlint
+    main = 'com.github.shyiko.ktlint.Main'
+    args '--verbose', 'src/**/*.kt'
+}
+check.dependsOn ktlint
+
+task ('ktlintFormat', type: JavaExec, group: 'formatting') {
+    description = 'Fix Kotlin code style deviations.'
+    classpath = configurations.ktlint
+    main = 'com.github.shyiko.ktlint.Main'
+    args '-F', 'src/**/*.kt'
+}
 
 apply plugin: 'com.google.gms.google-services'
