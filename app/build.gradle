@@ -1,11 +1,11 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 26
+    compileSdkVersion 27
     defaultConfig {
         applicationId "com.hmmelton.releave"
         minSdkVersion 21
-        targetSdkVersion 26
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -28,9 +28,12 @@ configurations {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:appcompat-v7:26.1.0'
+    implementation "com.android.support:appcompat-v7:${libraries.appcompat}"
+    implementation "com.android.support:support-media-compat:${libraries.appcompat}"
+    implementation "com.android.support:support-v4:${libraries.appcompat}"
     implementation "com.android.support.constraint:constraint-layout:${libraries.constraintLayout}"
     implementation "com.google.firebase:firebase-database:${libraries.firebase}"
+    implementation "com.google.firebase:firebase-auth:${libraries.firebase}"
 
     // Kotlin
     ktlint "com.github.shyiko:ktlint:${libraries.ktlint}"
@@ -51,7 +54,7 @@ task('ktlint', type: JavaExec, group: 'verification') {
 }
 check.dependsOn ktlint
 
-task ('ktlintFormat', type: JavaExec, group: 'formatting') {
+task('ktlintFormat', type: JavaExec, group: 'formatting') {
     description = 'Fix Kotlin code style deviations.'
     classpath = configurations.ktlint
     main = 'com.github.shyiko.ktlint.Main'

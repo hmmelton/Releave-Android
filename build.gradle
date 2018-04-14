@@ -23,7 +23,8 @@ ext.libraries = [
         'runner'            : '1.0.1',
         'espresso'          : '3.0.1',
         'ktlint'            : '0.20.0',
-        'kotlin'            : '1.2.31'
+        'kotlin'            : '1.2.31',
+        'appcompat'         : '27.1.1'
 ]
 
 allprojects {
