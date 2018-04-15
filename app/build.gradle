@@ -18,6 +18,10 @@ android {
     }
 }
 
+sourceSets {
+    main.java.srcDirs += 'src/main/kotlin'
+}
+
 repositories {
     jcenter()
 }
@@ -62,3 +66,5 @@ task('ktlintFormat', type: JavaExec, group: 'formatting') {
 }
 
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
