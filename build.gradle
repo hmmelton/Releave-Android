@@ -9,7 +9,9 @@ buildscript {
             'espresso'          : '3.0.1',
             'ktlint'            : '0.20.0',
             'kotlin'            : '1.2.30',
-            'appcompat'         : '27.1.1'
+            'appcompat'         : '27.1.1',
+            'lifecycle'         : '1.1.1',
+            'room'              : '1.0.0'
     ]
     repositories {
         google()
