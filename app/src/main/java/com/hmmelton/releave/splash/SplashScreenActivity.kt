@@ -2,12 +2,15 @@ package com.hmmelton.releave.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.hmmelton.releave.MainActivity
+import com.google.firebase.auth.FirebaseAuth
+import com.hmmelton.releave.main.MainActivity
+import com.hmmelton.releave.signin.SignInActivity
 
 class SplashScreenActivity : AppCompatActivity() {
+
+    private val firebaseAuth = FirebaseAuth.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -20,10 +23,17 @@ class SplashScreenActivity : AppCompatActivity() {
             View.SYSTEM_UI_FLAG_FULLSCREEN or
             View.SYSTEM_UI_FLAG_IMMERSIVE
 
-        // TODO: check if user is signed in
-        Handler().postDelayed({
+        // Grab most recent signed in account
+        val currentUser = firebaseAuth.currentUser
+
+        // If an account was found, navigate to MainActivity
+        currentUser?.let {
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-        }, 2000)
+        }
+
+        // Otherwise, navigate to SignInActivity
+        startActivity(Intent(this, SignInActivity::class.java))
+        finish()
     }
 }

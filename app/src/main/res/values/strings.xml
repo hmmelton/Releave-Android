@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">Releave</string>
+
+    <!-- Menu items -->
+    <string name="menu_label_sign_out">Sign out</string>
+
+    <!-- Error string -->
+    <string name="err_sign_in_failed">Sign in failed</string>
 </resources>

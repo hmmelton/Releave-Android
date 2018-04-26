@@ -18,10 +18,6 @@ android {
     }
 }
 
-sourceSets {
-    main.java.srcDirs += 'src/main/kotlin'
-}
-
 repositories {
     jcenter()
 }
@@ -35,14 +31,18 @@ dependencies {
     implementation "com.android.support:appcompat-v7:${libraries.appcompat}"
     implementation "com.android.support:support-media-compat:${libraries.appcompat}"
     implementation "com.android.support:support-v4:${libraries.appcompat}"
+    implementation "com.android.support:design:${libraries.appcompat}"
     implementation "com.android.support.constraint:constraint-layout:${libraries.constraintLayout}"
 
     // Firebase
     implementation "com.google.firebase:firebase-database:${libraries.firebase}"
     implementation "com.google.firebase:firebase-auth:${libraries.firebase}"
+    implementation "com.google.firebase:firebase-auth:${libraries.firebase}"
+    implementation "com.google.android.gms:play-services-auth:${libraries.firebase}"
 
     // Architecture Components
     implementation "android.arch.lifecycle:extensions:${libraries.lifecycle}"
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     annotationProcessor "android.arch.lifecycle:compiler:${libraries.lifecycle}"
     implementation "android.arch.persistence.room:runtime:${libraries.room}"
     annotationProcessor "android.arch.persistence.room:compiler:${libraries.room}"
