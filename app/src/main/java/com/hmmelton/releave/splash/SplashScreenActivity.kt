@@ -24,16 +24,17 @@ class SplashScreenActivity : AppCompatActivity() {
             View.SYSTEM_UI_FLAG_IMMERSIVE
 
         // Grab most recent signed in account
-        val currentUser = firebaseAuth.currentUser
+        FirebaseAuth.getInstance().addAuthStateListener {
 
-        // If an account was found, navigate to MainActivity
-        currentUser?.let {
-            startActivity(Intent(this, MainActivity::class.java))
+            // If an account was found, navigate to MainActivity
+            it.currentUser?.let {
+                startActivity(Intent(this, MainActivity::class.java))
+                finish()
+            }
+
+            // Otherwise, navigate to SignInActivity
+            startActivity(Intent(this, SignInActivity::class.java))
             finish()
         }
-
-        // Otherwise, navigate to SignInActivity
-        startActivity(Intent(this, SignInActivity::class.java))
-        finish()
     }
 }
