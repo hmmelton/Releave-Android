@@ -36,13 +36,15 @@ dependencies {
 
     // Firebase
     implementation "com.google.firebase:firebase-database:${libraries.firebase}"
-    implementation "com.google.firebase:firebase-auth:${libraries.firebase}"
-    implementation "com.google.firebase:firebase-auth:${libraries.firebase}"
-    implementation "com.google.android.gms:play-services-auth:${libraries.firebase}"
+    implementation "com.google.firebase:firebase-auth:${libraries.firebaseAuth}"
+    implementation "com.google.firebase:firebase-core:${libraries.firebaseCore}"
+
+    // Play Services
+    implementation "com.google.android.gms:play-services-auth:${libraries.playServices}"
+    implementation "com.google.android.gms:play-services-maps:${libraries.playServices}"
 
     // Architecture Components
     implementation "android.arch.lifecycle:extensions:${libraries.lifecycle}"
-    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
     annotationProcessor "android.arch.lifecycle:compiler:${libraries.lifecycle}"
     implementation "android.arch.persistence.room:runtime:${libraries.room}"
     annotationProcessor "android.arch.persistence.room:compiler:${libraries.room}"

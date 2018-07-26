@@ -2,8 +2,11 @@
 
 buildscript {
     ext.libraries = [
-            'constraintLayout'  : '1.1.0',
-            'firebase'          : '15.0.0',
+            'constraintLayout'  : '1.1.2',
+            'firebase'          : '16.0.1',
+            'firebaseCore'      : '16.0.1',
+            'firebaseAuth'      : '16.0.2',
+            'playServices'      : '15.0.1',
             'jUnit'             : '4.12',
             'runner'            : '1.0.1',
             'espresso'          : '3.0.1',
@@ -11,7 +14,7 @@ buildscript {
             'kotlin'            : '1.2.30',
             'appcompat'         : '27.1.1',
             'lifecycle'         : '1.1.1',
-            'room'              : '1.0.0'
+            'room'              : '1.1.1'
     ]
     repositories {
         google()
