@@ -10,8 +10,6 @@ import com.hmmelton.releave.signin.SignInActivity
 
 class SplashScreenActivity : AppCompatActivity() {
 
-    private val firebaseAuth = FirebaseAuth.getInstance()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -23,17 +21,16 @@ class SplashScreenActivity : AppCompatActivity() {
             View.SYSTEM_UI_FLAG_FULLSCREEN or
             View.SYSTEM_UI_FLAG_IMMERSIVE
 
-        // Grab most recent signed in account
-        FirebaseAuth.getInstance().addAuthStateListener {
+        val currentUser = FirebaseAuth.getInstance().currentUser
 
-            // If an account was found, navigate to MainActivity
-            it.currentUser?.let {
-                startActivity(Intent(this, MainActivity::class.java))
-                finish()
-            }
+        // If an account was found, navigate to MainActivity
+        if (currentUser == null) {
+            startActivity(Intent(this, SignInActivity::class.java))
+            finish()
+        } else {
 
             // Otherwise, navigate to SignInActivity
-            startActivity(Intent(this, SignInActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
             finish()
         }
     }

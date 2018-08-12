@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.view.View
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
@@ -60,7 +59,15 @@ class SignInActivity : AppCompatActivity() {
             val account = completedTask.getResult(ApiException::class.java)
             firebaseAuthWithGoogleAccount(account)
         } catch (e: ApiException) {
-            Log.e("SignInActivity", "Error signing in", e)
+
+            // Hide cover and notify user of failure
+            signInCover.visibility = View.GONE
+            Snackbar.make(
+                findViewById<View>(android.R.id.content),
+                getString(R.string.err_sign_in_failed),
+                Snackbar.LENGTH_LONG
+            ).show()
+
             e.printStackTrace()
         }
     }
@@ -69,10 +76,12 @@ class SignInActivity : AppCompatActivity() {
         val credentials = GoogleAuthProvider.getCredential(account.idToken, null)
         firebaseAuth.signInWithCredential(credentials).addOnCompleteListener {
             if (it.isSuccessful) {
-                // TODO: Save user to local storage
                 startActivity(Intent(this@SignInActivity, MainActivity::class.java))
                 finish()
             } else {
+
+                // Hide cover and notify user of error
+                signInCover.visibility = View.GONE
                 Snackbar.make(
                     findViewById<View>(android.R.id.content),
                     getString(R.string.err_sign_in_failed),
@@ -84,6 +93,7 @@ class SignInActivity : AppCompatActivity() {
 
     /** [View.OnClickListener] for Google sign in button */
     private val signInButtonOnClickListener = View.OnClickListener {
+        signInCover.visibility = View.VISIBLE
         startActivityForResult(googleSignInClient.signInIntent, REQUEST_CODE_SIGN_IN)
     }
 }
