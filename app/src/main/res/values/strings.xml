@@ -4,6 +4,14 @@
     <!-- Menu items -->
     <string name="menu_label_sign_out">Sign out</string>
 
-    <!-- Error string -->
+    <!-- Error strings -->
     <string name="err_sign_in_failed">Sign in failed</string>
+
+    <!-- Alert strings -->
+    <string name="alert_location_permission_title">Location permissions required</string>
+    <string name="alert_location_permission_message">Please turn on the location permission from application
+    settings.</string>
+
+    <!-- Button copy -->
+    <string name="btn_text_allow">Allow</string>
 </resources>
