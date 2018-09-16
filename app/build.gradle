@@ -42,6 +42,7 @@ dependencies {
     // Play Services
     implementation "com.google.android.gms:play-services-auth:${libraries.playServices}"
     implementation "com.google.android.gms:play-services-maps:${libraries.playServices}"
+    implementation "com.google.android.gms:play-services-location:${libraries.playServices}"
 
     // Architecture Components
     implementation "android.arch.lifecycle:extensions:${libraries.lifecycle}"
