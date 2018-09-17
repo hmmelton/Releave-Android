@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
 
 android {
     compileSdkVersion 27
@@ -38,6 +39,9 @@ dependencies {
     implementation "com.google.firebase:firebase-database:${libraries.firebase}"
     implementation "com.google.firebase:firebase-auth:${libraries.firebaseAuth}"
     implementation "com.google.firebase:firebase-core:${libraries.firebaseCore}"
+    implementation ("com.crashlytics.sdk.android:crashlytics:${libraries.crashlytics}@aar") {
+        transitive = true
+    }
 
     // Play Services
     implementation "com.google.android.gms:play-services-auth:${libraries.playServices}"
