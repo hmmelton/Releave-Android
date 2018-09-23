@@ -15,7 +15,8 @@ buildscript {
             'lifecycle'         : '1.1.1',
             'playServices'      : '15.0.1',
             'room'              : '1.1.1',
-            'runner'            : '1.0.1'
+            'runner'            : '1.0.1',
+            'threetenabp'       : '1.1.0'
     ]
     repositories {
         google()

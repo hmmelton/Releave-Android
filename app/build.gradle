@@ -59,6 +59,8 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${libraries.kotlin}"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${libraries.kotlin}"
 
+    implementation "com.jakewharton.threetenabp:threetenabp:${libraries.threetenabp}"
+
     testImplementation "junit:junit:${libraries.jUnit}"
 
     androidTestImplementation "com.android.support.test:runner:${libraries.runner}"
