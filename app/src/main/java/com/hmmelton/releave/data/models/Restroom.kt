@@ -1,21 +1,59 @@
-package com.hmmelton.releave.models
+package com.hmmelton.releave.data.models
 
+import android.arch.persistence.room.ColumnInfo
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.PrimaryKey
 import org.threeten.bp.Instant
 
+@Entity
 data class Restroom(
+
+    @PrimaryKey
+    val id: String,
+
+    @ColumnInfo(name = "name")
     val name: String,
+
+    @ColumnInfo(name = "street_address_1")
     val streetAddress1: String,
+
+    @ColumnInfo(name = "street_address_2")
     val streetAddress2: String,
+
+    @ColumnInfo(name = "city")
     val city: String,
+
+    @ColumnInfo(name = "state")
     val state: String,
+
+    @ColumnInfo(name = "postal_code")
     val postalCode: String,
-    val coords: GeoPoint,
+
+    @ColumnInfo(name = "latitude")
+    val lat: Double,
+
+    @ColumnInfo(name = "longitude")
+    val lng: Double,
+
+    @ColumnInfo(name = "is_locked")
     val isLocked: Boolean,
+
+    @ColumnInfo(name = "rating")
     private var rating: Double,
+
+    @ColumnInfo(name = "num_ratings")
     private var numRatings: Int,
+
+    @ColumnInfo(name = "created_by")
     private val createdBy: String,
+
+    @ColumnInfo(name = "created_when")
     private val createdWhen: Instant,
+
+    @ColumnInfo(name = "updated_by")
     private var updatedBy: String,
+
+    @ColumnInfo(name = "updated_when")
     private var updatedWhen: Instant
 ) {
 
