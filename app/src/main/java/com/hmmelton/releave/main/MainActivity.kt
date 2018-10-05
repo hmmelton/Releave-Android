@@ -171,10 +171,12 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
             setSupportActionBar(addRestroomToolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(true)
             supportActionBar?.setDisplayShowHomeEnabled(true)
+            supportActionBar?.title = getString(R.string.add_restroom_title)
         } else {
             setSupportActionBar(mainToolbar)
             supportActionBar?.setDisplayHomeAsUpEnabled(false)
             supportActionBar?.setDisplayShowHomeEnabled(false)
+            supportActionBar?.title = getString(R.string.app_name)
         }
     }
 
