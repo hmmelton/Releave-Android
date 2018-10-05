@@ -57,8 +57,9 @@ class SignInActivity : AppCompatActivity() {
     private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>) {
         try {
             val account = completedTask.getResult(ApiException::class.java)
+                ?: throw Exception()
             firebaseAuthWithGoogleAccount(account)
-        } catch (e: ApiException) {
+        } catch (e: Exception) {
 
             // Hide cover and notify user of failure
             signInCover.visibility = View.GONE

@@ -45,16 +45,16 @@ data class Restroom(
     private var numRatings: Int,
 
     @ColumnInfo(name = "created_by")
-    private val createdBy: String,
+    val createdBy: String,
 
     @ColumnInfo(name = "created_when")
-    private val createdWhen: Instant,
+    val createdWhen: Instant,
 
     @ColumnInfo(name = "updated_by")
-    private var updatedBy: String,
+    var updatedBy: String,
 
     @ColumnInfo(name = "updated_when")
-    private var updatedWhen: Instant
+    var updatedWhen: Instant
 ) {
 
     /**

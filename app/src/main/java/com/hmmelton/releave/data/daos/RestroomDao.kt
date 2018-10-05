@@ -7,7 +7,7 @@ import android.arch.persistence.room.Query
 import com.hmmelton.releave.data.models.Restroom
 
 private const val QUERY_STRING_VISIBLE_RESTROOMS = """
-        SELECT * FROM restrooms
+        SELECT * FROM restroom
         WHERE latitude >= :startLat
         AND latitude <= :endLat
         AND longitude >= :startLng
@@ -23,7 +23,7 @@ interface RestroomDao {
     fun getVisibleRestrooms(startLat: Double, endLat: Double, startLng: Double, endLng: Double): List<Restroom>
 
     @Query("SELECT * FROM restroom WHERE created_by = :userId")
-    fun getByUserId(userId: String)
+    fun getByUserId(userId: String): Restroom?
 
     @Insert
     fun insert(restroom: Restroom)
