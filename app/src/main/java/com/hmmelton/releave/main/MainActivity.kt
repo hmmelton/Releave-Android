@@ -12,7 +12,6 @@ import android.support.constraint.ConstraintLayout
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewAnimationUtils
 import android.view.animation.AccelerateInterpolator
 import android.view.animation.DecelerateInterpolator
 import com.google.android.gms.location.FusedLocationProviderClient
@@ -29,8 +28,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.hmmelton.releave.R
 import com.hmmelton.releave.helpers.BaseActivity
 import com.hmmelton.releave.signin.SignInActivity
+import com.hmmelton.releave.views.RestroomForm.Corner
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.view_add_restroom.*
+import kotlinx.android.synthetic.main.view_restroom_form.*
 import java.util.concurrent.TimeUnit
 
 class MainActivity : BaseActivity(), OnMapReadyCallback {
@@ -58,7 +58,7 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
 
         override fun onAnimationEnd(animation: Animator?) {
             if (isAddRestroomLayoutVisible) {
-                addRestroomView.visibility = View.GONE
+                restroomForm.visibility = View.GONE
             }
             isAddRestroomLayoutVisible = !isAddRestroomLayoutVisible
             setActionBar()
@@ -69,7 +69,7 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
 
         override fun onAnimationStart(animation: Animator?) {
             if (!isAddRestroomLayoutVisible) {
-                addRestroomView.visibility = View.VISIBLE
+                restroomForm.visibility = View.VISIBLE
             }
         }
     }
@@ -216,8 +216,12 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
      * This function animates the flow displaying the "add new restroom" layout.
      */
     private fun animateDisplayAddRestroomLayout() {
+        val content = findViewById<View>(android.R.id.content)
         val diagonalOutAnimation = createDiagonalOutMotionAnimation()
-        val expandLayoutAnimation = createExpandLayoutAnimation()
+        val expandLayoutAnimation =
+            restroomForm.createExpandLayoutAnimation(content, ANIMATION_DURATION, Corner.BOTTOM_RIGHT)
+
+        expandLayoutAnimation.addListener(animationListener)
 
         val set = AnimatorSet()
         set.playSequentially(diagonalOutAnimation, expandLayoutAnimation)
@@ -228,57 +232,16 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
      * This function animates the flow hiding the "add new restroom" layout.
      */
     private fun animateHideAddRestroomLayout() {
-        val shrinkLayoutAnimation = createShrinkLayoutAnimation()
+        val content = findViewById<View>(android.R.id.content)
+        val shrinkLayoutAnimation =
+            restroomForm.createShrinkLayoutAnimation(content, ANIMATION_DURATION, Corner.BOTTOM_RIGHT)
         val diagonalInAnimation = createDiagonalInMotionAnimation()
+
+        shrinkLayoutAnimation.addListener(animationListener)
 
         val set = AnimatorSet()
         set.playSequentially(shrinkLayoutAnimation, diagonalInAnimation)
         set.start()
-    }
-
-    /**
-     * This function creates an animation to expand the "add restroom" layout.
-     *
-     * @return [Animator] for animating the layout
-     */
-    private fun createExpandLayoutAnimation(): Animator {
-        val mainView = findViewById<View>(android.R.id.content)
-
-        val x = mainView.right
-        val y = mainView.bottom
-        val startRadius = 0
-        val endRadius = Math.hypot(mainView.width.toDouble(), mainView.height.toDouble()).toInt()
-
-        val anim =
-            ViewAnimationUtils.createCircularReveal(addRestroomView, x, y, startRadius.toFloat(), endRadius.toFloat())
-
-        anim.addListener(animationListener)
-        anim.duration = ANIMATION_DURATION
-
-        return anim
-    }
-
-    /**
-     * This function creates an animation to shrink the "add restroom" layout.
-     *
-     * @return [Animator] for animating the layout
-     */
-    private fun createShrinkLayoutAnimation(): Animator {
-        val mainView = findViewById<View>(android.R.id.content)
-
-        val x = addRestroomView.right
-        val y = addRestroomView.bottom
-
-        val startRadius = Math.hypot(mainView.width.toDouble(), mainView.height.toDouble()).toInt()
-        val endRadius = 0
-
-        val anim =
-            ViewAnimationUtils.createCircularReveal(addRestroomView, x, y, startRadius.toFloat(), endRadius.toFloat())
-
-        anim.addListener(animationListener)
-        anim.duration = ANIMATION_DURATION
-
-        return anim
     }
 
     /**
