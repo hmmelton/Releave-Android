@@ -50,12 +50,24 @@
             android:id="@+id/recyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginTop="16dp"
+            android:layout_margin="16dp"
             app:layout_constraintTop_toBottomOf="@+id/textView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toTopOf="@+id/ratingTextView" />
+
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="@id/recyclerView"
+            app:layout_constraintBottom_toBottomOf="@id/recyclerView"
+            app:layout_constraintEnd_toEndOf="@id/recyclerView"
+            app:layout_constraintStart_toStartOf="@id/recyclerView"
+            android:visibility="gone"
+            tools:visibility="visible"/>
 
         <TextView
             android:text="Rating"
@@ -84,7 +96,7 @@
             app:layout_constraintBottom_toTopOf="@+id/checkBox" />
 
         <Button
-            android:text="Button"
+            android:text="@string/btn_text_submit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:id="@+id/button"
@@ -93,7 +105,8 @@
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            android:backgroundTint="?colorAccent"/>
 
         <CheckBox
             android:layout_width="wrap_content"

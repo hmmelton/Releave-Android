@@ -15,4 +15,5 @@
 
     <!-- Button copy -->
     <string name="btn_text_allow">Allow</string>
+    <string name="btn_text_submit">Submit</string>
 </resources>

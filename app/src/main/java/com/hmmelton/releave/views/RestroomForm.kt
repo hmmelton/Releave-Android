@@ -3,44 +3,49 @@ package com.hmmelton.releave.views
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.support.v7.widget.DividerItemDecoration
+import android.support.v7.widget.LinearLayoutManager
 import android.util.AttributeSet
 import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.widget.LinearLayout
-import android.widget.Toast
-import com.google.android.gms.location.places.PlaceDetectionClient
+import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
 import com.google.android.gms.location.places.Places
 import com.hmmelton.releave.R
+import com.hmmelton.releave.adapters.RestroomFormAdapter
+import kotlinx.android.synthetic.main.view_restroom_form.view.*
 
 class RestroomForm(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    private val placeDetectionClient: PlaceDetectionClient
+    private val TAG = "RestroomForm"
+
+    private val placeDetectionClient = Places.getPlaceDetectionClient(context)
+    private val adapter = RestroomFormAdapter()
 
     init {
         inflate(context, R.layout.view_restroom_form, this)
 
-        placeDetectionClient = Places.getPlaceDetectionClient(context)
+        setUpRecyclerView()
+    }
 
-        try {
-            getLikelyPlaces()
-        } catch (e: SecurityException) {
-            Toast.makeText(context, "", Toast.LENGTH_LONG).show()
-        }
+    private fun setUpRecyclerView() {
+        val dividerItemDecoration = DividerItemDecoration(context, VERTICAL)
+
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(context, VERTICAL, false)
+        recyclerView.addItemDecoration(dividerItemDecoration)
     }
 
     @SuppressLint("MissingPermission")
-    private fun getLikelyPlaces() {
+    private fun getLikelyPlaces(resultHandler: (PlaceLikelihoodBufferResponse) -> Unit) {
         val placeResult = placeDetectionClient.getCurrentPlace(null)
         placeResult.addOnCompleteListener {
             val likelyPlaces = it.result ?: return@addOnCompleteListener
-            for (placeLikelihood in likelyPlaces) {
-                Log.d(
-                    "RestroomForm",
-                    "Place ${placeLikelihood.place.name} has likelihood ${placeLikelihood.likelihood}"
-                )
+            for (place in likelyPlaces) {
+                Log.d("RestroomForm", "${place.place.name}")
             }
-            likelyPlaces.release()
+            resultHandler(likelyPlaces)
         }
     }
 
@@ -125,9 +130,35 @@ class RestroomForm(context: Context, attrs: AttributeSet) : LinearLayout(context
         val anim =
             ViewAnimationUtils.createCircularReveal(this, x, y, startRadius.toFloat(), endRadius.toFloat())
 
+        anim.addListener(expandAnimationListener)
+
         anim.duration = duration
 
         return anim
+    }
+
+    /**
+     * This [Animator.AnimatorListener] handles adding/removing items from the RecyclerView's adapter.
+     */
+    private val expandAnimationListener = object : Animator.AnimatorListener {
+        override fun onAnimationStart(animation: Animator?) {
+            adapter.clear()
+            progressBar.visibility = View.VISIBLE
+        }
+
+        override fun onAnimationEnd(animation: Animator?) {
+            getLikelyPlaces {
+                progressBar.visibility = View.GONE
+
+                adapter.setItems(buffer = it)
+            }
+        }
+
+        override fun onAnimationRepeat(animation: Animator?) {
+        }
+
+        override fun onAnimationCancel(animation: Animator?) {
+        }
     }
 
     /**

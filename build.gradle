@@ -16,6 +16,7 @@ buildscript {
             'playServicesAuth'  : '16.0.1',
             'playServicesLoc'   : '16.0.0',
             'playServicesMaps'  : '16.0.0',
+            'playServicesPlaces': '16.0.0',
             'room'              : '1.1.1',
             'runner'            : '1.0.1',
             'threetenabp'       : '1.1.0'
