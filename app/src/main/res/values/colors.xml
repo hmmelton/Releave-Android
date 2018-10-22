@@ -8,6 +8,8 @@
 
     <color name="colorCoverBlack">#80000000</color>
 
-    <color name="colorStarOff">#BDBDBD</color>
+    <color name="colorStarOff">#bdbdbd</color>
     <color name="colorStarOn">@color/colorAccent</color>
+    
+    <color name="colorNoLocationIcon">#bdbdbd</color>
 </resources>

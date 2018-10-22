@@ -42,9 +42,6 @@ class RestroomForm(context: Context, attrs: AttributeSet) : LinearLayout(context
         val placeResult = placeDetectionClient.getCurrentPlace(null)
         placeResult.addOnCompleteListener {
             val likelyPlaces = it.result ?: return@addOnCompleteListener
-            for (place in likelyPlaces) {
-                Log.d("RestroomForm", "${place.place.name}")
-            }
             resultHandler(likelyPlaces)
         }
     }
@@ -144,6 +141,7 @@ class RestroomForm(context: Context, attrs: AttributeSet) : LinearLayout(context
         override fun onAnimationStart(animation: Animator?) {
             adapter.clear()
             progressBar.visibility = View.VISIBLE
+            noLocationsLayout.visibility = View.GONE
         }
 
         override fun onAnimationEnd(animation: Animator?) {
@@ -151,6 +149,10 @@ class RestroomForm(context: Context, attrs: AttributeSet) : LinearLayout(context
                 progressBar.visibility = View.GONE
 
                 adapter.setItems(buffer = it)
+
+                if (adapter.itemCount == 0) {
+                    noLocationsLayout.visibility = View.VISIBLE
+                }
             }
         }
 
