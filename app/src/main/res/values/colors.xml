@@ -8,8 +8,15 @@
 
     <color name="colorCoverBlack">#80000000</color>
 
-    <color name="colorStarOff">#bdbdbd</color>
+    <!-- Star colors -->
+    <color name="colorStarOff">#757575</color>
     <color name="colorStarOn">@color/colorAccent</color>
     
-    <color name="colorNoLocationIcon">#bdbdbd</color>
+    <color name="colorNoLocationIcon">#757575</color>
+    
+    <color name="colorDividerBar">#757575</color>
+
+    <!-- Text colors -->
+    <color name="colorTextTitle">#000000</color>
+    <color name="colorTextSecondary">#757575</color>
 </resources>

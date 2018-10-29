@@ -1,6 +1,8 @@
 package com.hmmelton.releave.adapters
 
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,6 +17,10 @@ import com.hmmelton.releave.R
  */
 class RestroomFormAdapter : RecyclerView.Adapter<RestroomFormAdapter.ViewHolder>() {
 
+    companion object {
+        private const val TAG = "RestroomFormAdapter"
+    }
+
     private var places = listOf<Place>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -28,7 +34,7 @@ class RestroomFormAdapter : RecyclerView.Adapter<RestroomFormAdapter.ViewHolder>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val place = places[position]
-        holder.textView.text = place.name
+        holder.bind(place)
     }
 
     fun setItems(buffer: PlaceLikelihoodBufferResponse) {
@@ -44,7 +50,22 @@ class RestroomFormAdapter : RecyclerView.Adapter<RestroomFormAdapter.ViewHolder>
         notifyDataSetChanged()
     }
 
-    class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val textView: TextView = itemView.findViewById(R.id.tvLabel)
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        private val textView = (itemView.findViewById(R.id.tvLabel) as TextView).apply {
+            setTextColor(ContextCompat.getColor(itemView.context, R.color.colorTextSecondary))
+        }
+
+        fun bind(place: Place) {
+            textView.text = place.name
+
+            itemView.setOnClickListener {
+                Log.d(TAG, place.name.toString())
+
+                val addressSections = place.address?.split(", ") ?: return@setOnClickListener
+                val addressMultiLine =
+                    String.format("%s\n %s, %s", addressSections[0], addressSections[1], addressSections[2])
+                Log.d(TAG, addressMultiLine)
+            }
+        }
     }
 }

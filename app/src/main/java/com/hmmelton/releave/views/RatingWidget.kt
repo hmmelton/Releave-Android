@@ -13,7 +13,7 @@ import com.hmmelton.releave.R
 class RatingWidget(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
     private val numStars: Int
-    private var selectedRating: Int
+    var selectedRating: Int
 
     init {
         inflate(context, R.layout.view_rating_widget, this)

@@ -3,10 +3,10 @@ package com.hmmelton.releave.views
 import android.animation.Animator
 import android.annotation.SuppressLint
 import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewAnimationUtils
 import android.widget.LinearLayout
@@ -18,8 +18,6 @@ import kotlinx.android.synthetic.main.view_restroom_form.view.*
 
 class RestroomForm(context: Context, attrs: AttributeSet) : LinearLayout(context, attrs) {
 
-    private val TAG = "RestroomForm"
-
     private val placeDetectionClient = Places.getPlaceDetectionClient(context)
     private val adapter = RestroomFormAdapter()
 
@@ -30,7 +28,9 @@ class RestroomForm(context: Context, attrs: AttributeSet) : LinearLayout(context
     }
 
     private fun setUpRecyclerView() {
-        val dividerItemDecoration = DividerItemDecoration(context, VERTICAL)
+        val dividerItemDecoration = DividerItemDecoration(context, VERTICAL).apply {
+            setDrawable(requireNotNull(ContextCompat.getDrawable(context, R.drawable.divider_item_decoration)))
+        }
 
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context, VERTICAL, false)
@@ -145,10 +145,10 @@ class RestroomForm(context: Context, attrs: AttributeSet) : LinearLayout(context
         }
 
         override fun onAnimationEnd(animation: Animator?) {
-            getLikelyPlaces {
+            getLikelyPlaces { buffer ->
                 progressBar.visibility = View.GONE
 
-                adapter.setItems(buffer = it)
+                adapter.setItems(buffer = buffer)
 
                 if (adapter.itemCount == 0) {
                     noLocationsLayout.visibility = View.VISIBLE
@@ -160,6 +160,12 @@ class RestroomForm(context: Context, attrs: AttributeSet) : LinearLayout(context
         }
 
         override fun onAnimationCancel(animation: Animator?) {
+        }
+    }
+
+    private val submitButtonOnClickListener = View.OnClickListener {
+        if (ratingBar.selectedRating == 0) {
+            // TODO: Notify user to fill in all info
         }
     }
 

@@ -19,4 +19,9 @@
     <style name="SignInTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:statusBarColor">@color/colorPrimaryDark</item>
     </style>
+
+    <style name="TextTitleStyle">
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/colorTextTitle</item>
+    </style>
 </resources>
