@@ -22,4 +22,7 @@
     <string name="label_rating">Rating</string>
     <string name="label_locked">Locked</string>
     <string name="empty_location_list_message">No nearby locations found</string>
+
+    <!-- Snackbar strings -->
+    <string name="snack_no_nearby_locations">No nearby locations found</string>
 </resources>

@@ -1,24 +1,21 @@
 package com.hmmelton.releave.main
 
-import android.animation.Animator
-import android.animation.AnimatorSet
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
-import android.support.constraint.ConstraintLayout
+import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.animation.AccelerateInterpolator
-import android.view.animation.DecelerateInterpolator
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
+import com.google.android.gms.location.places.Places
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -26,11 +23,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.hmmelton.releave.R
+import com.hmmelton.releave.dialogs.RestroomFormDialog
 import com.hmmelton.releave.helpers.BaseActivity
 import com.hmmelton.releave.signin.SignInActivity
-import com.hmmelton.releave.views.RestroomForm.Corner
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.view_restroom_form.*
 import java.util.concurrent.TimeUnit
 
 class MainActivity : BaseActivity(), OnMapReadyCallback {
@@ -42,37 +38,13 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
         private const val LOCATION_REQUEST_FASTEST_INTERVAL = 1L
 
         private const val MAP_ZOOM_LEVEL = 16f
-        private const val ANIMATION_DURATION = 200L
     }
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var map: GoogleMap? = null
-    private var isAddRestroomLayoutVisible = false
 
-    /**
-     * This listener is used for [android.support.design.widget.FloatingActionButton] expand and shrink animations.
-     */
-    private val animationListener = object : Animator.AnimatorListener {
-        override fun onAnimationRepeat(animation: Animator?) {
-        }
-
-        override fun onAnimationEnd(animation: Animator?) {
-            if (isAddRestroomLayoutVisible) {
-                restroomForm.visibility = View.GONE
-            }
-            isAddRestroomLayoutVisible = !isAddRestroomLayoutVisible
-            setActionBar()
-        }
-
-        override fun onAnimationCancel(animation: Animator?) {
-        }
-
-        override fun onAnimationStart(animation: Animator?) {
-            if (!isAddRestroomLayoutVisible) {
-                restroomForm.visibility = View.VISIBLE
-            }
-        }
-    }
+    private val placeDetectionClient
+        get() = Places.getPlaceDetectionClient(this)
 
     /**
      * Callback for device location updates
@@ -96,7 +68,7 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
-    private val fabOnClickListener = View.OnClickListener { animateDisplayAddRestroomLayout() }
+    private val fabOnClickListener = View.OnClickListener { displayFormDialog() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -120,7 +92,7 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        if (!isAddRestroomLayoutVisible) menuInflater.inflate(R.menu.menu_activity_main, menu)
+        menuInflater.inflate(R.menu.menu_activity_main, menu)
         return true
     }
 
@@ -133,9 +105,6 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
                 // Return to sign in page
                 startActivity(Intent(this, SignInActivity::class.java))
                 finish()
-            }
-            android.R.id.home -> {
-                animateHideAddRestroomLayout()
             }
             else -> throw IllegalArgumentException("Unrecognized item: ${item.itemId}")
         }
@@ -167,17 +136,10 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private fun setActionBar() {
-        if (isAddRestroomLayoutVisible) {
-            setSupportActionBar(addRestroomToolbar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(true)
-            supportActionBar?.setDisplayShowHomeEnabled(true)
-            supportActionBar?.title = getString(R.string.add_restroom_title)
-        } else {
-            setSupportActionBar(mainToolbar)
-            supportActionBar?.setDisplayHomeAsUpEnabled(false)
-            supportActionBar?.setDisplayShowHomeEnabled(false)
-            supportActionBar?.title = getString(R.string.app_name)
-        }
+        setSupportActionBar(mainToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.title = getString(R.string.app_name)
     }
 
     private fun updateLocationUi() {
@@ -212,79 +174,36 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
-    /**
-     * This function animates the flow displaying the "add new restroom" layout.
-     */
-    private fun animateDisplayAddRestroomLayout() {
-        val content = findViewById<View>(android.R.id.content)
-        val diagonalOutAnimation = createDiagonalOutMotionAnimation()
-        val expandLayoutAnimation =
-            restroomForm.createExpandLayoutAnimation(content, ANIMATION_DURATION, Corner.BOTTOM_RIGHT)
+    private fun displayFormDialog() {
+        val transaction = supportFragmentManager.beginTransaction()
+        val prev = supportFragmentManager.findFragmentByTag("dialog")
+        if (prev !=  null) {
+            transaction.remove(prev)
+        }
+        transaction.addToBackStack(null)
 
-        expandLayoutAnimation.addListener(animationListener)
-
-        val set = AnimatorSet()
-        set.playSequentially(diagonalOutAnimation, expandLayoutAnimation)
-        set.start()
+        fetchCurrentPlaces { bufferResponse ->
+            if (bufferResponse == null) {
+                Snackbar
+                    .make(findViewById(android.R.id.content), R.string.snack_no_nearby_locations, Snackbar.LENGTH_LONG)
+                    .show()
+                return@fetchCurrentPlaces
+            }
+            RestroomFormDialog
+                .newInstance(bufferResponse)
+                .show(transaction, "dialog")
+        }
     }
 
     /**
-     * This function animates the flow hiding the "add new restroom" layout.
+     * This function fetches a collection of places near the user.
      */
-    private fun animateHideAddRestroomLayout() {
-        val content = findViewById<View>(android.R.id.content)
-        val shrinkLayoutAnimation =
-            restroomForm.createShrinkLayoutAnimation(content, ANIMATION_DURATION, Corner.BOTTOM_RIGHT)
-        val diagonalInAnimation = createDiagonalInMotionAnimation()
-
-        shrinkLayoutAnimation.addListener(animationListener)
-
-        val set = AnimatorSet()
-        set.playSequentially(shrinkLayoutAnimation, diagonalInAnimation)
-        set.start()
-    }
-
-    /**
-     * This function creates an [AnimatorSet] for animating the FAB off screen.
-     *
-     * @return [AnimatorSet] used for FAB animation
-     */
-    private fun createDiagonalOutMotionAnimation(): AnimatorSet {
-        val layoutParams = addRestroomFab.layoutParams as ConstraintLayout.LayoutParams
-
-        val xTranslationDistance = (layoutParams.marginEnd + (addRestroomFab.width / 2)).toFloat()
-        val xAnimation = ObjectAnimator.ofFloat(addRestroomFab, "translationX", xTranslationDistance)
-        xAnimation.interpolator = AccelerateInterpolator()
-
-        val yTranslationDistance = (layoutParams.bottomMargin + (addRestroomFab.height / 2)).toFloat()
-        val yAnimation = ObjectAnimator.ofFloat(addRestroomFab, "translationY", yTranslationDistance)
-        yAnimation.interpolator = DecelerateInterpolator()
-
-        val set = AnimatorSet()
-        set.playTogether(xAnimation, yAnimation)
-        set.duration = ANIMATION_DURATION
-
-        return set
-    }
-
-    /**
-     * This function creates an [AnimatorSet] for animating the FAB onto the screen.
-     *
-     * @return [AnimatorSet] used for FAB animation
-     */
-    private fun createDiagonalInMotionAnimation(): AnimatorSet {
-        val xTranslationDistance = 0f
-        val xAnimation = ObjectAnimator.ofFloat(addRestroomFab, "translationX", xTranslationDistance)
-        xAnimation.interpolator = DecelerateInterpolator()
-
-        val yTranslationDistance = 0f
-        val yAnimation = ObjectAnimator.ofFloat(addRestroomFab, "translationY", yTranslationDistance)
-        yAnimation.interpolator = AccelerateInterpolator()
-
-        val set = AnimatorSet()
-        set.playTogether(xAnimation, yAnimation)
-        set.duration = ANIMATION_DURATION
-
-        return set
+    private fun fetchCurrentPlaces(callback: (PlaceLikelihoodBufferResponse?) -> Unit) {
+        try {
+            val placeResult = placeDetectionClient.getCurrentPlace(null)
+            placeResult.addOnCompleteListener { callback(it.result) }
+        } catch (e: SecurityException) {
+            requestLocationPermission()
+        }
     }
 }

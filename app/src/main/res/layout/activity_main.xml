@@ -46,11 +46,4 @@
         android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-    <com.hmmelton.releave.views.RestroomForm
-        android:id="@+id/restroomForm"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:elevation="8dp"
-        android:visibility="gone" />
 </android.support.constraint.ConstraintLayout>
