@@ -153,6 +153,8 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
                 map?.isMyLocationEnabled = false
                 map?.uiSettings?.isMyLocationButtonEnabled = false
             }
+            map?.uiSettings?.isZoomGesturesEnabled = false
+            map?.uiSettings?.isZoomControlsEnabled = false
         } catch (e: SecurityException) {
             requestLocationPermission()
         }
