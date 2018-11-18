@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
 
 android {
@@ -10,6 +12,12 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = ["room.schemaLocation": "$projectDir/schemas".toString()]
+            }
+        }
     }
     buildTypes {
         release {
@@ -39,25 +47,26 @@ dependencies {
     implementation "com.google.firebase:firebase-database:${libraries.firebase}"
     implementation "com.google.firebase:firebase-auth:${libraries.firebaseAuth}"
     implementation "com.google.firebase:firebase-core:${libraries.firebaseCore}"
-    implementation ("com.crashlytics.sdk.android:crashlytics:${libraries.crashlytics}@aar") {
+    implementation("com.crashlytics.sdk.android:crashlytics:${libraries.crashlytics}@aar") {
         transitive = true
     }
 
     // Play Services
-    implementation "com.google.android.gms:play-services-auth:${libraries.playServices}"
-    implementation "com.google.android.gms:play-services-maps:${libraries.playServices}"
-    implementation "com.google.android.gms:play-services-location:${libraries.playServices}"
-
-    // Architecture Components
-    implementation "android.arch.lifecycle:extensions:${libraries.lifecycle}"
-    annotationProcessor "android.arch.lifecycle:compiler:${libraries.lifecycle}"
-    implementation "android.arch.persistence.room:runtime:${libraries.room}"
-    annotationProcessor "android.arch.persistence.room:compiler:${libraries.room}"
+    implementation "com.google.android.gms:play-services-auth:${libraries.playServicesAuth}"
+    implementation "com.google.android.gms:play-services-location:${libraries.playServicesLoc}"
+    implementation "com.google.android.gms:play-services-maps:${libraries.playServicesMaps}"
+    implementation "com.google.android.gms:play-services-places:${libraries.playServicesPlaces}"
 
     // Kotlin
     ktlint "com.github.shyiko:ktlint:${libraries.ktlint}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${libraries.kotlin}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libraries.kotlin}"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${libraries.kotlin}"
+
+    // Architecture Components
+    implementation "android.arch.lifecycle:extensions:${libraries.lifecycle}"
+    kapt "android.arch.lifecycle:compiler:${libraries.lifecycle}"
+
+    implementation "com.jakewharton.threetenabp:threetenabp:${libraries.threetenabp}"
 
     testImplementation "junit:junit:${libraries.jUnit}"
 
@@ -81,5 +90,3 @@ task('ktlintFormat', type: JavaExec, group: 'formatting') {
 }
 
 apply plugin: 'com.google.gms.google-services'
-apply plugin: 'kotlin-android'
-apply plugin: 'kotlin-android-extensions'

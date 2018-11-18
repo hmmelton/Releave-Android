@@ -5,13 +5,17 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
+import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
+import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
+import com.google.android.gms.location.places.Places
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -19,8 +23,10 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.firebase.auth.FirebaseAuth
 import com.hmmelton.releave.R
+import com.hmmelton.releave.dialogs.RestroomFormDialog
 import com.hmmelton.releave.helpers.BaseActivity
 import com.hmmelton.releave.signin.SignInActivity
+import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.TimeUnit
 
 class MainActivity : BaseActivity(), OnMapReadyCallback {
@@ -37,15 +43,46 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
     private var map: GoogleMap? = null
 
+    private val placeDetectionClient
+        get() = Places.getPlaceDetectionClient(this)
+
+    /**
+     * Callback for device location updates
+     */
+    private val locationCallback = object : LocationCallback() {
+
+        override fun onLocationResult(locationResult: LocationResult?) {
+            val result = locationResult ?: return
+
+            val locationList = result.locations
+            if (locationList.isNotEmpty()) {
+
+                // Update last known location
+                val lastLocation = locationList.last()
+
+                val location = lastLocation ?: return
+                val latLng = LatLng(location.latitude, location.longitude)
+
+                map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL))
+            }
+        }
+    }
+
+    private val fabOnClickListener = View.OnClickListener { displayFormDialog() }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        setActionBar()
 
         // Get reference to map Fragment
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this)
+
+        addRestroomFab.setOnClickListener(fabOnClickListener)
     }
 
     override fun onStart() {
@@ -98,6 +135,13 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
         displayCurrentLocation()
     }
 
+    private fun setActionBar() {
+        setSupportActionBar(mainToolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
+        supportActionBar?.title = getString(R.string.app_name)
+    }
+
     private fun updateLocationUi() {
         if (map == null) return
 
@@ -130,25 +174,36 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
         }
     }
 
-    /**
-     * Callback for device location updates
-     */
-    private val locationCallback = object : LocationCallback() {
+    private fun displayFormDialog() {
+        val transaction = supportFragmentManager.beginTransaction()
+        val prev = supportFragmentManager.findFragmentByTag("dialog")
+        if (prev != null) {
+            transaction.remove(prev)
+        }
+        transaction.addToBackStack(null)
 
-        override fun onLocationResult(locationResult: LocationResult?) {
-            val result = locationResult ?: return
-
-            val locationList = result.locations
-            if (locationList.isNotEmpty()) {
-
-                // Update last known location
-                val lastLocation = locationList.last()
-
-                val location = lastLocation ?: return
-                val latLng = LatLng(location.latitude, location.longitude)
-
-                map?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, MAP_ZOOM_LEVEL))
+        fetchCurrentPlaces { bufferResponse ->
+            if (bufferResponse == null) {
+                Snackbar
+                    .make(findViewById(android.R.id.content), R.string.snack_no_nearby_locations, Snackbar.LENGTH_LONG)
+                    .show()
+                return@fetchCurrentPlaces
             }
+            RestroomFormDialog
+                .newInstance(bufferResponse)
+                .show(transaction, "dialog")
+        }
+    }
+
+    /**
+     * This function fetches a collection of places near the user.
+     */
+    private fun fetchCurrentPlaces(callback: (PlaceLikelihoodBufferResponse?) -> Unit) {
+        try {
+            val placeResult = placeDetectionClient.getCurrentPlace(null)
+            placeResult.addOnCompleteListener { callback(it.result) }
+        } catch (e: SecurityException) {
+            requestLocationPermission()
         }
     }
 }
