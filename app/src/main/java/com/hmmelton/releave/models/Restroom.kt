@@ -1,14 +1,10 @@
-package com.hmmelton.releave.data.models
+package com.hmmelton.releave.models
 
 import org.threeten.bp.Instant
 
 data class Restroom(
     val name: String,
-    val streetAddress1: String,
-    val streetAddress2: String,
-    val city: String,
-    val state: String,
-    val postalCode: String,
+    val location: String,
     val lat: Double,
     val lng: Double,
     val isLocked: Boolean,
@@ -16,8 +12,8 @@ data class Restroom(
     private var numRatings: Int,
     val createdBy: String,
     val createdWhen: Instant,
-    var updatedBy: String,
-    var updatedWhen: Instant
+    var updatedBy: String?,
+    var updatedWhen: Instant?
 ) {
 
     /**
