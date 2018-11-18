@@ -1,7 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
-apply plugin: 'kotlin-kapt'
 apply plugin: 'io.fabric'
 
 android {
@@ -48,7 +47,7 @@ dependencies {
     implementation "com.google.firebase:firebase-database:${libraries.firebase}"
     implementation "com.google.firebase:firebase-auth:${libraries.firebaseAuth}"
     implementation "com.google.firebase:firebase-core:${libraries.firebaseCore}"
-    implementation ("com.crashlytics.sdk.android:crashlytics:${libraries.crashlytics}@aar") {
+    implementation("com.crashlytics.sdk.android:crashlytics:${libraries.crashlytics}@aar") {
         transitive = true
     }
 
@@ -60,14 +59,12 @@ dependencies {
 
     // Kotlin
     ktlint "com.github.shyiko:ktlint:${libraries.ktlint}"
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:${libraries.kotlin}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:${libraries.kotlin}"
     implementation "org.jetbrains.kotlin:kotlin-reflect:${libraries.kotlin}"
 
     // Architecture Components
     implementation "android.arch.lifecycle:extensions:${libraries.lifecycle}"
     kapt "android.arch.lifecycle:compiler:${libraries.lifecycle}"
-    implementation "android.arch.persistence.room:runtime:${libraries.room}"
-    kapt "android.arch.persistence.room:compiler:${libraries.room}"
 
     implementation "com.jakewharton.threetenabp:threetenabp:${libraries.threetenabp}"
 
