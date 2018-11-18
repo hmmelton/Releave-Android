@@ -177,7 +177,7 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     private fun displayFormDialog() {
         val transaction = supportFragmentManager.beginTransaction()
         val prev = supportFragmentManager.findFragmentByTag("dialog")
-        if (prev !=  null) {
+        if (prev != null) {
             transaction.remove(prev)
         }
         transaction.addToBackStack(null)
