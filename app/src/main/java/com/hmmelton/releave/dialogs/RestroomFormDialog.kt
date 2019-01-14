@@ -9,8 +9,6 @@ import android.view.View
 import android.widget.AdapterView
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.FirebaseDatabase
 import com.hmmelton.releave.R
 import com.hmmelton.releave.adapters.RestroomFormSpinnerAdapter
 import com.hmmelton.releave.models.Restroom
@@ -79,14 +77,12 @@ class RestroomFormDialog : DialogFragment() {
     }
 
     /**
-     * This function saves a new restroom to cloud storage.
+     * This function saves a new restroom to storage.
      */
     private fun saveNewRestroom(place: Place, isLocked: Boolean, rating: Double) {
-        val database = FirebaseDatabase.getInstance()
-        val restroomRef = database.getReference("restroom/${place.id}")
+        // TODO: save new restroom to database(s)
 
         val address = place.address ?: return
-        val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
         val latLng = place.latLng
         val entry = Restroom(
             name = place.name.toString(),
@@ -96,12 +92,10 @@ class RestroomFormDialog : DialogFragment() {
             isLocked = isLocked,
             rating = rating,
             numRatings = 1,
-            createdBy = uid,
+            createdBy = /* TODO: get user's ID */ "",
             createdWhen = Instant.now(),
             updatedBy = null,
             updatedWhen = null
         )
-
-        restroomRef.setValue(entry)
     }
 }
