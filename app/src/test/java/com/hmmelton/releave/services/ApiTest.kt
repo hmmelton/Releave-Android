@@ -12,6 +12,11 @@ import retrofit2.Response
 
 abstract class ApiTest {
 
+    companion object {
+        const val ERROR_MESSAGE_401 = """{ "error": "No authorization token found" }"""
+        const val ERROR_MESSAGE_500 = """{ "error": "Internal server error" }"""
+    }
+
     protected lateinit var testHelper: TestServerHelper
 
     @Before

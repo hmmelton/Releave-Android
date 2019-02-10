@@ -7,11 +7,6 @@ import org.junit.Test
 
 class AddUserTest : ApiTest() {
 
-    companion object {
-        private const val ERROR_MESSAGE_401 = """{ "message": "Not authorized" }"""
-        private const val ERROR_MESSAGE_500 = """{ "message": "Internal server error" }"""
-    }
-
     private lateinit var userAdapter: JsonAdapter<User>
 
     @Before

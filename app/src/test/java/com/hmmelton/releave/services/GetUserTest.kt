@@ -10,9 +10,7 @@ import org.junit.Test
 class GetUserTest : ApiTest() {
 
     companion object {
-        private const val ERROR_MESSAGE_401 = """{ "message": "Not authorized" }"""
-        private const val ERROR_MESSAGE_404 = """{ "message": "User not found" }"""
-        private const val ERROR_MESSAGE_500 = """{ "message": "Internal server error" }"""
+        private const val ERROR_MESSAGE_404 = """{ "error": "User not found" }"""
     }
 
     private lateinit var userAdapter: JsonAdapter<User>
