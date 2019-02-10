@@ -1,4 +1,4 @@
-package com.hmmelton.releave.signin
+package com.hmmelton.releave.activities
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

@@ -1,10 +1,9 @@
-package com.hmmelton.releave.splash
+package com.hmmelton.releave.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.View
-import com.hmmelton.releave.main.MainActivity
 
 class SplashScreenActivity : AppCompatActivity() {
 
