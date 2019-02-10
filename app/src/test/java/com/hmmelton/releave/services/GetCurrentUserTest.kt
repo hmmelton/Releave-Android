@@ -3,7 +3,7 @@ package com.hmmelton.releave.services
 import com.hmmelton.releave.TestServerHelper
 import com.hmmelton.releave.models.User
 import com.squareup.moshi.JsonAdapter
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -60,12 +60,13 @@ class GetCurrentUserTest : ApiTest() {
     }
 
     private fun thenUserParsedCorrectly(user: User) {
-        Assert.assertEquals(TestServerHelper.CREATED_WHEN, user.createdWhen)
-        Assert.assertEquals(TestServerHelper.FACEBOOK_ID, user.facebookId)
-        Assert.assertEquals(TestServerHelper.FIRST_NAME, user.firstName)
-        Assert.assertEquals(TestServerHelper.LAST_NAME, user.lastName)
-        Assert.assertEquals(TestServerHelper.EMAIL, user.email)
-        Assert.assertEquals(TestServerHelper.AUTH_TOKEN, user.authToken)
-        Assert.assertEquals(TestServerHelper.PAID, user.paid)
+        assertEquals(TestServerHelper.USER_ID, user.id)
+        assertEquals(TestServerHelper.CREATED_WHEN, user.createdWhen)
+        assertEquals(TestServerHelper.USER_FACEBOOK_ID, user.facebookId)
+        assertEquals(TestServerHelper.USER_FIRST_NAME, user.firstName)
+        assertEquals(TestServerHelper.USER_LAST_NAME, user.lastName)
+        assertEquals(TestServerHelper.USER_EMAIL, user.email)
+        assertEquals(TestServerHelper.USER_AUTH_TOKEN, user.authToken)
+        assertEquals(TestServerHelper.USER_PAID, user.paid)
     }
 }

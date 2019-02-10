@@ -15,7 +15,7 @@ class GetUserTest : ApiTest() {
     fun getUser_200_success() {
         givenResponse(code = 200, responseBody = testHelper.userJson)
 
-        val response = execute { testHelper.service.getUser(id = TestServerHelper.FACEBOOK_ID) }
+        val response = execute { testHelper.service.getUser(id = TestServerHelper.USER_ID) }
         val user = response.body()
 
         thenCallSuccessfulNonNullBody(response = response, body = user)
@@ -26,7 +26,7 @@ class GetUserTest : ApiTest() {
     fun getUser_401_failure() {
         givenResponse(code = 401, responseBody = ERROR_MESSAGE_401)
 
-        val response = execute { testHelper.service.getUser(TestServerHelper.FACEBOOK_ID) }
+        val response = execute { testHelper.service.getUser(TestServerHelper.USER_ID) }
         val user = response.body()
 
         thenCallUnsuccessfulNullBody(
@@ -41,7 +41,7 @@ class GetUserTest : ApiTest() {
     fun getUser_404_failure() {
         givenResponse(code = 404, responseBody = ERROR_MESSAGE_404)
 
-        val response = execute { testHelper.service.getUser(TestServerHelper.FACEBOOK_ID) }
+        val response = execute { testHelper.service.getUser(TestServerHelper.USER_ID) }
         val user = response.body()
 
         thenCallUnsuccessfulNullBody(
@@ -56,7 +56,7 @@ class GetUserTest : ApiTest() {
     fun getUser_500_failure() {
         givenResponse(code = 500, responseBody = ERROR_MESSAGE_500)
 
-        val response = execute { testHelper.service.getUser(TestServerHelper.FACEBOOK_ID) }
+        val response = execute { testHelper.service.getUser(TestServerHelper.USER_ID) }
         val user = response.body()
 
         thenCallUnsuccessfulNullBody(
@@ -68,12 +68,13 @@ class GetUserTest : ApiTest() {
     }
 
     private fun thenUserParsedCorrectly(user: User) {
+        assertEquals(TestServerHelper.USER_ID, user.id)
         assertEquals(TestServerHelper.CREATED_WHEN, user.createdWhen)
-        assertEquals(TestServerHelper.FACEBOOK_ID, user.facebookId)
-        assertEquals(TestServerHelper.FIRST_NAME, user.firstName)
-        assertEquals(TestServerHelper.LAST_NAME, user.lastName)
-        assertEquals(TestServerHelper.EMAIL, user.email)
-        assertEquals(TestServerHelper.AUTH_TOKEN, user.authToken)
-        assertEquals(TestServerHelper.PAID, user.paid)
+        assertEquals(TestServerHelper.USER_FACEBOOK_ID, user.facebookId)
+        assertEquals(TestServerHelper.USER_FIRST_NAME, user.firstName)
+        assertEquals(TestServerHelper.USER_LAST_NAME, user.lastName)
+        assertEquals(TestServerHelper.USER_EMAIL, user.email)
+        assertEquals(TestServerHelper.USER_AUTH_TOKEN, user.authToken)
+        assertEquals(TestServerHelper.USER_PAID, user.paid)
     }
 }

@@ -1,19 +1,21 @@
 package com.hmmelton.releave.models
 
+import com.squareup.moshi.Json
 import org.threeten.bp.Instant
 
 data class Restroom(
+    val id: String,
     val name: String,
     val location: String,
     val lat: Double,
     val lng: Double,
-    val isLocked: Boolean,
+    @Json(name = "is_locked") val isLocked: Boolean,
     private var rating: Double,
-    private var numRatings: Int,
-    val createdBy: String,
-    val createdWhen: Instant,
-    var updatedBy: String?,
-    var updatedWhen: Instant?
+    @Json(name = "num_ratings") private var numRatings: Int,
+    @Json(name = "created_by") val createdBy: String,
+    @Json(name = "created_when") val createdWhen: Instant,
+    @Json(name = "updated_by") var updatedBy: String?,
+    @Json(name = "updated_when") var updatedWhen: Instant?
 ) {
 
     /**

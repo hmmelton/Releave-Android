@@ -13,7 +13,7 @@ class DeleteUserTest : ApiTest() {
     fun deleteUser_200_success() {
         givenResponse(code = 200, responseBody = "")
 
-        val response = execute { testHelper.service.deleteUser(id = TestServerHelper.FACEBOOK_ID) }
+        val response = execute { testHelper.service.deleteUser(id = TestServerHelper.USER_ID) }
 
         thenCallSuccessful(response = response)
     }
@@ -22,7 +22,7 @@ class DeleteUserTest : ApiTest() {
     fun deleteUser_401_failure() {
         givenResponse(code = 401, responseBody = ERROR_MESSAGE_401)
 
-        val response = execute { testHelper.service.deleteUser(id = TestServerHelper.FACEBOOK_ID) }
+        val response = execute { testHelper.service.deleteUser(id = TestServerHelper.USER_ID) }
 
         thenCallUnsuccessful(
             response = response,
@@ -35,7 +35,7 @@ class DeleteUserTest : ApiTest() {
     fun deleteUser_404_failure() {
         givenResponse(code = 404, responseBody = ERROR_MESSAGE_404)
 
-        val response = execute { testHelper.service.deleteUser(id = TestServerHelper.FACEBOOK_ID) }
+        val response = execute { testHelper.service.deleteUser(id = TestServerHelper.USER_ID) }
 
         thenCallUnsuccessful(
             response = response,
@@ -48,7 +48,7 @@ class DeleteUserTest : ApiTest() {
     fun deleteUser_500_failure() {
         givenResponse(code = 500, responseBody = ERROR_MESSAGE_500)
 
-        val response = execute { testHelper.service.deleteUser(id = TestServerHelper.FACEBOOK_ID) }
+        val response = execute { testHelper.service.deleteUser(id = TestServerHelper.USER_ID) }
 
         thenCallUnsuccessful(
             response = response,

@@ -13,13 +13,23 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class TestServerHelper {
 
     companion object {
-        const val AUTH_TOKEN = "123-abc-45de"
         val CREATED_WHEN: Instant = Instant.parse("2019-01-02T00:00:00Z")
-        const val EMAIL = "hmmelton@email.com"
-        const val FACEBOOK_ID = "123456abc"
-        const val FIRST_NAME = "Harrison"
-        const val LAST_NAME = "Melton"
-        const val PAID = true
+        val UPDATED_WHEN: Instant = Instant.parse("2019-01-03T00:00:00Z")
+        const val USER_AUTH_TOKEN = "123-abc-45de"
+        const val USER_EMAIL = "hmmelton@email.com"
+        const val USER_FACEBOOK_ID = "123456abc"
+        const val USER_FIRST_NAME = "Harrison"
+        const val USER_ID = "user-123abc"
+        const val USER_LAST_NAME = "Melton"
+        const val USER_PAID = true
+        const val RESTROOM_ID = "restroom-123abc"
+        const val RESTROOM_IS_LOCKED = false
+        const val RESTROOM_LAT = 123.45
+        const val RESTROOM_LNG = 123.45
+        const val RESTROOM_LOCATION = "123 Main St., Seattle, WA 98122"
+        const val RESTROOM_NAME = "Starbucks"
+        const val RESTROOM_NUM_RATINGS = 5
+        const val RESTROOM_RATING = 5.0
     }
 
     val service: ReleaveService
@@ -47,12 +57,28 @@ class TestServerHelper {
     }
 
     val userJson = """{
+        "id":"$USER_ID",
         "created_when":"$CREATED_WHEN",
-        "facebook_id":"$FACEBOOK_ID",
-        "first_name":"$FIRST_NAME",
-        "last_name":"$LAST_NAME",
-        "email":"$EMAIL",
-        "auth_token":"$AUTH_TOKEN",
-        "paid":$PAID
+        "facebook_id":"$USER_FACEBOOK_ID",
+        "first_name":"$USER_FIRST_NAME",
+        "last_name":"$USER_LAST_NAME",
+        "email":"$USER_EMAIL",
+        "auth_token":"$USER_AUTH_TOKEN",
+        "paid":$USER_PAID
     }""".trimMargin()
+
+    val restroomJson = """{
+        "id":"$RESTROOM_ID",
+        "name":"$RESTROOM_NAME",
+        "location":"$RESTROOM_LOCATION",
+        "lat":"$RESTROOM_LAT",
+        "lng":"$RESTROOM_LNG",
+        "is_locked":$RESTROOM_IS_LOCKED,
+        "rating":$RESTROOM_RATING,
+        "num_ratings":$RESTROOM_NUM_RATINGS,
+        "created_by":"$USER_ID",
+        "created_when":"$CREATED_WHEN",
+        "updated_by":"$USER_ID",
+        "updated_when":"$UPDATED_WHEN"
+    }""".trimIndent()
 }

@@ -23,7 +23,7 @@ class UpdateUserTest : ApiTest() {
 
         val response = execute {
             testHelper.service.updateUser(
-                id = TestServerHelper.FACEBOOK_ID,
+                id = TestServerHelper.USER_ID,
                 user = userAdapter.fromJson(testHelper.userJson) ?: throw IllegalStateException("userJson is null")
             )
         }
@@ -37,7 +37,7 @@ class UpdateUserTest : ApiTest() {
 
         val response = execute {
             testHelper.service.updateUser(
-                id = TestServerHelper.FACEBOOK_ID,
+                id = TestServerHelper.USER_ID,
                 user = userAdapter.fromJson(testHelper.userJson) ?: throw IllegalStateException("userJson is null")
             )
         }
@@ -55,7 +55,7 @@ class UpdateUserTest : ApiTest() {
 
         val response = execute {
             testHelper.service.updateUser(
-                id = TestServerHelper.FACEBOOK_ID,
+                id = TestServerHelper.USER_ID,
                 user = userAdapter.fromJson(testHelper.userJson) ?: throw IllegalStateException("userJson is null")
             )
         }

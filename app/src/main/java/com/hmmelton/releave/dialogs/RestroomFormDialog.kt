@@ -13,6 +13,7 @@ import com.hmmelton.releave.R
 import com.hmmelton.releave.adapters.RestroomFormSpinnerAdapter
 import com.hmmelton.releave.models.Restroom
 import org.threeten.bp.Instant
+import java.util.UUID
 
 class RestroomFormDialog : DialogFragment() {
 
@@ -85,6 +86,7 @@ class RestroomFormDialog : DialogFragment() {
         val address = place.address ?: return
         val latLng = place.latLng
         val entry = Restroom(
+            id = UUID.randomUUID().toString(),
             name = place.name.toString(),
             location = address.toString(),
             lat = latLng.latitude,
