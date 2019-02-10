@@ -2,24 +2,13 @@ package com.hmmelton.releave.services
 
 import com.hmmelton.releave.TestServerHelper
 import com.hmmelton.releave.models.User
-import com.squareup.moshi.JsonAdapter
 import org.junit.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 
 class GetUserTest : ApiTest() {
 
     companion object {
         private const val ERROR_MESSAGE_404 = """{ "error": "User not found" }"""
-    }
-
-    private lateinit var userAdapter: JsonAdapter<User>
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-
-        userAdapter = testHelper.moshi.adapter(User::class.java)
     }
 
     @Test

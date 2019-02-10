@@ -18,7 +18,7 @@ class AddUserTest : ApiTest() {
 
     @Test
     fun addUser_200_success() {
-        givenResponse(code = 200, responseBody = testHelper.userJson)
+        givenResponse(code = 200, responseBody = "")
 
         val sampleUser = userAdapter.fromJson(testHelper.userJson) ?: throw IllegalStateException("userJson is invalid")
         val response = execute { testHelper.service.addUser(user = sampleUser) }
