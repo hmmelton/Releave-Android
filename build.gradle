@@ -10,6 +10,7 @@ buildscript {
             'kotlin'            : '1.2.71',
             'ktlint'            : '0.20.0',
             'lifecycle'         : '1.1.1',
+            'moshi'             : '1.8.0',
             'playServicesAuth'  : '16.0.1',
             'playServicesLoc'   : '16.0.0',
             'playServicesMaps'  : '16.0.0',

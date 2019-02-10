@@ -66,6 +66,8 @@ dependencies {
     implementation "com.jakewharton.threetenabp:threetenabp:${libraries.threetenabp}"
     implementation "com.squareup.retrofit2:retrofit:${libraries.retrofit}"
 
+    implementation "com.squareup.moshi:moshi:${libraries.moshi}"
+
     testImplementation "junit:junit:${libraries.jUnit}"
 
     androidTestImplementation "com.android.support.test:runner:${libraries.runner}"
