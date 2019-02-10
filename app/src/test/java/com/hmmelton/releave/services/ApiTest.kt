@@ -14,7 +14,8 @@ abstract class ApiTest {
 
     protected lateinit var testHelper: TestServerHelper
 
-    @Before open fun setUp() {
+    @Before
+    open fun setUp() {
         testHelper = TestServerHelper()
     }
 
@@ -27,10 +28,25 @@ abstract class ApiTest {
         testHelper.setResponse(code = code, body = responseBody)
     }
 
+    protected fun thenCallSuccessful(response: Response<Void>) {
+        assertTrue(response.isSuccessful)
+        assertEquals(200, response.code())
+    }
+
     protected fun <T> thenCallSuccessfulNonNullBody(response: Response<T>, body: T?) {
         assertTrue(response.isSuccessful)
         assertEquals(200, response.code())
         assertNotNull(body)
+    }
+
+    protected fun thenCallUnsuccessful(
+        response: Response<Void>,
+        expectedResponseCode: Int,
+        expectedErrorMessage: String
+    ) {
+        assertFalse(response.isSuccessful)
+        assertEquals(expectedResponseCode, response.code())
+        assertEquals(expectedErrorMessage, response.errorBody()?.string())
     }
 
     protected fun <T> thenCallUnsuccessfulNullBody(

@@ -18,7 +18,7 @@ class GetUserTest : ApiTest() {
     private lateinit var userAdapter: JsonAdapter<User>
 
     @Before
-    override  fun setUp() {
+    override fun setUp() {
         super.setUp()
 
         userAdapter = testHelper.moshi.adapter(User::class.java)
@@ -28,7 +28,7 @@ class GetUserTest : ApiTest() {
     fun getUser_200_success() {
         givenResponse(code = 200, responseBody = testHelper.userJson)
 
-        val response = execute { testHelper.service.getUser(TestServerHelper.FACEBOOK_ID) }
+        val response = execute { testHelper.service.getUser(id = TestServerHelper.FACEBOOK_ID) }
         val user = response.body()
 
         thenCallSuccessfulNonNullBody(response = response, body = user)
