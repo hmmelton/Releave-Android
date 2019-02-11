@@ -81,4 +81,9 @@ class TestServerHelper {
         "updated_by":"$USER_ID",
         "updated_when":"$UPDATED_WHEN"
     }""".trimIndent()
+
+    val restroomArrayJson = """[
+        $restroomJson,
+        $restroomJson
+    ]""".trimIndent()
 }
