@@ -2,24 +2,13 @@ package com.hmmelton.releave.services
 
 import com.hmmelton.releave.TestServerHelper
 import com.hmmelton.releave.models.Restroom
-import com.squareup.moshi.JsonAdapter
 import junit.framework.Assert.assertEquals
-import org.junit.Before
 import org.junit.Test
 
 class GetRestroomTest : ApiTest() {
 
     companion object {
         private const val ERROR_MESSAGE_404 = """{ "message": "Restroom not found" }"""
-    }
-
-    private lateinit var restroomAdapter: JsonAdapter<Restroom>
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-
-        restroomAdapter = testHelper.moshi.adapter(Restroom::class.java)
     }
 
     @Test
