@@ -56,6 +56,18 @@ class TestServerHelper {
         mockWebServer.enqueue(MockResponse().setResponseCode(code).setBody(body))
     }
 
+    /**
+     * This function sets the response body of the [MockWebServer], with the Authentication header.
+     */
+    fun setResponseWithAuthHeader(code: Int, body: String) {
+        mockWebServer.enqueue(
+            MockResponse()
+                .setResponseCode(code)
+                .setBody(body)
+                .setHeader("Authentication", USER_AUTH_TOKEN)
+        )
+    }
+
     val userJson = """{
         "id":"$USER_ID",
         "created_when":"$CREATED_WHEN",

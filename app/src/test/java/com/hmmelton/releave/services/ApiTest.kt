@@ -33,6 +33,10 @@ abstract class ApiTest {
         testHelper.setResponse(code = code, body = responseBody)
     }
 
+    protected fun givenResponseWithAuthHeader(code: Int, responseBody: String) {
+        testHelper.setResponseWithAuthHeader(code = code, body = responseBody)
+    }
+
     protected fun thenCallSuccessful(response: Response<Void>) {
         assertTrue(response.isSuccessful)
         assertTrue(response.code() in 200..299)
