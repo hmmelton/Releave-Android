@@ -35,7 +35,7 @@ abstract class ApiTest {
 
     protected fun thenCallSuccessful(response: Response<Void>) {
         assertTrue(response.isSuccessful)
-        assertEquals(200, response.code())
+        assertTrue(response.code() in 200..299)
     }
 
     protected fun <T> thenCallSuccessfulNonNullBody(response: Response<T>, body: T?) {
