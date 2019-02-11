@@ -43,10 +43,6 @@ dependencies {
     implementation "com.android.support:design:${libraries.appcompat}"
     implementation "com.android.support.constraint:constraint-layout:${libraries.constraintLayout}"
 
-    // Firebase
-    implementation "com.google.firebase:firebase-database:${libraries.firebase}"
-    implementation "com.google.firebase:firebase-auth:${libraries.firebaseAuth}"
-    implementation "com.google.firebase:firebase-core:${libraries.firebaseCore}"
     implementation("com.crashlytics.sdk.android:crashlytics:${libraries.crashlytics}@aar") {
         transitive = true
     }
@@ -66,9 +62,16 @@ dependencies {
     implementation "android.arch.lifecycle:extensions:${libraries.lifecycle}"
     kapt "android.arch.lifecycle:compiler:${libraries.lifecycle}"
 
+    // Jake Wharton
     implementation "com.jakewharton.threetenabp:threetenabp:${libraries.threetenabp}"
+    implementation "com.squareup.retrofit2:retrofit:${libraries.retrofit}"
+    implementation "com.squareup.retrofit2:converter-moshi:${libraries.retrofit}"
+
+    implementation "com.squareup.moshi:moshi:${libraries.moshi}"
+    implementation "com.squareup.moshi:moshi-kotlin:${libraries.moshi}"
 
     testImplementation "junit:junit:${libraries.jUnit}"
+    testImplementation "com.squareup.okhttp3:mockwebserver:${libraries.mockWebServer}"
 
     androidTestImplementation "com.android.support.test:runner:${libraries.runner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${libraries.espresso}"

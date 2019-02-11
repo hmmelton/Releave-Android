@@ -1,4 +1,4 @@
-package com.hmmelton.releave.main
+package com.hmmelton.releave.activities
 
 import android.annotation.SuppressLint
 import android.content.Intent
@@ -21,11 +21,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
-import com.google.firebase.auth.FirebaseAuth
 import com.hmmelton.releave.R
 import com.hmmelton.releave.dialogs.RestroomFormDialog
 import com.hmmelton.releave.helpers.BaseActivity
-import com.hmmelton.releave.signin.SignInActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.TimeUnit
 
@@ -99,8 +97,8 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.menu_sign_out -> {
-                // Log out of Firebase
-                FirebaseAuth.getInstance().signOut()
+                // Log out
+                // TODO: invalidate auth key or whatevs
 
                 // Return to sign in page
                 startActivity(Intent(this, SignInActivity::class.java))
