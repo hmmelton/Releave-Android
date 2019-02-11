@@ -27,7 +27,7 @@ class GetRestroomTest : ApiTest() {
 
     @Test
     fun getRestroom_401_failure() {
-        givenResponse(code = 401, responseBody = testHelper.restroomJson)
+        givenResponse(code = 401, responseBody = ERROR_MESSAGE_401)
 
         val response = execute { testHelper.service.getRestroom(TestServerHelper.RESTROOM_ID) }
         val restroom = response.body()
