@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'io.fabric'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 27
@@ -72,6 +73,7 @@ dependencies {
 
     testImplementation "junit:junit:${libraries.jUnit}"
     testImplementation "com.squareup.okhttp3:mockwebserver:${libraries.mockWebServer}"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${libraries.mockito}"
 
     androidTestImplementation "com.android.support.test:runner:${libraries.runner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${libraries.espresso}"
