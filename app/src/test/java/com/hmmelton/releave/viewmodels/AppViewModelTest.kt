@@ -11,7 +11,7 @@ import junit.framework.Assert.assertNull
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentMatchers
-import java.time.Instant
+import org.threeten.bp.Instant
 
 class AppViewModelTest {
 

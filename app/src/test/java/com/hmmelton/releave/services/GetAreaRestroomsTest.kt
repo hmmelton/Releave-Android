@@ -1,6 +1,5 @@
 package com.hmmelton.releave.services
 
-import com.hmmelton.releave.TestServerHelper
 import com.hmmelton.releave.models.Restroom
 import junit.framework.Assert.assertEquals
 import org.junit.Test
@@ -98,19 +97,7 @@ class GetAreaRestroomsTest : ApiTest() {
         assertEquals(2, restrooms.count())
 
         for (restroom in restrooms) {
-            assertEquals(TestServerHelper.RESTROOM_ID, restroom.id)
-            assertEquals(TestServerHelper.RESTROOM_NAME, restroom.name)
-            assertEquals(TestServerHelper.RESTROOM_LOCATION, restroom.location)
-            assertEquals(TestServerHelper.RESTROOM_LAT, restroom.lat)
-            assertEquals(TestServerHelper.RESTROOM_LNG, restroom.lng)
-            assertEquals(TestServerHelper.RESTROOM_LNG, restroom.lng)
-            assertEquals(TestServerHelper.RESTROOM_IS_LOCKED, restroom.isLocked)
-            assertEquals(TestServerHelper.RESTROOM_RATING, restroom.getRating())
-            assertEquals(TestServerHelper.RESTROOM_NUM_RATINGS, restroom.getNumRatings())
-            assertEquals(TestServerHelper.USER_ID, restroom.createdBy)
-            assertEquals(TestServerHelper.CREATED_WHEN, restroom.createdWhen)
-            assertEquals(TestServerHelper.USER_ID, restroom.updatedBy)
-            assertEquals(TestServerHelper.UPDATED_WHEN, restroom.updatedWhen)
+            assertEquals(testHelper.sampleRestroom, restroom)
         }
     }
 

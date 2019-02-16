@@ -1,6 +1,6 @@
 package com.hmmelton.releave.services
 
-import com.hmmelton.releave.TestServerHelper
+import com.hmmelton.releave.NetworkTestHelper
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -17,11 +17,11 @@ abstract class ApiTest {
         const val ERROR_MESSAGE_500 = """{ "error": "Internal server error" }"""
     }
 
-    protected lateinit var testHelper: TestServerHelper
+    protected lateinit var testHelper: NetworkTestHelper
 
     @Before
     open fun setUp() {
-        testHelper = TestServerHelper()
+        testHelper = NetworkTestHelper()
     }
 
     protected fun <T> execute(action: () -> Call<T>): Response<T> {

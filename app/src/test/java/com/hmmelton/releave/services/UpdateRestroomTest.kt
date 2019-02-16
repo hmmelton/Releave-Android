@@ -1,9 +1,6 @@
 package com.hmmelton.releave.services
 
-import com.hmmelton.releave.TestServerHelper
-import com.hmmelton.releave.models.Restroom
-import com.squareup.moshi.JsonAdapter
-import org.junit.Before
+import com.hmmelton.releave.NetworkTestHelper
 import org.junit.Test
 
 class UpdateRestroomTest : ApiTest() {
@@ -12,24 +9,14 @@ class UpdateRestroomTest : ApiTest() {
         private const val ERROR_MESSAGE_404 = """{ "error": "Restroom not found" }"""
     }
 
-    private lateinit var restroomAdapter: JsonAdapter<Restroom>
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-
-        restroomAdapter = testHelper.moshi.adapter(Restroom::class.java)
-    }
-
     @Test
     fun updateRestroom_200_success() {
         givenResponse(code = 200, responseBody = "")
 
         val response = execute {
             testHelper.service.updateRestroom(
-                id = TestServerHelper.RESTROOM_ID,
-                restroom = restroomAdapter.fromJson(testHelper.restroomJson)
-                    ?: throw IllegalStateException("restroomJson not valid")
+                id = NetworkTestHelper.RESTROOM_ID,
+                restroom = testHelper.sampleRestroom
             )
         }
 
@@ -42,9 +29,8 @@ class UpdateRestroomTest : ApiTest() {
 
         val response = execute {
             testHelper.service.updateRestroom(
-                id = TestServerHelper.RESTROOM_ID,
-                restroom = restroomAdapter.fromJson(testHelper.restroomJson)
-                    ?: throw IllegalStateException("restroomJson not valid")
+                id = NetworkTestHelper.RESTROOM_ID,
+                restroom = testHelper.sampleRestroom
             )
         }
 
@@ -61,9 +47,8 @@ class UpdateRestroomTest : ApiTest() {
 
         val response = execute {
             testHelper.service.updateRestroom(
-                id = TestServerHelper.RESTROOM_ID,
-                restroom = restroomAdapter.fromJson(testHelper.restroomJson)
-                    ?: throw IllegalStateException("restroomJson not valid")
+                id = NetworkTestHelper.RESTROOM_ID,
+                restroom = testHelper.sampleRestroom
             )
         }
 
@@ -80,9 +65,8 @@ class UpdateRestroomTest : ApiTest() {
 
         val response = execute {
             testHelper.service.updateRestroom(
-                id = TestServerHelper.RESTROOM_ID,
-                restroom = restroomAdapter.fromJson(testHelper.restroomJson)
-                    ?: throw IllegalStateException("restroomJson not valid")
+                id = NetworkTestHelper.RESTROOM_ID,
+                restroom = testHelper.sampleRestroom
             )
         }
 

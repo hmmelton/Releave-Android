@@ -1,24 +1,12 @@
 package com.hmmelton.releave.services
 
-import com.hmmelton.releave.TestServerHelper
-import com.hmmelton.releave.models.User
-import com.squareup.moshi.JsonAdapter
+import com.hmmelton.releave.NetworkTestHelper
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
-import org.junit.Before
 import org.junit.Test
 import retrofit2.Response
 
 class AuthenticateTest : ApiTest() {
-
-    private lateinit var userAdapter: JsonAdapter<User>
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-
-        userAdapter = testHelper.moshi.adapter(User::class.java)
-    }
 
     @Test
     fun authenticate_200_success() {
@@ -26,8 +14,8 @@ class AuthenticateTest : ApiTest() {
 
         val response = execute {
             testHelper.service.authenticate(
-                id = TestServerHelper.USER_ID,
-                user = userAdapter.fromJson(testHelper.userJson) ?: throw IllegalStateException("userJson is invalid")
+                id = NetworkTestHelper.USER_ID,
+                user = testHelper.sampleUser
             )
         }
 
@@ -41,8 +29,8 @@ class AuthenticateTest : ApiTest() {
 
         val response = execute {
             testHelper.service.authenticate(
-                id = TestServerHelper.USER_ID,
-                user = userAdapter.fromJson(testHelper.userJson) ?: throw IllegalStateException("userJson is invalid")
+                id = NetworkTestHelper.USER_ID,
+                user = testHelper.sampleUser
             )
         }
 
@@ -56,7 +44,7 @@ class AuthenticateTest : ApiTest() {
 
     private fun thenResponseHasAuthHeader(response: Response<Void>) {
         assertTrue(response.headers().get("Authentication") != null)
-        assertEquals(response.headers().get("Authentication"), TestServerHelper.USER_AUTH_TOKEN)
+        assertEquals(response.headers().get("Authentication"), NetworkTestHelper.USER_AUTH_TOKEN)
     }
 
     private fun thenResponseDoesNotHaveAuthHeader(response: Response<Void>) {
