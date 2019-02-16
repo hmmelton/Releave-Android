@@ -1,6 +1,8 @@
 package com.hmmelton.releave
 
 import com.hmmelton.releave.adapters.InstantTypeAdapter
+import com.hmmelton.releave.models.Restroom
+import com.hmmelton.releave.models.User
 import com.hmmelton.releave.services.ReleaveService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
@@ -10,7 +12,7 @@ import org.threeten.bp.Instant
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class TestServerHelper {
+class NetworkTestHelper {
 
     companion object {
         val CREATED_WHEN: Instant = Instant.parse("2019-01-02T00:00:00Z")
@@ -67,6 +69,32 @@ class TestServerHelper {
                 .setHeader("Authentication", USER_AUTH_TOKEN)
         )
     }
+
+    val sampleUser = User(
+        id = USER_ID,
+        createdWhen = CREATED_WHEN,
+        facebookId = USER_FACEBOOK_ID,
+        firstName = USER_FIRST_NAME,
+        lastName = USER_LAST_NAME,
+        email = USER_EMAIL,
+        authToken = USER_AUTH_TOKEN,
+        paid = USER_PAID
+    )
+
+    val sampleRestroom = Restroom(
+        id = RESTROOM_ID,
+        name = RESTROOM_NAME,
+        location = RESTROOM_LOCATION,
+        lat = RESTROOM_LAT,
+        lng = RESTROOM_LNG,
+        isLocked = RESTROOM_IS_LOCKED,
+        rating = RESTROOM_RATING,
+        numRatings = RESTROOM_NUM_RATINGS,
+        createdBy = USER_ID,
+        createdWhen = CREATED_WHEN,
+        updatedBy = USER_ID,
+        updatedWhen = UPDATED_WHEN
+    )
 
     val userJson = """{
         "id":"$USER_ID",

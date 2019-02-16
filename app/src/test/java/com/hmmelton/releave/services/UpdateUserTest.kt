@@ -1,21 +1,9 @@
 package com.hmmelton.releave.services
 
-import com.hmmelton.releave.TestServerHelper
-import com.hmmelton.releave.models.User
-import com.squareup.moshi.JsonAdapter
-import org.junit.Before
+import com.hmmelton.releave.NetworkTestHelper
 import org.junit.Test
 
 class UpdateUserTest : ApiTest() {
-
-    private lateinit var userAdapter: JsonAdapter<User>
-
-    @Before
-    override fun setUp() {
-        super.setUp()
-
-        userAdapter = testHelper.moshi.adapter(User::class.java)
-    }
 
     @Test
     fun updateUser_200_success() {
@@ -23,8 +11,8 @@ class UpdateUserTest : ApiTest() {
 
         val response = execute {
             testHelper.service.updateUser(
-                id = TestServerHelper.USER_ID,
-                user = userAdapter.fromJson(testHelper.userJson) ?: throw IllegalStateException("userJson is null")
+                id = NetworkTestHelper.USER_ID,
+                user = testHelper.sampleUser
             )
         }
 
@@ -37,8 +25,8 @@ class UpdateUserTest : ApiTest() {
 
         val response = execute {
             testHelper.service.updateUser(
-                id = TestServerHelper.USER_ID,
-                user = userAdapter.fromJson(testHelper.userJson) ?: throw IllegalStateException("userJson is null")
+                id = NetworkTestHelper.USER_ID,
+                user = testHelper.sampleUser
             )
         }
 
@@ -55,8 +43,8 @@ class UpdateUserTest : ApiTest() {
 
         val response = execute {
             testHelper.service.updateUser(
-                id = TestServerHelper.USER_ID,
-                user = userAdapter.fromJson(testHelper.userJson) ?: throw IllegalStateException("userJson is null")
+                id = NetworkTestHelper.USER_ID,
+                user = testHelper.sampleUser
             )
         }
 

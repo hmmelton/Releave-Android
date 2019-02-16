@@ -1,6 +1,6 @@
 package com.hmmelton.releave.services
 
-import com.hmmelton.releave.TestServerHelper
+import com.hmmelton.releave.NetworkTestHelper
 import org.junit.Test
 
 class DeleteRestroomTest : ApiTest() {
@@ -13,7 +13,7 @@ class DeleteRestroomTest : ApiTest() {
     fun deleteRestroom_200_success() {
         givenResponse(code = 200, responseBody = "")
 
-        val response = execute { testHelper.service.deleteRestroom(id = TestServerHelper.RESTROOM_ID) }
+        val response = execute { testHelper.service.deleteRestroom(id = NetworkTestHelper.RESTROOM_ID) }
 
         thenCallSuccessful(response = response)
     }
@@ -22,7 +22,7 @@ class DeleteRestroomTest : ApiTest() {
     fun deleteRestroom_401_failure() {
         givenResponse(code = 401, responseBody = ERROR_MESSAGE_401)
 
-        val response = execute { testHelper.service.deleteRestroom(id = TestServerHelper.RESTROOM_ID) }
+        val response = execute { testHelper.service.deleteRestroom(id = NetworkTestHelper.RESTROOM_ID) }
 
         thenCallUnsuccessful(
             response = response,
@@ -35,7 +35,7 @@ class DeleteRestroomTest : ApiTest() {
     fun deleteRestroom_404_failure() {
         givenResponse(code = 404, responseBody = ERROR_MESSAGE_404)
 
-        val response = execute { testHelper.service.deleteRestroom(id = TestServerHelper.RESTROOM_ID) }
+        val response = execute { testHelper.service.deleteRestroom(id = NetworkTestHelper.RESTROOM_ID) }
 
         thenCallUnsuccessful(
             response = response,
@@ -48,7 +48,7 @@ class DeleteRestroomTest : ApiTest() {
     fun deleteRestroom_500_failure() {
         givenResponse(code = 500, responseBody = ERROR_MESSAGE_500)
 
-        val response = execute { testHelper.service.deleteRestroom(id = TestServerHelper.RESTROOM_ID) }
+        val response = execute { testHelper.service.deleteRestroom(id = NetworkTestHelper.RESTROOM_ID) }
 
         thenCallUnsuccessful(
             response = response,
