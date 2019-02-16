@@ -7,14 +7,14 @@ import com.hmmelton.releave.models.User
 import com.hmmelton.releave.services.ReleaveService
 import com.hmmelton.releave.viewmodels.AppViewModel
 import io.fabric.sdk.android.Fabric
-import retrofit2.Retrofit
 
 class App : Application() {
 
     private lateinit var viewModel: AppViewModel
 
-    lateinit var releaveService: ReleaveService
-        private set
+    val releaveService: ReleaveService by lazy {
+        viewModel.service
+    }
 
     var currentUser: User?
         get() = viewModel.currentUser
@@ -25,10 +25,12 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
 
-        viewModel = AppViewModel(PreferenceManager.getDefaultSharedPreferences(this))
+        viewModel = AppViewModel(
+            preferences = PreferenceManager.getDefaultSharedPreferences(this),
+            serverAddress = Secrets.SERVER_ADDRESS
+        )
 
         initFabric()
-        initReleaveService()
     }
 
     private fun initFabric() {
@@ -37,12 +39,5 @@ class App : Application() {
             .debuggable(true)
             .build()
         Fabric.with(fabric)
-    }
-
-    private fun initReleaveService() {
-        releaveService = Retrofit.Builder()
-            .baseUrl(getString(R.string.server_address))
-            .build()
-            .create(ReleaveService::class.java)
     }
 }
