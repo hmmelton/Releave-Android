@@ -68,13 +68,18 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:${libraries.retrofit}"
     implementation "com.squareup.retrofit2:converter-moshi:${libraries.retrofit}"
 
+    // Moshi
     implementation "com.squareup.moshi:moshi:${libraries.moshi}"
     implementation "com.squareup.moshi:moshi-kotlin:${libraries.moshi}"
 
+    implementation "com.facebook.android:facebook-android-sdk:${libraries.facebook}"
+
+    // Unit testing
     testImplementation "junit:junit:${libraries.jUnit}"
     testImplementation "com.squareup.okhttp3:mockwebserver:${libraries.mockWebServer}"
     testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:${libraries.mockito}"
 
+    // Instrumented testing
     androidTestImplementation "com.android.support.test:runner:${libraries.runner}"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:${libraries.espresso}"
 }
