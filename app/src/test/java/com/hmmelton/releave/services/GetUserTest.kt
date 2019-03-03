@@ -68,13 +68,6 @@ class GetUserTest : ApiTest() {
     }
 
     private fun thenUserParsedCorrectly(user: User) {
-        assertEquals(NetworkTestHelper.USER_ID, user.id)
-        assertEquals(NetworkTestHelper.CREATED_WHEN, user.createdWhen)
-        assertEquals(NetworkTestHelper.USER_FACEBOOK_ID, user.facebookId)
-        assertEquals(NetworkTestHelper.USER_FIRST_NAME, user.firstName)
-        assertEquals(NetworkTestHelper.USER_LAST_NAME, user.lastName)
-        assertEquals(NetworkTestHelper.USER_EMAIL, user.email)
-        assertEquals(NetworkTestHelper.USER_AUTH_TOKEN, user.authToken)
-        assertEquals(NetworkTestHelper.USER_PAID, user.paid)
+        assertEquals(testHelper.sampleUser, user)
     }
 }

@@ -1,6 +1,7 @@
 package com.hmmelton.releave
 
 import com.hmmelton.releave.adapters.InstantTypeAdapter
+import com.hmmelton.releave.models.AuthRequestBody
 import com.hmmelton.releave.models.Restroom
 import com.hmmelton.releave.models.User
 import com.hmmelton.releave.services.ReleaveService
@@ -70,6 +71,13 @@ class NetworkTestHelper {
         )
     }
 
+    val sampleAuthRequestBody = AuthRequestBody(
+        facebookId = USER_FACEBOOK_ID,
+        firstName = USER_FIRST_NAME,
+        lastName = USER_LAST_NAME,
+        email = USER_EMAIL
+    )
+
     val sampleUser = User(
         id = USER_ID,
         createdWhen = CREATED_WHEN,
@@ -77,7 +85,6 @@ class NetworkTestHelper {
         firstName = USER_FIRST_NAME,
         lastName = USER_LAST_NAME,
         email = USER_EMAIL,
-        authToken = USER_AUTH_TOKEN,
         paid = USER_PAID
     )
 
@@ -97,13 +104,13 @@ class NetworkTestHelper {
     )
 
     val userJson = """{
-        "id":"$USER_ID",
+        "_id":"$USER_ID",
         "created_when":"$CREATED_WHEN",
         "facebook_id":"$USER_FACEBOOK_ID",
         "first_name":"$USER_FIRST_NAME",
         "last_name":"$USER_LAST_NAME",
         "email":"$USER_EMAIL",
-        "auth_token":"$USER_AUTH_TOKEN",
+        "__v":0,
         "paid":$USER_PAID
     }""".trimMargin()
 

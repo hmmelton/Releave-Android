@@ -28,7 +28,7 @@ class AppViewModelTest {
     }
 
     private val userJson = """{
-        "id":"$USER_ID",
+        "_id":"$USER_ID",
         "created_when":"$CREATED_WHEN",
         "facebook_id":"$USER_FACEBOOK_ID",
         "first_name":"$USER_FIRST_NAME",
@@ -45,7 +45,6 @@ class AppViewModelTest {
         firstName = USER_FIRST_NAME,
         lastName = USER_LAST_NAME,
         email = USER_EMAIL,
-        authToken = USER_AUTH_TOKEN,
         paid = USER_PAID
     )
 
