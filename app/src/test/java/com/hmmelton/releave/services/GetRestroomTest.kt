@@ -1,7 +1,7 @@
 package com.hmmelton.releave.services
 
 import com.hmmelton.releave.NetworkTestHelper
-import com.hmmelton.releave.models.Restroom
+import com.hmmelton.releave.data.models.Restroom
 import junit.framework.Assert.assertEquals
 import org.junit.Test
 

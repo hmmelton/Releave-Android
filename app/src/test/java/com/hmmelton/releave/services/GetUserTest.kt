@@ -1,7 +1,7 @@
 package com.hmmelton.releave.services
 
 import com.hmmelton.releave.NetworkTestHelper
-import com.hmmelton.releave.models.User
+import com.hmmelton.releave.data.models.User
 import org.junit.Assert.assertEquals
 import org.junit.Test
 

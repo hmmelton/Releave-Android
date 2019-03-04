@@ -1,7 +1,7 @@
 package com.hmmelton.releave.services
 
 import com.hmmelton.releave.NetworkTestHelper
-import com.hmmelton.releave.models.User
+import com.hmmelton.releave.data.models.User
 import junit.framework.Assert.assertEquals
 import junit.framework.Assert.assertTrue
 import org.junit.Test
@@ -15,8 +15,7 @@ class AuthenticateTest : ApiTest() {
 
         val response = execute {
             testHelper.service.authenticate(
-                id = NetworkTestHelper.USER_ID,
-                user = testHelper.sampleAuthRequestBody
+                body = testHelper.sampleAuthRequestBody
             )
         }
 
@@ -31,8 +30,7 @@ class AuthenticateTest : ApiTest() {
 
         val response = execute {
             testHelper.service.authenticate(
-                id = NetworkTestHelper.USER_ID,
-                user = testHelper.sampleAuthRequestBody
+                body = testHelper.sampleAuthRequestBody
             )
         }
 
