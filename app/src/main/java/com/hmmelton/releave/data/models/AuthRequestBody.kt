@@ -1,7 +1,10 @@
-package com.hmmelton.releave.models
+package com.hmmelton.releave.data.models
+
+import com.squareup.moshi.Json
 
 data class AuthRequestBody(
-    val firstName: String,
-    val lastName: String,
+    @Json(name = "facebook_id") val facebookId: String,
+    @Json(name = "first_name") val firstName: String,
+    @Json(name = "last_name") val lastName: String,
     val email: String
 )
