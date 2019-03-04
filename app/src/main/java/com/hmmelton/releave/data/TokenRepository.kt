@@ -6,11 +6,15 @@ object TokenRepository {
 
     private const val TOKEN_KEY = "access_token"
 
-    fun setToken(token: String, preferences: SharedPreferences) {
-        preferences.edit().putString(TOKEN_KEY, token).apply()
+    fun setToken(token: String?, preferences: SharedPreferences) {
+        synchronized(this) {
+            preferences.edit().putString(TOKEN_KEY, token).apply()
+        }
     }
 
     fun getToken(preferences: SharedPreferences): String? {
-        return preferences.getString(TOKEN_KEY, null)
+        synchronized(this) {
+            return preferences.getString(TOKEN_KEY, null)
+        }
     }
 }

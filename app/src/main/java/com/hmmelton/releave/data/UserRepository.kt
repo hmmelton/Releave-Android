@@ -16,7 +16,7 @@ object UserRepository {
         .build()
         .adapter(User::class.java)
 
-    fun setCurrentUser(user: User, preferences: SharedPreferences) {
+    fun setCurrentUser(user: User?, preferences: SharedPreferences) {
         preferences.edit().putString(USER_KEY, moshi.toJson(user)).apply()
     }
 

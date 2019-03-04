@@ -5,10 +5,12 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Looper
+import android.preference.PreferenceManager
 import android.support.design.widget.Snackbar
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import com.facebook.login.LoginManager
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
@@ -22,6 +24,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.hmmelton.releave.R
+import com.hmmelton.releave.data.TokenRepository
+import com.hmmelton.releave.data.UserRepository
 import com.hmmelton.releave.dialogs.RestroomFormDialog
 import com.hmmelton.releave.helpers.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -98,7 +102,10 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
         when (item.itemId) {
             R.id.menu_sign_out -> {
                 // Log out
-                // TODO: invalidate auth key or whatevs
+                val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+                UserRepository.setCurrentUser(user = null, preferences = preferences)
+                TokenRepository.setToken(token = null, preferences = preferences)
+                LoginManager.getInstance().logOut()
 
                 // Return to sign in page
                 startActivity(Intent(this, SignInActivity::class.java))

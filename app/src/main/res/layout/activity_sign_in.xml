@@ -7,8 +7,8 @@
     android:background="@color/colorPrimary"
     tools:context=".activities.SignInActivity">
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/signInButtonGoogle"
+    <com.facebook.login.widget.LoginButton
+        android:id="@+id/signInButtonFacebook"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"

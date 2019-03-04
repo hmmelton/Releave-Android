@@ -2,8 +2,10 @@ package com.hmmelton.releave.activities
 
 import android.content.Intent
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.hmmelton.releave.data.UserRepository
 
 class SplashScreenActivity : AppCompatActivity() {
 
@@ -18,17 +20,14 @@ class SplashScreenActivity : AppCompatActivity() {
             View.SYSTEM_UI_FLAG_FULLSCREEN or
             View.SYSTEM_UI_FLAG_IMMERSIVE
 
-        // TODO: check if user is signed in. Redirect accordingly
+        // If there is no current user, navigate to sign in
+        if (UserRepository.getCurrentUser(PreferenceManager.getDefaultSharedPreferences(this)) == null) {
+            startActivity(Intent(this, SignInActivity::class.java))
+        } else {
 
-        // If an account was found, navigate to MainActivity
-//        if (currentUser == null) {
-//            startActivity(Intent(this, SignInActivity::class.java))
-//            finish()
-//        } else {
-
-            // Otherwise, navigate to SignInActivity
+            // Otherwise, navigate to main screen
             startActivity(Intent(this, MainActivity::class.java))
             finish()
-//        }
+        }
     }
 }
