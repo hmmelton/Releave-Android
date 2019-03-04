@@ -1,9 +1,9 @@
 package com.hmmelton.releave
 
 import com.hmmelton.releave.adapters.InstantTypeAdapter
-import com.hmmelton.releave.models.AuthRequestBody
-import com.hmmelton.releave.models.Restroom
-import com.hmmelton.releave.models.User
+import com.hmmelton.releave.data.models.AuthRequestBody
+import com.hmmelton.releave.data.models.Restroom
+import com.hmmelton.releave.data.models.User
 import com.hmmelton.releave.services.ReleaveService
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
