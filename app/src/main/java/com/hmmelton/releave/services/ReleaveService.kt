@@ -1,11 +1,13 @@
 package com.hmmelton.releave.services
 
-import com.hmmelton.releave.models.Restroom
-import com.hmmelton.releave.models.User
+import com.hmmelton.releave.data.models.AuthRequestBody
+import com.hmmelton.releave.data.models.Restroom
+import com.hmmelton.releave.data.models.User
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Header
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -15,8 +17,8 @@ interface ReleaveService {
 
     // Authentication routes
 
-    @POST("api/v1/auth/facebook/{id}")
-    fun authenticate(@Path("id") id: String, @Body user: User): Call<Void>
+    @POST("api/v1/auth/facebook")
+    fun authenticate(@Header("FacebookAuth") facebookAuthToken: String, @Body body: AuthRequestBody): Call<User>
 
     @GET("api/v1/auth/me")
     fun getCurrentUser(): Call<User>

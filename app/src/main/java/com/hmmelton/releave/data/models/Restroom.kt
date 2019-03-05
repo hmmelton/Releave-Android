@@ -1,4 +1,4 @@
-package com.hmmelton.releave.models
+package com.hmmelton.releave.data.models
 
 import com.squareup.moshi.Json
 import org.threeten.bp.Instant

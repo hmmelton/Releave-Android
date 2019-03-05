@@ -61,14 +61,14 @@ open class BaseActivity : AppCompatActivity() {
 
             // User has asked not to be prompted for location permissions again
             snackbar
-                .setAction(R.string.btn_text_allow, {
+                .setAction(R.string.btn_text_allow) {
                     startActivity(settingsIntent)
-                })
+                }
         } else {
             snackbar
-                .setAction(R.string.btn_text_allow, {
+                .setAction(R.string.btn_text_allow) {
                     requestLocationPermission()
-                })
+                }
         }
 
         snackbar
@@ -120,9 +120,9 @@ open class BaseActivity : AppCompatActivity() {
             .setPositiveButton(R.string.btn_text_allow) { _, _ ->
                 startActivity(settingsIntent)
             }
-            .setNegativeButton(android.R.string.cancel, { _, _ ->
+            .setNegativeButton(android.R.string.cancel) { _, _ ->
                 alertNeedsLocationPermission()
-            })
+            }
             .create()
 
         // Remove extra space at top of dialog
@@ -155,6 +155,22 @@ open class BaseActivity : AppCompatActivity() {
             if (!locationPermissionSnackbar.isShown) locationPermissionSnackbar.dismiss()
             ActivityCompat.requestPermissions(this, arrayOf(LOCATION_PERMISSION), REQUEST_CODE_LOCATION)
         }
+    }
+
+    protected fun displayErrorDialog(title: String, exception: Exception) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(exception.localizedMessage)
+            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
+            .show()
+    }
+
+    protected fun displayErrorDialog(title: String, message: String) {
+        AlertDialog.Builder(this)
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(android.R.string.ok) { dialog, _ -> dialog.dismiss() }
+            .show()
     }
 
     /**

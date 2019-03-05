@@ -6,7 +6,11 @@
     <string name="menu_label_sign_out">Sign out</string>
 
     <!-- Error strings -->
-    <string name="err_sign_in_failed">Sign in failed</string>
+    <string name="err_title_sign_in_failed">Sign in failed</string>
+    <string name="err_title_email_missing">Missing email</string>
+    <string name="err_message_sign_in_failed">Oops! Something on our end failed.</string>
+    <string name="err_message_email_missing">Facebook email permission was not granted.</string>
+    <string name="err_message_missing_user_info">Error getting user info. Required id and first name</string>
 
     <!-- Alert strings -->
     <string name="alert_location_permission_title">Location permissions required</string>

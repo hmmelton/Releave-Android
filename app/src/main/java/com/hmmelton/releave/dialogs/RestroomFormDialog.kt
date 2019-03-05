@@ -11,7 +11,7 @@ import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
 import com.hmmelton.releave.R
 import com.hmmelton.releave.adapters.RestroomFormSpinnerAdapter
-import com.hmmelton.releave.models.Restroom
+import com.hmmelton.releave.data.models.Restroom
 import org.threeten.bp.Instant
 import java.util.UUID
 
