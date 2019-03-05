@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
+import android.view.View
 import com.facebook.AccessToken
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
@@ -37,9 +38,11 @@ class SignInActivity : BaseActivity() {
         }
 
         override fun onCancel() {
+            hideProgressBar()
         }
 
         override fun onError(error: FacebookException) {
+            hideProgressBar()
             displayErrorDialog(title = getString(R.string.err_title_sign_in_failed), exception = error)
         }
     }
@@ -47,16 +50,21 @@ class SignInActivity : BaseActivity() {
     private val authCallback = object : Callback<User> {
         override fun onFailure(call: Call<User>, t: Throwable) {
             Log.e("SignInActivity", "Error -> ${t.localizedMessage}")
-            alertLoginFailed()
+            alertSignInFailed()
             LoginManager.getInstance().logOut()
         }
 
         override fun onResponse(call: Call<User>, response: Response<User>) {
+            if (!response.isSuccessful) {
+                alertSignInFailed()
+                return
+            }
+
             val token = response.headers().get("Authorization")
             val user = response.body()
 
             if (token == null || user == null) {
-                alertLoginFailed()
+                alertSignInFailed()
                 LoginManager.getInstance().logOut()
             } else {
                 signInUser(user = user, token = token)
@@ -107,6 +115,7 @@ class SignInActivity : BaseActivity() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        showProgressBar()
         callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
     }
@@ -131,7 +140,7 @@ class SignInActivity : BaseActivity() {
         request.executeAsync()
     }
 
-    private fun alertLoginFailed() {
+    private fun alertSignInFailed() {
         displayErrorDialog(
             title = getString(R.string.err_title_sign_in_failed),
             message = getString(R.string.err_message_sign_in_failed)
@@ -146,5 +155,15 @@ class SignInActivity : BaseActivity() {
         UserRepository.setCurrentUser(user = user, preferences = preferences)
 
         startActivity(Intent(this, MainActivity::class.java))
+    }
+
+    private fun showProgressBar() {
+        signInButtonFacebook.visibility = View.GONE
+        progressBar.visibility = View.VISIBLE
+    }
+
+    private fun hideProgressBar() {
+        progressBar.visibility = View.GONE
+        signInButtonFacebook.visibility = View.VISIBLE
     }
 }
