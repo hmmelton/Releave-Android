@@ -8,5 +8,5 @@ class InstantTypeAdapter {
 
     @FromJson fun instantFromJson(instantJson: Long) = Instant.ofEpochMilli(instantJson)
 
-    @ToJson fun instantToJson(instant: Instant) = instant.toString()
+    @ToJson fun instantToJson(instant: Instant) = instant.toEpochMilli().toString()
 }

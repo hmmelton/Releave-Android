@@ -15,7 +15,8 @@ class AuthenticateTest : ApiTest() {
 
         val response = execute {
             testHelper.service.authenticate(
-                body = testHelper.sampleAuthRequestBody
+                body = testHelper.sampleAuthRequestBody,
+                facebookAuthToken = "123abc"
             )
         }
 
@@ -30,7 +31,8 @@ class AuthenticateTest : ApiTest() {
 
         val response = execute {
             testHelper.service.authenticate(
-                body = testHelper.sampleAuthRequestBody
+                body = testHelper.sampleAuthRequestBody,
+                facebookAuthToken = "123abc"
             )
         }
 

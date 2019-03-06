@@ -4,12 +4,13 @@ import com.squareup.moshi.Json
 import org.threeten.bp.Instant
 
 data class Restroom(
-    val id: String,
+    @Json(name = "_id") val id: String,
     val name: String,
     val location: String,
     val lat: Double,
     val lng: Double,
     @Json(name = "is_locked") val isLocked: Boolean,
+    @Json(name = "is_single_occupancy") val isSingleOccupancy: Boolean,
     private var rating: Double,
     @Json(name = "num_ratings") private var numRatings: Int,
     @Json(name = "created_by") val createdBy: String,

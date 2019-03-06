@@ -11,9 +11,6 @@ import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
 import com.hmmelton.releave.R
 import com.hmmelton.releave.adapters.RestroomFormSpinnerAdapter
-import com.hmmelton.releave.data.models.Restroom
-import org.threeten.bp.Instant
-import java.util.UUID
 
 class RestroomFormDialog : DialogFragment() {
 
@@ -85,19 +82,19 @@ class RestroomFormDialog : DialogFragment() {
 
         val address = place.address ?: return
         val latLng = place.latLng
-        val entry = Restroom(
-            id = UUID.randomUUID().toString(),
-            name = place.name.toString(),
-            location = address.toString(),
-            lat = latLng.latitude,
-            lng = latLng.longitude,
-            isLocked = isLocked,
-            rating = rating,
-            numRatings = 1,
-            createdBy = /* TODO: get user's ID */ "",
-            createdWhen = Instant.now(),
-            updatedBy = null,
-            updatedWhen = null
-        )
+//        val entry = Restroom(
+//            id = UUID.randomUUID().toString(),
+//            name = place.name.toString(),
+//            location = address.toString(),
+//            lat = latLng.latitude,
+//            lng = latLng.longitude,
+//            isLocked = isLocked,
+//            rating = rating,
+//            numRatings = 1,
+//            createdBy = /* TODO: get user's ID */ "",
+//            createdWhen = Instant.now(),
+//            updatedBy = null,
+//            updatedWhen = null
+//        )
     }
 }
