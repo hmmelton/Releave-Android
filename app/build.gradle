@@ -67,11 +67,14 @@ dependencies {
     implementation "com.jakewharton.threetenabp:threetenabp:${libraries.threetenabp}"
     implementation "com.squareup.retrofit2:retrofit:${libraries.retrofit}"
     implementation "com.squareup.retrofit2:converter-moshi:${libraries.retrofit}"
+    implementation "com.google.dagger:dagger:${libraries.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${libraries.dagger}"
 
     // Moshi
     implementation "com.squareup.moshi:moshi:${libraries.moshi}"
     implementation "com.squareup.moshi:moshi-kotlin:${libraries.moshi}"
 
+    // Facebook
     implementation "com.facebook.android:facebook-android-sdk:${libraries.facebook}"
 
     // Unit testing
