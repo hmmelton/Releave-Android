@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import com.hmmelton.releave.data.TokenRepository
 import com.hmmelton.releave.data.UserRepository
 
 class SplashScreenActivity : AppCompatActivity() {
@@ -21,7 +22,10 @@ class SplashScreenActivity : AppCompatActivity() {
             View.SYSTEM_UI_FLAG_IMMERSIVE
 
         // If there is no current user, navigate to sign in
-        if (UserRepository.getCurrentUser(PreferenceManager.getDefaultSharedPreferences(this)) == null) {
+        val preferences = PreferenceManager.getDefaultSharedPreferences(this)
+        val currentUser = UserRepository.getCurrentUser(preferences = preferences)
+        val currentUserToken = TokenRepository.getToken(preferences = preferences)
+        if (currentUser == null || currentUserToken == null) {
             startActivity(Intent(this, SignInActivity::class.java))
         } else {
 

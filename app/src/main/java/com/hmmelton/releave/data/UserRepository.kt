@@ -17,11 +17,15 @@ object UserRepository {
         .adapter(User::class.java)
 
     fun setCurrentUser(user: User?, preferences: SharedPreferences) {
-        preferences.edit().putString(USER_KEY, moshi.toJson(user)).apply()
+        synchronized(this) {
+            preferences.edit().putString(USER_KEY, moshi.toJson(user)).apply()
+        }
     }
 
     fun getCurrentUser(preferences: SharedPreferences): User? {
-        val userJson = preferences.getString(USER_KEY, "").trim()
-        return if (userJson.isEmpty()) null else moshi.fromJson(userJson)
+        synchronized(this) {
+            val userJson = preferences.getString(USER_KEY, "").trim()
+            return if (userJson.isEmpty()) null else moshi.fromJson(userJson)
+        }
     }
 }
