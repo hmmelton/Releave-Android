@@ -3,6 +3,7 @@ package com.hmmelton.releave
 import com.hmmelton.releave.adapters.InstantTypeAdapter
 import com.hmmelton.releave.data.models.AuthRequestBody
 import com.hmmelton.releave.data.models.Restroom
+import com.hmmelton.releave.data.models.RestroomRequestBody
 import com.hmmelton.releave.data.models.User
 import com.hmmelton.releave.services.ReleaveService
 import com.squareup.moshi.Moshi
@@ -16,8 +17,8 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 class NetworkTestHelper {
 
     companion object {
-        val CREATED_WHEN: Long = 1551830367745L//Instant = Instant.ofEpochMilli(1551830367745L)
-        val UPDATED_WHEN: Long = 1551830367745L//Instant = Instant.ofEpochMilli(1551830367745L)
+        const val CREATED_WHEN: String = "2019-03-05T00:00:00.000Z"
+        const val UPDATED_WHEN: String = "2019-03-05T00:00:00.000Z"
         const val USER_AUTH_TOKEN = "123-abc-45de"
         const val USER_EMAIL = "hmmelton@email.com"
         const val USER_FACEBOOK_ID = "123456abc"
@@ -79,14 +80,26 @@ class NetworkTestHelper {
         email = USER_EMAIL
     )
 
+    val sampleRestroomRequestBody = RestroomRequestBody(
+        createdBy = USER_ID,
+        lat = RESTROOM_LAT,
+        lng = RESTROOM_LNG,
+        name = RESTROOM_NAME,
+        location = RESTROOM_LOCATION,
+        isLocked = RESTROOM_IS_LOCKED,
+        isSingleOccupancy = RESTROOM_IS_SINGLE_OCCUPANCY,
+        rating = RESTROOM_RATING
+    )
+
     val sampleUser = User(
         id = USER_ID,
-        createdWhen = Instant.ofEpochMilli(CREATED_WHEN),
         facebookId = USER_FACEBOOK_ID,
         firstName = USER_FIRST_NAME,
         lastName = USER_LAST_NAME,
         email = USER_EMAIL,
-        paid = USER_PAID
+        paid = USER_PAID,
+        createdWhen = Instant.parse(CREATED_WHEN),
+        updatedWhen = Instant.parse(UPDATED_WHEN)
     )
 
     val sampleRestroom = Restroom(
@@ -100,20 +113,21 @@ class NetworkTestHelper {
         rating = RESTROOM_RATING,
         numRatings = RESTROOM_NUM_RATINGS,
         createdBy = USER_ID,
-        createdWhen = Instant.ofEpochMilli(CREATED_WHEN),
+        createdWhen = Instant.parse(CREATED_WHEN),
         updatedBy = USER_ID,
-        updatedWhen = Instant.ofEpochMilli(UPDATED_WHEN)
+        updatedWhen = Instant.parse(UPDATED_WHEN)
     )
 
     val userJson = """{
         "_id":"$USER_ID",
-        "created_when":"$CREATED_WHEN",
         "facebook_id":"$USER_FACEBOOK_ID",
         "first_name":"$USER_FIRST_NAME",
         "last_name":"$USER_LAST_NAME",
         "email":"$USER_EMAIL",
         "__v":0,
-        "paid":$USER_PAID
+        "paid":$USER_PAID,
+        "created_when":"$CREATED_WHEN",
+        "updated_when":"$UPDATED_WHEN"
     }""".trimMargin()
 
     val restroomJson = """{

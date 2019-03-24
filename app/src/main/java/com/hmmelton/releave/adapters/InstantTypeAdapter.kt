@@ -6,7 +6,7 @@ import org.threeten.bp.Instant
 
 class InstantTypeAdapter {
 
-    @FromJson fun instantFromJson(instantJson: Long) = Instant.ofEpochMilli(instantJson)
+    @FromJson fun instantFromJson(instantJson: String) = Instant.parse(instantJson)
 
-    @ToJson fun instantToJson(instant: Instant) = instant.toEpochMilli().toString()
+    @ToJson fun instantToJson(instant: Instant) = instant.toString()
 }

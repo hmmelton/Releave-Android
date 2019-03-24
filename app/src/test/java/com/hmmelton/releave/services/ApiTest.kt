@@ -37,19 +37,19 @@ abstract class ApiTest {
         testHelper.setResponseWithAuthHeader(code = code, body = responseBody)
     }
 
-    protected fun thenCallSuccessful(response: Response<Void>) {
+    protected fun <T> thenCallSuccessful(response: Response<T>) {
         assertTrue(response.isSuccessful)
         assertTrue(response.code() in 200..299)
     }
 
-    protected fun <T> thenCallSuccessfulNonNullBody(response: Response<T>, body: T?) {
+    protected fun <T> thenCallSuccessfulNonNullBody(response: Response<T>) {
         assertTrue(response.isSuccessful)
-        assertEquals(200, response.code())
-        assertNotNull(body)
+        assertTrue(response.code() in 200..299)
+        assertNotNull(response.body())
     }
 
-    protected fun thenCallUnsuccessful(
-        response: Response<Void>,
+    protected fun <T> thenCallUnsuccessful(
+        response: Response<T>,
         expectedResponseCode: Int,
         expectedErrorMessage: String
     ) {
@@ -60,13 +60,12 @@ abstract class ApiTest {
 
     protected fun <T> thenCallUnsuccessfulNullBody(
         response: Response<T>,
-        body: T?,
         expectedResponseCode: Int,
         expectedErrorMessage: String
     ) {
         assertFalse(response.isSuccessful)
         assertEquals(expectedResponseCode, response.code())
-        assertNull(body)
+        assertNull(response.body())
         assertEquals(expectedErrorMessage, response.errorBody()?.string())
     }
 }

@@ -16,7 +16,7 @@ class UpdateRestroomTest : ApiTest() {
         val response = execute {
             testHelper.service.updateRestroom(
                 id = NetworkTestHelper.RESTROOM_ID,
-                restroom = testHelper.sampleRestroom
+                requestBody = testHelper.sampleRestroomRequestBody
             )
         }
 
@@ -30,7 +30,7 @@ class UpdateRestroomTest : ApiTest() {
         val response = execute {
             testHelper.service.updateRestroom(
                 id = NetworkTestHelper.RESTROOM_ID,
-                restroom = testHelper.sampleRestroom
+                requestBody = testHelper.sampleRestroomRequestBody
             )
         }
 
@@ -48,7 +48,7 @@ class UpdateRestroomTest : ApiTest() {
         val response = execute {
             testHelper.service.updateRestroom(
                 id = NetworkTestHelper.RESTROOM_ID,
-                restroom = testHelper.sampleRestroom
+                requestBody = testHelper.sampleRestroomRequestBody
             )
         }
 
@@ -66,7 +66,7 @@ class UpdateRestroomTest : ApiTest() {
         val response = execute {
             testHelper.service.updateRestroom(
                 id = NetworkTestHelper.RESTROOM_ID,
-                restroom = testHelper.sampleRestroom
+                requestBody = testHelper.sampleRestroomRequestBody
             )
         }
 

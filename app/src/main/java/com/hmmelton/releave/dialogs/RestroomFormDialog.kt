@@ -2,6 +2,7 @@ package com.hmmelton.releave.dialogs
 
 import android.app.Dialog
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatSpinner
@@ -11,6 +12,8 @@ import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
 import com.hmmelton.releave.R
 import com.hmmelton.releave.adapters.RestroomFormSpinnerAdapter
+import com.hmmelton.releave.data.UserRepository
+import com.hmmelton.releave.data.models.RestroomRequestBody
 
 class RestroomFormDialog : DialogFragment() {
 
@@ -44,7 +47,8 @@ class RestroomFormDialog : DialogFragment() {
                 saveNewRestroom(
                     place = places[selectedItemIndex],
                     isLocked = true,
-                    rating = 5.0
+                    isSingleOccupancy = false,
+                    rating = 5.0 // TODO: lmfao put a real rating here
                 )
             }
             .setNegativeButton(android.R.string.cancel) { _, _ -> dismiss() }
@@ -77,24 +81,29 @@ class RestroomFormDialog : DialogFragment() {
     /**
      * This function saves a new restroom to storage.
      */
-    private fun saveNewRestroom(place: Place, isLocked: Boolean, rating: Double) {
+    private fun saveNewRestroom(place: Place, isLocked: Boolean, isSingleOccupancy: Boolean, rating: Double) {
         // TODO: save new restroom to database(s)
+        val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+
+        // We just return here, because our auth token interceptor should handle the case in which the user is not
+        // authenticated
+        val currentUser = UserRepository.getCurrentUser(preferences) ?: return
 
         val address = place.address ?: return
         val latLng = place.latLng
-//        val entry = Restroom(
-//            id = UUID.randomUUID().toString(),
-//            name = place.name.toString(),
-//            location = address.toString(),
-//            lat = latLng.latitude,
-//            lng = latLng.longitude,
-//            isLocked = isLocked,
-//            rating = rating,
-//            numRatings = 1,
-//            createdBy = /* TODO: get user's ID */ "",
-//            createdWhen = Instant.now(),
-//            updatedBy = null,
-//            updatedWhen = null
-//        )
+
+        val requestBody = RestroomRequestBody(
+            createdBy = currentUser.id,
+            lat = latLng.latitude,
+            lng = latLng.longitude,
+            name = place.name.toString(),
+            location = address.toString(),
+            isLocked = isLocked,
+            isSingleOccupancy = isSingleOccupancy,
+            rating = rating
+        )
+
+        // TODO: use DialogFragment::onAttach approach to pass in callback from hosting Activity
+        // ReleaveClient.service.addRestroom(requestBody = requestBody).enqueue()
     }
 }

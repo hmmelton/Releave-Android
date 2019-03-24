@@ -6,13 +6,13 @@ class AddRestroomTest : ApiTest() {
 
     @Test
     fun addRestroom_201_success() {
-        givenResponse(code = 201, responseBody = "")
+        givenResponse(code = 201, responseBody = testHelper.restroomJson)
 
         val response = execute {
-            testHelper.service.addRestroom(testHelper.sampleRestroom)
+            testHelper.service.addRestroom(testHelper.sampleRestroomRequestBody)
         }
 
-        thenCallSuccessful(response = response)
+        thenCallSuccessfulNonNullBody(response = response)
     }
 
     @Test
@@ -20,10 +20,10 @@ class AddRestroomTest : ApiTest() {
         givenResponse(code = 401, responseBody = ERROR_MESSAGE_401)
 
         val response = execute {
-            testHelper.service.addRestroom(testHelper.sampleRestroom)
+            testHelper.service.addRestroom(testHelper.sampleRestroomRequestBody)
         }
 
-        thenCallUnsuccessful(
+        thenCallUnsuccessfulNullBody(
             response = response,
             expectedResponseCode = 401,
             expectedErrorMessage = ERROR_MESSAGE_401
@@ -35,7 +35,7 @@ class AddRestroomTest : ApiTest() {
         givenResponse(code = 500, responseBody = ERROR_MESSAGE_500)
 
         val response = execute {
-            testHelper.service.addRestroom(testHelper.sampleRestroom)
+            testHelper.service.addRestroom(testHelper.sampleRestroomRequestBody)
         }
 
         thenCallUnsuccessful(

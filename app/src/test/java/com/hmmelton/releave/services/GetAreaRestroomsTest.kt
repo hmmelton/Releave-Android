@@ -27,7 +27,7 @@ class GetAreaRestroomsTest : ApiTest() {
         }
         val restroomList = response.body()
 
-        thenCallSuccessfulNonNullBody(response = response, body = restroomList)
+        thenCallSuccessfulNonNullBody(response = response)
         thenRestroomsParsedCorrectly(restrooms = restroomList ?: throw IllegalStateException("Restroom list is null"))
     }
 
@@ -45,7 +45,7 @@ class GetAreaRestroomsTest : ApiTest() {
         }
         val restroomList = response.body()
 
-        thenCallSuccessfulNonNullBody(response = response, body = restroomList)
+        thenCallSuccessfulNonNullBody(response = response)
         thenRestroomListEmpty(restrooms = restroomList ?: throw IllegalStateException("Restroom list is null"))
     }
 
@@ -61,11 +61,9 @@ class GetAreaRestroomsTest : ApiTest() {
                 maxLng = MAX_LNG
             )
         }
-        val restroomList = response.body()
 
         thenCallUnsuccessfulNullBody(
             response = response,
-            body = restroomList,
             expectedResponseCode = 401,
             expectedErrorMessage = ERROR_MESSAGE_401
         )
@@ -83,11 +81,9 @@ class GetAreaRestroomsTest : ApiTest() {
                 maxLng = MAX_LNG
             )
         }
-        val restroomList = response.body()
 
         thenCallUnsuccessfulNullBody(
             response = response,
-            body = restroomList,
             expectedResponseCode = 500,
             expectedErrorMessage = ERROR_MESSAGE_500
         )

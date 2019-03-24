@@ -14,7 +14,7 @@ class GetCurrentUserTest : ApiTest() {
         val response = execute { testHelper.service.getCurrentUser() }
         val user = response.body()
 
-        thenCallSuccessfulNonNullBody(response = response, body = user)
+        thenCallSuccessfulNonNullBody(response = response)
         thenUserParsedCorrectly(user = user)
     }
 
@@ -23,11 +23,9 @@ class GetCurrentUserTest : ApiTest() {
         givenResponse(code = 401, responseBody = ERROR_MESSAGE_401)
 
         val response = execute { testHelper.service.getCurrentUser() }
-        val user = response.body()
 
         thenCallUnsuccessfulNullBody(
             response = response,
-            body = user,
             expectedResponseCode = 401,
             expectedErrorMessage = ERROR_MESSAGE_401
         )
@@ -38,11 +36,9 @@ class GetCurrentUserTest : ApiTest() {
         givenResponse(code = 500, responseBody = ERROR_MESSAGE_500)
 
         val response = execute { testHelper.service.getCurrentUser() }
-        val user = response.body()
 
         thenCallUnsuccessfulNullBody(
             response = response,
-            body = user,
             expectedResponseCode = 500,
             expectedErrorMessage = ERROR_MESSAGE_500
         )

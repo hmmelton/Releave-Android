@@ -20,7 +20,7 @@ class AuthenticateTest : ApiTest() {
             )
         }
 
-        thenCallSuccessfulNonNullBody(response = response, body = response.body())
+        thenCallSuccessfulNonNullBody(response = response)
         thenResponseHasAuthHeader(response = response)
         thenUserHasExpectedValues(user = response.body())
     }
@@ -38,7 +38,6 @@ class AuthenticateTest : ApiTest() {
 
         thenCallUnsuccessfulNullBody(
             response = response,
-            body = response.body(),
             expectedResponseCode = 500,
             expectedErrorMessage = ERROR_MESSAGE_500
         )
