@@ -11,3 +11,5 @@ finding a restroom in a crowded city. Restroom information will include:
 
 Some of this information will be available for free, while the rest will be available only to users with premium
 accounts.
+
+This application interacts with the [Releave API](https://github.com/hmmelton/Releave-Api/)
