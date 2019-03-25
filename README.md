@@ -1,3 +1,13 @@
 # Releave
 
-Releave is a crowdsourced application for finding public restrooms in crowded cities.
+Releave is a crowd-sourced application for finding public restrooms. Its purpose is to alleviate the stress involved in
+finding a restroom in a crowded city. Restroom information will include:
+
+- Location
+- Name of establishment
+- Average user rating
+- Whether or not the restroom requires a key/code
+- Whether or not the restroom is single-occupant
+
+Some of this information will be available for free, while the rest will be available only to users with premium
+accounts.
