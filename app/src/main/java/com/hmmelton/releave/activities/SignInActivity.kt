@@ -100,7 +100,7 @@ class SignInActivity : BaseActivity() {
                 email = email
             )
 
-            ReleaveClient.service.authenticate(
+            ReleaveClient.INSTANCE.authenticate(
                 facebookAuthToken = AccessToken.getCurrentAccessToken().token,
                 body = requestBody
             ).enqueue(authCallback)

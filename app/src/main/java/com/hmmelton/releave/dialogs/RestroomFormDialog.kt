@@ -12,6 +12,7 @@ import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
 import com.hmmelton.releave.R
 import com.hmmelton.releave.adapters.RestroomFormSpinnerAdapter
+import com.hmmelton.releave.data.SaveRestroomCallback
 import com.hmmelton.releave.data.UserRepository
 import com.hmmelton.releave.data.models.RestroomRequestBody
 
@@ -20,6 +21,8 @@ class RestroomFormDialog : DialogFragment() {
     private var places = emptyArray<Place>()
     private lateinit var spinner: AppCompatSpinner
     private var selectedItemIndex = 0
+
+    var saveRestroomCallback: SaveRestroomCallback? = null
 
     private val spinnerItemClickListener = object : AdapterView.OnItemSelectedListener {
         override fun onNothingSelected(parent: AdapterView<*>?) {
@@ -82,7 +85,6 @@ class RestroomFormDialog : DialogFragment() {
      * This function saves a new restroom to storage.
      */
     private fun saveNewRestroom(place: Place, isLocked: Boolean, isSingleOccupancy: Boolean, rating: Double) {
-        // TODO: save new restroom to database(s)
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         // We just return here, because our auth token interceptor should handle the case in which the user is not
@@ -103,7 +105,6 @@ class RestroomFormDialog : DialogFragment() {
             rating = rating
         )
 
-        // TODO: use DialogFragment::onAttach approach to pass in callback from hosting Activity
-        // ReleaveClient.service.addRestroom(requestBody = requestBody).enqueue()
+        saveRestroomCallback?.onSaveRestroom(requestBody = requestBody)
     }
 }

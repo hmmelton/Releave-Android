@@ -14,7 +14,7 @@ object ReleaveClient {
         .add(KotlinJsonAdapterFactory())
         .build()
 
-    val service: ReleaveService = Retrofit.Builder()
+    val INSTANCE: ReleaveService = Retrofit.Builder()
         .baseUrl(Secrets.SERVER_ADDRESS)
         .addConverterFactory(MoshiConverterFactory.create(moshi))
         .build()
