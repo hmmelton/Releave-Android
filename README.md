@@ -16,6 +16,6 @@ This application interacts with the [Releave API](https://github.com/hmmelton/Re
 
 ## Images
 
-![Image of Map](https://github.com/hmmelton/Releave-Android/tree/master/img/map.png)
+[[https://github.com/hmmelton/Releave-Android/tree/master/img/map.png]]
 
-![Image of Restroom Input](https://github.com/hmmelton/Releave-Android/tree/master/img/add_restroom.png)
+[[https://github.com/hmmelton/Releave-Android/tree/master/img/add_restroom.png]]
