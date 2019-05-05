@@ -4,6 +4,7 @@ import com.squareup.moshi.Json
 
 data class RestroomRequestBody(
     @Json(name = "created_by") val createdBy: String,
+    @Json(name = "updated_by") val updatedBy: String = createdBy,
     val lat: Double,
     val lng: Double,
     val name: String,

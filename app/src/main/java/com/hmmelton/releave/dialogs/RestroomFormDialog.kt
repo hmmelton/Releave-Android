@@ -106,5 +106,7 @@ class RestroomFormDialog : DialogFragment() {
         )
 
         saveRestroomCallback?.onSaveRestroom(requestBody = requestBody)
+
+        dismiss()
     }
 }

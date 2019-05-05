@@ -56,6 +56,7 @@ class SignInActivity : BaseActivity() {
 
         override fun onResponse(call: Call<User>, response: Response<User>) {
             if (!response.isSuccessful) {
+                Log.e("SignInActivity", "Error -> ${response.message()}")
                 alertSignInFailed()
                 return
             }
@@ -64,6 +65,7 @@ class SignInActivity : BaseActivity() {
             val user = response.body()
 
             if (token == null || user == null) {
+                Log.e("SignInActivity", "Error -> token: $token, user: $user")
                 alertSignInFailed()
                 LoginManager.getInstance().logOut()
             } else {
@@ -145,6 +147,8 @@ class SignInActivity : BaseActivity() {
             title = getString(R.string.err_title_sign_in_failed),
             message = getString(R.string.err_message_sign_in_failed)
         )
+
+        hideProgressBar()
     }
 
     private fun signInUser(user: User, token: String) {
