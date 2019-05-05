@@ -1,7 +1,6 @@
 package com.hmmelton.releave.views.viewmodels
 
 import android.arch.lifecycle.ViewModel
-import android.util.Log
 import com.hmmelton.releave.data.SaveRestroomCallback
 import com.hmmelton.releave.data.models.Restroom
 import com.hmmelton.releave.data.models.RestroomRequestBody
@@ -15,6 +14,9 @@ import java.util.Queue
 
 class MainActivityViewModel : ViewModel(), SaveRestroomCallback {
 
+    /**
+     * Used to alert the user of an error saving a restroom
+     */
     var errorHandler: (() -> Unit)? = null
 
     private val releaveService: ReleaveService by lazy { ReleaveClient.INSTANCE }
@@ -24,7 +26,6 @@ class MainActivityViewModel : ViewModel(), SaveRestroomCallback {
     private val saveRestroomNetworkCallback = object : Callback<Restroom> {
         override fun onFailure(call: Call<Restroom>, t: Throwable) {
             processNextRequest()
-            Log.e("MainActivityViewModel", t.localizedMessage, t)
             errorHandler?.invoke()
         }
 
@@ -37,6 +38,8 @@ class MainActivityViewModel : ViewModel(), SaveRestroomCallback {
         val call = releaveService.addRestroom(requestBody = requestBody)
         synchronized(requestQueue) {
             requestQueue.add(call)
+
+            // If the queue's size is not 1, it is either empty or already processing its contents
             if (requestQueue.count() == 1) {
                 processNextRequest()
             }
@@ -48,6 +51,9 @@ class MainActivityViewModel : ViewModel(), SaveRestroomCallback {
         call?.cancel()
     }
 
+    /**
+     * This function attempts to save a restroom to the server.
+     */
     private fun processNextRequest() {
         synchronized(requestQueue) {
             if (!requestQueue.isEmpty()) {
