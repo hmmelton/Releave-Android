@@ -1,6 +1,7 @@
 package com.hmmelton.releave.activities
 
 import android.annotation.SuppressLint
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -16,7 +17,6 @@ import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationRequest
 import com.google.android.gms.location.LocationResult
 import com.google.android.gms.location.LocationServices
-import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
 import com.google.android.gms.location.places.Places
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -28,6 +28,7 @@ import com.hmmelton.releave.data.TokenRepository
 import com.hmmelton.releave.data.UserRepository
 import com.hmmelton.releave.dialogs.RestroomFormDialog
 import com.hmmelton.releave.helpers.BaseActivity
+import com.hmmelton.releave.views.viewmodels.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import java.util.concurrent.TimeUnit
 
@@ -43,6 +44,8 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private lateinit var fusedLocationProviderClient: FusedLocationProviderClient
+    private lateinit var viewModel: MainActivityViewModel
+
     private var map: GoogleMap? = null
 
     private val placeDetectionClient
@@ -71,12 +74,21 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
     }
 
     private val fabOnClickListener = View.OnClickListener { displayFormDialog() }
+    private val restroomUploadErrorHandler = {
+        Snackbar
+            .make(findViewById(android.R.id.content), R.string.snack_error_uploading_restroom, Snackbar.LENGTH_LONG)
+            .show()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setActionBar()
+
+        viewModel = ViewModelProviders.of(this).get(MainActivityViewModel::class.java).apply {
+            errorHandler = restroomUploadErrorHandler
+        }
 
         // Get reference to map Fragment
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
@@ -183,32 +195,26 @@ class MainActivity : BaseActivity(), OnMapReadyCallback {
 
     private fun displayFormDialog() {
         val transaction = supportFragmentManager.beginTransaction()
-        val prev = supportFragmentManager.findFragmentByTag("dialog")
-        if (prev != null) {
-            transaction.remove(prev)
-        }
+        supportFragmentManager.findFragmentByTag("dialog")?.let { previous -> transaction.remove(previous) }
         transaction.addToBackStack(null)
 
-        fetchCurrentPlaces { bufferResponse ->
-            if (bufferResponse == null) {
+        try {
+            val placeResult = placeDetectionClient.getCurrentPlace(null)
+            placeResult.addOnCompleteListener { task ->
+
+                task.result?.let { result ->
+                    RestroomFormDialog.newInstance(result).apply {
+                        saveRestroomCallback = viewModel
+                        show(transaction, "dialog")
+                    }
+
+                    return@addOnCompleteListener
+                }
+
                 Snackbar
                     .make(findViewById(android.R.id.content), R.string.snack_no_nearby_locations, Snackbar.LENGTH_LONG)
                     .show()
-                return@fetchCurrentPlaces
             }
-            RestroomFormDialog
-                .newInstance(bufferResponse)
-                .show(transaction, "dialog")
-        }
-    }
-
-    /**
-     * This function fetches a collection of places near the user.
-     */
-    private fun fetchCurrentPlaces(callback: (PlaceLikelihoodBufferResponse?) -> Unit) {
-        try {
-            val placeResult = placeDetectionClient.getCurrentPlace(null)
-            placeResult.addOnCompleteListener { callback(it.result) }
         } catch (e: SecurityException) {
             requestLocationPermission()
         }

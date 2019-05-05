@@ -15,11 +15,12 @@ class AuthenticateTest : ApiTest() {
 
         val response = execute {
             testHelper.service.authenticate(
-                body = testHelper.sampleAuthRequestBody
+                body = testHelper.sampleAuthRequestBody,
+                facebookAuthToken = "123abc"
             )
         }
 
-        thenCallSuccessfulNonNullBody(response = response, body = response.body())
+        thenCallSuccessfulNonNullBody(response = response)
         thenResponseHasAuthHeader(response = response)
         thenUserHasExpectedValues(user = response.body())
     }
@@ -30,13 +31,13 @@ class AuthenticateTest : ApiTest() {
 
         val response = execute {
             testHelper.service.authenticate(
-                body = testHelper.sampleAuthRequestBody
+                body = testHelper.sampleAuthRequestBody,
+                facebookAuthToken = "123abc"
             )
         }
 
         thenCallUnsuccessfulNullBody(
             response = response,
-            body = response.body(),
             expectedResponseCode = 500,
             expectedErrorMessage = ERROR_MESSAGE_500
         )

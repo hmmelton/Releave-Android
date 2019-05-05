@@ -18,10 +18,7 @@ class GetRestroomTest : ApiTest() {
         val response = execute { testHelper.service.getRestroom(NetworkTestHelper.RESTROOM_ID) }
         val restroom = response.body()
 
-        thenCallSuccessfulNonNullBody(
-            response = response,
-            body = restroom
-        )
+        thenCallSuccessfulNonNullBody(response = response)
         thenRestroomParsedCorrectly(restroom = restroom ?: throw IllegalStateException("Restroom is null"))
     }
 
@@ -30,11 +27,9 @@ class GetRestroomTest : ApiTest() {
         givenResponse(code = 401, responseBody = ERROR_MESSAGE_401)
 
         val response = execute { testHelper.service.getRestroom(NetworkTestHelper.RESTROOM_ID) }
-        val restroom = response.body()
 
         thenCallUnsuccessfulNullBody(
             response = response,
-            body = restroom,
             expectedResponseCode = 401,
             expectedErrorMessage = ERROR_MESSAGE_401
         )
@@ -45,11 +40,9 @@ class GetRestroomTest : ApiTest() {
         givenResponse(code = 404, responseBody = ERROR_MESSAGE_404)
 
         val response = execute { testHelper.service.getRestroom(NetworkTestHelper.RESTROOM_ID) }
-        val restroom = response.body()
 
         thenCallUnsuccessfulNullBody(
             response = response,
-            body = restroom,
             expectedResponseCode = 404,
             expectedErrorMessage = ERROR_MESSAGE_404
         )
@@ -60,11 +53,9 @@ class GetRestroomTest : ApiTest() {
         givenResponse(code = 500, responseBody = ERROR_MESSAGE_500)
 
         val response = execute { testHelper.service.getRestroom(NetworkTestHelper.RESTROOM_ID) }
-        val restroom = response.body()
 
         thenCallUnsuccessfulNullBody(
             response = response,
-            body = restroom,
             expectedResponseCode = 500,
             expectedErrorMessage = ERROR_MESSAGE_500
         )
