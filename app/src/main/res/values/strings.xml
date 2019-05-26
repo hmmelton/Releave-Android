@@ -23,8 +23,9 @@
 
     <!-- Restroom form strings -->
     <string name="label_location">Location</string>
-    <string name="label_rating">Rating</string>
-    <string name="label_locked">Locked</string>
+    <string name="label_rating">Rating:</string>
+    <string name="label_locked">Locked:</string>
+    <string name="label_single_occupancy">Single occupancy:</string>
     <string name="empty_location_list_message">No nearby locations found</string>
 
     <!-- Snackbar strings -->

@@ -8,6 +8,7 @@ import android.support.v7.app.AlertDialog
 import android.support.v7.widget.AppCompatSpinner
 import android.view.View
 import android.widget.AdapterView
+import android.widget.CheckBox
 import com.google.android.gms.location.places.Place
 import com.google.android.gms.location.places.PlaceLikelihoodBufferResponse
 import com.hmmelton.releave.R
@@ -15,11 +16,11 @@ import com.hmmelton.releave.adapters.RestroomFormSpinnerAdapter
 import com.hmmelton.releave.data.SaveRestroomCallback
 import com.hmmelton.releave.data.UserRepository
 import com.hmmelton.releave.data.models.RestroomRequestBody
+import com.hmmelton.releave.views.RatingWidget
 
 class RestroomFormDialog : DialogFragment() {
 
     private var places = emptyArray<Place>()
-    private lateinit var spinner: AppCompatSpinner
     private var selectedItemIndex = 0
 
     var saveRestroomCallback: SaveRestroomCallback? = null
@@ -44,22 +45,13 @@ class RestroomFormDialog : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(requireActivity())
-            .setTitle("Add Restroom")
-            .setPositiveButton(android.R.string.ok) { _, _ ->
-                saveNewRestroom(
-                    place = places[selectedItemIndex],
-                    isLocked = true,
-                    isSingleOccupancy = false,
-                    rating = 5.0 // TODO: lmfao put a real rating here
-                )
-            }
-            .setNegativeButton(android.R.string.cancel) { _, _ -> dismiss() }
-
         val inflater = requireActivity().layoutInflater
 
         val view = inflater.inflate(R.layout.layout_restroom_form_dialog, null)
-        spinner = view.findViewById(R.id.spinner)
+        val spinner: AppCompatSpinner = view.findViewById(R.id.spinner)
+        val lockedCheckBox: CheckBox = view.findViewById(R.id.lockedCheckBox)
+        val singleOccupancyCheckBox: CheckBox = view.findViewById(R.id.singleOccupancyCheckBox)
+        val ratingWidget: RatingWidget = view.findViewById(R.id.ratingWidget)
 
         // Add adapter with data to Spinner
         val adapter = RestroomFormSpinnerAdapter(ctx = requireContext(), places = places)
@@ -68,8 +60,19 @@ class RestroomFormDialog : DialogFragment() {
 
         spinner.onItemSelectedListener = spinnerItemClickListener
 
-        builder.setView(view)
-        return builder.create()
+        return AlertDialog.Builder(requireActivity())
+            .setView(view)
+            .setTitle("Add Restroom")
+            .setPositiveButton(android.R.string.ok) { _, _ ->
+                saveNewRestroom(
+                    place = places[selectedItemIndex],
+                    isLocked = lockedCheckBox.isChecked,
+                    isSingleOccupancy = singleOccupancyCheckBox.isChecked,
+                    rating = ratingWidget.selectedRating
+                )
+            }
+            .setNegativeButton(android.R.string.cancel) { _, _ -> dismiss() }
+            .create()
     }
 
     private fun setPlacesList(bufferResponse: PlaceLikelihoodBufferResponse) {
@@ -84,7 +87,7 @@ class RestroomFormDialog : DialogFragment() {
     /**
      * This function saves a new restroom to storage.
      */
-    private fun saveNewRestroom(place: Place, isLocked: Boolean, isSingleOccupancy: Boolean, rating: Double) {
+    private fun saveNewRestroom(place: Place, isLocked: Boolean, isSingleOccupancy: Boolean, rating: Int) {
         val preferences = PreferenceManager.getDefaultSharedPreferences(context)
 
         // We just return here, because our auth token interceptor should handle the case in which the user is not

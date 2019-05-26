@@ -11,5 +11,5 @@ data class RestroomRequestBody(
     val location: String,
     @Json(name = "is_locked") val isLocked: Boolean = true,
     @Json(name = "is_single_occupancy") val isSingleOccupancy: Boolean = false,
-    val rating: Double
+    val rating: Int
 )
