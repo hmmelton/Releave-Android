@@ -1,7 +1,8 @@
-package com.ambush.android
+package com.ambush.android.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import com.ambush.android.R
 
 class MainActivity : AppCompatActivity() {
 
