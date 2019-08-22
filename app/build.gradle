@@ -12,7 +12,7 @@ android {
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
@@ -22,12 +22,44 @@ android {
     }
 }
 
+repositories {
+    jcenter()
+}
+
+configurations {
+    ktlint
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation"org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.android.support:appcompat-v7:28.0.0'
-    implementation 'com.android.support.constraint:constraint-layout:1.1.3'
+
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    ktlint "com.github.shyiko:ktlint:${libraries.ktlint}"
+
+    implementation 'androidx.appcompat:appcompat:1.0.2'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
+
+    // Jetpack
+    implementation "androidx.lifecycle:lifecycle-extensions:${libraries.lifecycle_version}"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libraries.lifecycle_version}"
+
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation "androidx.test.ext:junit:${libraries.androidx.junit}"
+    androidTestImplementation "androidx.test.espresso:espresso-core:${libraries.androidx.espresso_core}"
+}
+
+task('ktlint', type: JavaExec, group: 'verification') {
+    description = 'Check Kotlin code style.'
+    classpath = configurations.ktlint
+    main = 'com.github.shyiko.ktlint.Main'
+    args '--verbose', 'src/**/*.kt'
+}
+check.dependsOn ktlint
+
+task('ktlintFormat', type: JavaExec, group: 'formatting') {
+    description = 'Fix Kotlin code style deviations.'
+    classpath = configurations.ktlint
+    main = 'com.github.shyiko.ktlint.Main'
+    args '-F', 'src/**/*.kt'
 }
