@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">AmBush</string>
 
-    <!-- Login strings -->
-    <string name="title_activity_login">Sign in</string>
+    <!-- Login -->
+    <string name="title_activity_sign_in">Sign in</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -10,4 +10,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >8 characters</string>
     <string name="error_login">Error logging in</string>
+
+    <!-- Menu -->
+    <string name="menu_sign_out">Sign out</string>
 </resources>

@@ -9,28 +9,28 @@ import com.ambush.android.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
-class LoginViewModel : ViewModel() {
+class SignInViewModel : ViewModel() {
 
     private val auth = FirebaseAuth.getInstance()
 
-    private val _loginForm = MutableLiveData<LoginFormState>()
-    val loginFormState: LiveData<LoginFormState> = _loginForm
+    private val _loginForm = MutableLiveData<SignInFormState>()
+    val signInFormState: LiveData<SignInFormState> = _loginForm
 
-    private val _loginResult = MutableLiveData<LoginResult>()
-    val loginResult: LiveData<LoginResult> = _loginResult
+    private val _loginResult = MutableLiveData<SignInResult>()
+    val signInResult: LiveData<SignInResult> = _loginResult
 
     fun login(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             when {
-                task.isSuccessful -> _loginResult.value = LoginResult.SUCCESS
+                task.isSuccessful -> _loginResult.value = SignInResult.SUCCESS
                 task.exception is FirebaseAuthInvalidUserException -> {
                     // If user does not exist, register
                     registerNewUser(email = email, password = password)
                 }
                 else -> {
                     // If error is not related to absent user, post failure
-                    Log.e("LoginViewModel", task.exception.toString())
-                    _loginResult.value = LoginResult.ERROR
+                    Log.e("SignInViewModel", task.exception.toString())
+                    _loginResult.value = SignInResult.ERROR
                 }
             }
         }
@@ -38,20 +38,20 @@ class LoginViewModel : ViewModel() {
 
     fun loginDataChanged(username: String, password: String) {
         if (!isEmailValid(username)) {
-            _loginForm.value = LoginFormState(usernameError = R.string.invalid_username)
+            _loginForm.value = SignInFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
-            _loginForm.value = LoginFormState(passwordError = R.string.invalid_password)
+            _loginForm.value = SignInFormState(passwordError = R.string.invalid_password)
         } else {
-            _loginForm.value = LoginFormState(isDataValid = true)
+            _loginForm.value = SignInFormState(isDataValid = true)
         }
     }
 
     private fun registerNewUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                _loginResult.value = LoginResult.SUCCESS
+                _loginResult.value = SignInResult.SUCCESS
             } else {
-                _loginResult.value = LoginResult.ERROR
+                _loginResult.value = SignInResult.ERROR
             }
         }
     }
