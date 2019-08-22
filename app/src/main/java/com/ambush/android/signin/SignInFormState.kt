@@ -1,4 +1,4 @@
-package com.ambush.android.login
+package com.ambush.android.signin
 
 /**
  * Data validation state of the login form.

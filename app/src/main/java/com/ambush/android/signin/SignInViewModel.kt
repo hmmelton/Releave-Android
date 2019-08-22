@@ -1,4 +1,4 @@
-package com.ambush.android.login
+package com.ambush.android.signin
 
 import android.util.Log
 import android.util.Patterns

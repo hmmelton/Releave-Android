@@ -12,8 +12,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.ambush.android.R
-import com.ambush.android.login.SignInResult
-import com.ambush.android.login.SignInViewModel
+import com.ambush.android.signin.SignInResult
+import com.ambush.android.signin.SignInViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : AppCompatActivity() {
