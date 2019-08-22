@@ -1,4 +1,4 @@
-package com.ambush.android
+package com.szr.android
 
 import org.junit.Test
 

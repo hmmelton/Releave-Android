@@ -1,4 +1,4 @@
-package com.ambush.android.activities
+package com.szr.android.activities
 
 import android.content.Intent
 import android.os.Bundle

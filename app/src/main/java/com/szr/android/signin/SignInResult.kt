@@ -1,4 +1,4 @@
-package com.ambush.android.signin
+package com.szr.android.signin
 
 /**
  * Class used to signal whether login request was successful or not

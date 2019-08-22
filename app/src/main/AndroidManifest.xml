@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.ambush.android">
+    package="com.szr.android">
 
     <application
         android:allowBackup="true"
@@ -10,10 +10,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".activities.SignInActivity"
+            android:name="com.szr.android.activities.SignInActivity"
             android:label="@string/title_activity_sign_in" />
         <activity
-            android:name=".activities.SplashScreenActivity"
+            android:name="com.szr.android.activities.SplashScreenActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,7 +22,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity" />
+        <activity android:name="com.szr.android.activities.MainActivity" />
     </application>
 
 </manifest>

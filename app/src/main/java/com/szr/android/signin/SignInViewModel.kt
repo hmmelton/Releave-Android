@@ -1,13 +1,13 @@
-package com.ambush.android.signin
+package com.szr.android.signin
 
 import android.util.Log
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.ambush.android.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.szr.android.R
 
 class SignInViewModel : ViewModel() {
 
@@ -22,7 +22,11 @@ class SignInViewModel : ViewModel() {
     fun login(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             when {
-                task.isSuccessful -> _loginResult.value = SignInResult.SUCCESS
+                task.isSuccessful && auth.currentUser?.isEmailVerified  == true ->
+                    _loginResult.value = SignInResult.SUCCESS
+                task.isSuccessful -> {
+
+                }
                 task.exception is FirebaseAuthInvalidUserException -> {
                     // If user does not exist, register
                     registerNewUser(email = email, password = password)

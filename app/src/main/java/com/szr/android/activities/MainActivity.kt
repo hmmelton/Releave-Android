@@ -1,11 +1,11 @@
-package com.ambush.android.activities
+package com.szr.android.activities
 
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.ambush.android.R
+import com.szr.android.R
 import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {

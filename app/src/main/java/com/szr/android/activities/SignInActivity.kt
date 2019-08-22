@@ -1,4 +1,4 @@
-package com.ambush.android.activities
+package com.szr.android.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,9 +11,9 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.ambush.android.R
-import com.ambush.android.signin.SignInResult
-import com.ambush.android.signin.SignInViewModel
+import com.szr.android.R
+import com.szr.android.signin.SignInResult
+import com.szr.android.signin.SignInViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : AppCompatActivity() {
