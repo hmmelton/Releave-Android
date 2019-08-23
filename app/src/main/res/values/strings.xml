@@ -7,10 +7,16 @@
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
-    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_username">Not a valid email</string>
     <string name="invalid_password">Password must be >8 characters</string>
-    <string name="error_login">Error logging in</string>
+    <string name="error_sign_in">Error signing in</string>
+    <string name="error_invalid_credentials">Invalid credentials</string>
 
     <!-- Menu -->
     <string name="menu_sign_out">Sign out</string>
+
+    <!-- Email confirmation -->
+    <string name="confirm_email">Please check your email for a confirmation</string>
+    <string name="resend_verification_email">Resend verification email</string>
+    <string name="sign_out">Sign out</string>
 </resources>

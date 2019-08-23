@@ -1,40 +1,66 @@
 package com.szr.android.signin
 
-import android.util.Log
 import android.util.Patterns
+import androidx.databinding.Bindable
+import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.szr.android.R
+import com.szr.android.models.NotifiableObservable
+import com.szr.android.models.NotifiableObservableImpl
 
-class SignInViewModel : ViewModel() {
+class SignInViewModel(
+    observable: NotifiableObservable = NotifiableObservableImpl()
+) : ViewModel(), NotifiableObservable by observable {
+
+    val shouldShowEmailScreen: Boolean
+        @Bindable get() = (auth.currentUser != null && auth.currentUser?.isEmailVerified == false)
 
     private val auth = FirebaseAuth.getInstance()
 
-    private val _loginForm = MutableLiveData<SignInFormState>()
-    val signInFormState: LiveData<SignInFormState> = _loginForm
+    private val _signInForm = MutableLiveData<SignInFormState>()
+    val signInFormState: LiveData<SignInFormState> = _signInForm
 
-    private val _loginResult = MutableLiveData<SignInResult>()
-    val signInResult: LiveData<SignInResult> = _loginResult
+    private val _signInResult = MutableLiveData<SignInResult>()
+    val signInResult: LiveData<SignInResult> = _signInResult
+
+    init {
+        (observable as? NotifiableObservableImpl)?.sender = this
+    }
+
+    fun start() {
+        if (auth.currentUser != null) {
+            auth.currentUser?.reload()?.addOnCompleteListener {
+                if (auth.currentUser?.isEmailVerified == true) {
+                    _signInResult.value = SignInResult.Success
+                }
+            }
+        }
+    }
 
     fun login(email: String, password: String) {
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             when {
-                task.isSuccessful && auth.currentUser?.isEmailVerified  == true ->
-                    _loginResult.value = SignInResult.SUCCESS
                 task.isSuccessful -> {
-
+                    if (auth.currentUser?.isEmailVerified == true) {
+                        _signInResult.value = SignInResult.Success
+                    } else {
+                        _signInResult.value = SignInResult.EmailNotVerified
+                        notifyPropertyChanged(BR.shouldShowEmailScreen)
+                    }
                 }
                 task.exception is FirebaseAuthInvalidUserException -> {
                     // If user does not exist, register
                     registerNewUser(email = email, password = password)
                 }
-                else -> {
-                    // If error is not related to absent user, post failure
-                    Log.e("SignInViewModel", task.exception.toString())
-                    _loginResult.value = SignInResult.ERROR
+                task.exception is FirebaseAuthInvalidCredentialsException -> {
+                    // Password was incorrect
+                    _signInResult.value =
+                        SignInResult.Error(message = R.string.error_invalid_credentials)
                 }
             }
         }
@@ -42,22 +68,32 @@ class SignInViewModel : ViewModel() {
 
     fun loginDataChanged(username: String, password: String) {
         if (!isEmailValid(username)) {
-            _loginForm.value = SignInFormState(usernameError = R.string.invalid_username)
+            _signInForm.value = SignInFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
-            _loginForm.value = SignInFormState(passwordError = R.string.invalid_password)
+            _signInForm.value = SignInFormState(passwordError = R.string.invalid_password)
         } else {
-            _loginForm.value = SignInFormState(isDataValid = true)
+            _signInForm.value = SignInFormState(isDataValid = true)
         }
     }
 
     private fun registerNewUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
-                _loginResult.value = SignInResult.SUCCESS
+                notifyPropertyChanged(BR.shouldShowEmailScreen)
+                sendEmailVerification()
             } else {
-                _loginResult.value = SignInResult.ERROR
+                _signInResult.value = SignInResult.Error(message = R.string.error_sign_in)
             }
         }
+    }
+
+    fun sendEmailVerification() {
+        auth.currentUser?.sendEmailVerification()
+    }
+
+    fun signOut() {
+        auth.signOut()
+        notifyPropertyChanged(BR.shouldShowEmailScreen)
     }
 
     // A placeholder username validation check

@@ -10,8 +10,10 @@ class SplashScreenActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        val auth = FirebaseAuth.getInstance()
+
         // If user is logged in, navigate to main screen, else navigate to login
-        if (FirebaseAuth.getInstance().currentUser != null) {
+        if (auth.currentUser != null && auth.currentUser?.isEmailVerified == true) {
             startActivity(Intent(this, MainActivity::class.java))
         } else {
             startActivity(Intent(this, SignInActivity::class.java))

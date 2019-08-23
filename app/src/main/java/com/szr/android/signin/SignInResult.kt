@@ -3,7 +3,10 @@ package com.szr.android.signin
 /**
  * Class used to signal whether login request was successful or not
  */
-enum class SignInResult {
-    SUCCESS,
-    ERROR
+sealed class SignInResult {
+    object Success : SignInResult()
+
+    object EmailNotVerified : SignInResult()
+
+    class Error(val message: Int) : SignInResult()
 }

@@ -9,9 +9,12 @@ import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.szr.android.R
+import com.szr.android.databinding.ActivitySignInBinding
+import com.szr.android.signin.SignInFormState
 import com.szr.android.signin.SignInResult
 import com.szr.android.signin.SignInViewModel
 import kotlinx.android.synthetic.main.activity_sign_in.*
@@ -20,40 +23,49 @@ class SignInActivity : AppCompatActivity() {
 
     private lateinit var signInViewModel: SignInViewModel
 
+    private val signInFormStateObserver: Observer<SignInFormState> = Observer {
+        val loginState = it ?: return@Observer
+
+        // Disable login button unless both username / password is valid
+        login.isEnabled = loginState.isDataValid
+
+        if (loginState.usernameError != null) {
+            email.error = getString(loginState.usernameError)
+        }
+        if (loginState.passwordError != null) {
+            password.error = getString(loginState.passwordError)
+        }
+    }
+
+    private val signInResultObserver: Observer<SignInResult> = Observer {
+        val signInResult = it ?: return@Observer
+
+        loading.visibility = View.GONE
+        when (signInResult) {
+            is SignInResult.Error -> showLoginFailed(signInResult.message)
+            is SignInResult.Success -> navigateToMainScreen()
+            else -> {}
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        setContentView(R.layout.activity_sign_in)
+        val binding: ActivitySignInBinding = DataBindingUtil.setContentView(
+            this,
+            R.layout.activity_sign_in
+        )
 
-        signInViewModel = ViewModelProviders.of(this).get(SignInViewModel::class.java)
+        signInViewModel = ViewModelProviders.of(this).get(SignInViewModel::class.java).apply {
+            signInFormState.observe(this@SignInActivity, signInFormStateObserver)
+            signInResult.observe(this@SignInActivity, signInResultObserver)
+        }
 
-        signInViewModel.signInFormState.observe(this@SignInActivity, Observer {
-            val loginState = it ?: return@Observer
+        binding.viewModel = signInViewModel
 
-            // Disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
-
-            if (loginState.usernameError != null) {
-                username.error = getString(loginState.usernameError)
-            }
-            if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
-            }
-        })
-
-        signInViewModel.signInResult.observe(this@SignInActivity, Observer {
-            val loginResult = it ?: return@Observer
-
-            loading.visibility = View.GONE
-            when (loginResult) {
-                SignInResult.ERROR -> showLoginFailed()
-                SignInResult.SUCCESS -> navigateToMainScreen()
-            }
-        })
-
-        username.afterTextChanged {
+        email.afterTextChanged {
             signInViewModel.loginDataChanged(
-                username.text.toString(),
+                email.text.toString(),
                 password.text.toString()
             )
         }
@@ -61,7 +73,7 @@ class SignInActivity : AppCompatActivity() {
         password.apply {
             afterTextChanged {
                 signInViewModel.loginDataChanged(
-                    username.text.toString(),
+                    email.text.toString(),
                     password.text.toString()
                 )
             }
@@ -70,7 +82,7 @@ class SignInActivity : AppCompatActivity() {
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
                         signInViewModel.login(
-                            username.text.toString(),
+                            email.text.toString(),
                             password.text.toString()
                         )
                 }
@@ -79,9 +91,14 @@ class SignInActivity : AppCompatActivity() {
 
             login.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                signInViewModel.login(username.text.toString(), password.text.toString())
+                signInViewModel.login(email.text.toString(), password.text.toString())
             }
         }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        signInViewModel.start()
     }
 
     private fun navigateToMainScreen() {
@@ -89,8 +106,8 @@ class SignInActivity : AppCompatActivity() {
         finish()
     }
 
-    private fun showLoginFailed() {
-        Toast.makeText(applicationContext, R.string.error_login, Toast.LENGTH_SHORT).show()
+    private fun showLoginFailed(message: Int) {
+        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
     }
 }
 
