@@ -6,21 +6,22 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.szr.android.R
 import com.szr.android.models.NotifiableObservable
 import com.szr.android.models.NotifiableObservableImpl
+import com.szr.android.utils.DeepLinks
 
 class SignInViewModel(
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
     observable: NotifiableObservable = NotifiableObservableImpl()
 ) : ViewModel(), NotifiableObservable by observable {
 
     val shouldShowEmailScreen: Boolean
         @Bindable get() = (auth.currentUser != null && auth.currentUser?.isEmailVerified == false)
-
-    private val auth = FirebaseAuth.getInstance()
 
     private val _signInForm = MutableLiveData<SignInFormState>()
     val signInFormState: LiveData<SignInFormState> = _signInForm
@@ -76,6 +77,23 @@ class SignInViewModel(
         }
     }
 
+    fun sendEmailVerification() {
+        val user = auth.currentUser ?: return
+        val url = DeepLinks.getEmailDeepLink(user.uid)
+        val actionCodeSettings = ActionCodeSettings.newBuilder()
+            .setUrl(url)
+            .setAndroidPackageName("com.szr.android", true, null)
+            .build()
+
+        user.sendEmailVerification(actionCodeSettings).addOnCompleteListener {
+        }
+    }
+
+    fun signOut() {
+        auth.signOut()
+        notifyPropertyChanged(BR.shouldShowEmailScreen)
+    }
+
     private fun registerNewUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -87,19 +105,8 @@ class SignInViewModel(
         }
     }
 
-    fun sendEmailVerification() {
-        auth.currentUser?.sendEmailVerification()
-    }
-
-    fun signOut() {
-        auth.signOut()
-        notifyPropertyChanged(BR.shouldShowEmailScreen)
-    }
-
     // A placeholder username validation check
-    private fun isEmailValid(username: String): Boolean {
-        return Patterns.EMAIL_ADDRESS.matcher(username).matches()
-    }
+    private fun isEmailValid(username: String) = Patterns.EMAIL_ADDRESS.matcher(username).matches()
 
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {

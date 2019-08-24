@@ -43,7 +43,9 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.0.0'
     ktlint "com.github.shyiko:ktlint:${libraries.ktlint}"
 
+    // Firebase
     implementation "com.google.firebase:firebase-auth:${libraries.firebase_auth}"
+    implementation "com.google.firebase:firebase-dynamic-links:${libraries.firebase_dl}"
 
     // Jetpack
     implementation "androidx.lifecycle:lifecycle-extensions:${libraries.lifecycle_version}"

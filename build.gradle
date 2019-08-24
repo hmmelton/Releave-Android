@@ -9,6 +9,7 @@ buildscript {
                         junit           : '1.1.1'
                 ],
                 firebase_auth       : "19.0.0",
+                firebase_dl         : "19.0.0",
                 ktlint              : "0.20.0",
                 lifecycle_version   : '2.0.0'
         ]

@@ -142,6 +142,6 @@
             android:layout_height="wrap_content"
             android:visibility="@{viewModel.shouldShowEmailScreen ? View.VISIBLE : View.GONE}"
             app:constraint_referenced_ids="confirm_email,resend_email,sign_out"
-            tools:visibility="visible"/>
+            tools:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
