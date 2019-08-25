@@ -1,4 +1,4 @@
-package com.szr.android.activities
+package com.szr.android.views.activities
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +17,7 @@ import com.szr.android.databinding.ActivitySignInBinding
 import com.szr.android.signin.SignInFormState
 import com.szr.android.signin.SignInResult
 import com.szr.android.signin.SignInViewModel
+import com.szr.android.views.PasswordResetDialog
 import kotlinx.android.synthetic.main.activity_sign_in.*
 
 class SignInActivity : AppCompatActivity() {
@@ -48,6 +49,28 @@ class SignInActivity : AppCompatActivity() {
         }
     }
 
+    private val actionObserver: Observer<SignInViewModel.Action> = Observer { action ->
+        if (action == null) return@Observer
+
+        when (action) {
+            is SignInViewModel.Action.DisplayMessage -> {
+                Toast.makeText(
+                    applicationContext,
+                    action.message,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            SignInViewModel.Action.DisplayPasswordResetDialog -> {
+                // Display dialog prompting user to enter email for password reset
+                PasswordResetDialog().apply {
+                    callback = { email -> signInViewModel.sendResetPasswordEmail(email = email) }
+                }.show(supportFragmentManager, "PasswordResetDialog")
+            }
+            SignInViewModel.Action.HideSpinner -> loading.visibility = View.GONE
+            SignInViewModel.Action.DisplaySpinner -> loading.visibility = View.VISIBLE
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -59,6 +82,7 @@ class SignInActivity : AppCompatActivity() {
         signInViewModel = ViewModelProviders.of(this).get(SignInViewModel::class.java).apply {
             signInFormState.observe(this@SignInActivity, signInFormStateObserver)
             signInResult.observe(this@SignInActivity, signInResultObserver)
+            action.observe(this@SignInActivity, actionObserver)
         }
 
         binding.viewModel = signInViewModel
@@ -90,7 +114,6 @@ class SignInActivity : AppCompatActivity() {
             }
 
             login.setOnClickListener {
-                loading.visibility = View.VISIBLE
                 signInViewModel.login(email.text.toString(), password.text.toString())
             }
         }

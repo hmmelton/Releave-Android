@@ -1,5 +1,6 @@
 package com.szr.android.signin
 
+import android.util.Log
 import android.util.Patterns
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
@@ -29,6 +30,23 @@ class SignInViewModel(
     private val _signInResult = MutableLiveData<SignInResult>()
     val signInResult: LiveData<SignInResult> = _signInResult
 
+    private val _action = MutableLiveData<Action>()
+    val action: LiveData<Action> = _action
+
+    /**
+     * This sealed class is used to send actionable notifications back to Activity.
+     */
+    sealed class Action {
+
+        class DisplayMessage(val message: Int) : Action()
+
+        object DisplayPasswordResetDialog : Action()
+
+        object HideSpinner : Action()
+
+        object DisplaySpinner : Action()
+    }
+
     init {
         (observable as? NotifiableObservableImpl)?.sender = this
     }
@@ -44,6 +62,7 @@ class SignInViewModel(
     }
 
     fun login(email: String, password: String) {
+        _action.value = Action.DisplaySpinner
         auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
             when {
                 task.isSuccessful -> {
@@ -60,6 +79,7 @@ class SignInViewModel(
                 }
                 task.exception is FirebaseAuthInvalidCredentialsException -> {
                     // Password was incorrect
+                    _action.value = Action.HideSpinner
                     _signInResult.value =
                         SignInResult.Error(message = R.string.error_invalid_credentials)
                 }
@@ -79,13 +99,21 @@ class SignInViewModel(
 
     fun sendEmailVerification() {
         val user = auth.currentUser ?: return
-        val url = DeepLinks.getEmailDeepLink(user.uid)
+        _action.value = Action.DisplaySpinner
+
+        // Create continuation link to send user back to app after email verification
         val actionCodeSettings = ActionCodeSettings.newBuilder()
-            .setUrl(url)
+            .setUrl(DeepLinks.EMAIL_VERIFICATION_DEEP_LINK)
             .setAndroidPackageName("com.szr.android", true, null)
             .build()
 
-        user.sendEmailVerification(actionCodeSettings).addOnCompleteListener {
+        user.sendEmailVerification(actionCodeSettings).addOnCompleteListener { task ->
+            _action.value = Action.HideSpinner
+            if (task.isSuccessful) {
+                _action.value = Action.DisplayMessage(message = R.string.verification_email_sent)
+            } else {
+                _action.value = Action.DisplayMessage(message = R.string.verification_email_error)
+            }
         }
     }
 
@@ -94,8 +122,34 @@ class SignInViewModel(
         notifyPropertyChanged(BR.shouldShowEmailScreen)
     }
 
+    fun displayPasswordResetDialog() {
+        _action.value = Action.DisplayPasswordResetDialog
+    }
+
+    fun sendResetPasswordEmail(email: String) {
+        _action.value = Action.DisplaySpinner
+
+        val actionCodeSettings = ActionCodeSettings.newBuilder()
+            .setUrl(DeepLinks.EMAIL_RESET_DEEP_LINK)
+            .setAndroidPackageName("com.szr.android", true, null)
+            .build()
+
+        auth.sendPasswordResetEmail(email, actionCodeSettings).addOnCompleteListener { task ->
+            _action.value = Action.HideSpinner
+            if (task.isSuccessful) {
+                _action.value = Action.DisplayMessage(message = R.string.password_reset_email_sent)
+            } else {
+                task.exception?.let {
+                    Log.e("SignInViewModel", it.toString())
+                }
+                _action.value = Action.DisplayMessage(message = R.string.password_reset_email_error)
+            }
+        }
+    }
+
     private fun registerNewUser(email: String, password: String) {
         auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            _action.value = Action.HideSpinner
             if (task.isSuccessful) {
                 notifyPropertyChanged(BR.shouldShowEmailScreen)
                 sendEmailVerification()

@@ -18,5 +18,13 @@
     <!-- Email confirmation -->
     <string name="confirm_email">Please check your email for a confirmation</string>
     <string name="resend_verification_email">Resend verification email</string>
+    <string name="verification_email_sent">Verification email sent</string>
+    <string name="verification_email_error">Error sending verification email</string>
     <string name="sign_out">Sign out</string>
+
+    <!-- Password reset -->
+    <string name="btn_reset">Reset</string>
+    <string name="action_reset_password">Reset password</string>
+    <string name="password_reset_email_sent">Password reset email sent</string>
+    <string name="password_reset_email_error">Error sending password reset email</string>
 </resources>
