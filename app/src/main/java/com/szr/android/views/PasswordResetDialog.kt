@@ -1,9 +1,9 @@
 package com.szr.android.views
 
+import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.EditText
-import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.szr.android.R
 
@@ -17,7 +17,7 @@ class PasswordResetDialog : DialogFragment() {
             val view = inflater.inflate(R.layout.dialog_reset_password, null)
             val emailInput: EditText = view.findViewById(R.id.reset_password)
 
-            val builder = AlertDialog.Builder(it)
+            val builder = AlertDialog.Builder(it, android.R.style.Theme_Material_Light_Dialog_Alert)
                 .setView(view)
                 .setTitle(R.string.action_reset_password)
                 .setPositiveButton(R.string.btn_reset) { _, _ ->
