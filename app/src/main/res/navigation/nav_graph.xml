@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/splashScreenFragment">
+
+    <fragment
+        android:id="@+id/splashScreenFragment"
+        android:name="com.szr.android.views.fragments.SplashScreenFragment"
+        android:label="Splashscreen" >
+        <action
+            android:id="@+id/action_splashScreenFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_splashScreenFragment_to_nearbyUsersFragment"
+            app:destination="@id/nearbyUsersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/signInFragment"
+        android:name="com.szr.android.views.fragments.SignInFragment"
+        android:label="SignInFragment"
+        tools:layout="@layout/fragment_sign_in">
+        <action
+            android:id="@+id/action_signInFragment_to_nearbyUsersFragment"
+            app:destination="@id/nearbyUsersFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/nearbyUsersFragment"
+        android:name="com.szr.android.views.fragments.NearbyUsersFragment"
+        android:label="NearbyUsersFragment" >
+        <action
+            android:id="@+id/action_nearbyUsersFragment_to_signInFragment"
+            app:destination="@id/signInFragment" />
+    </fragment>
+</navigation>

@@ -1,28 +1,30 @@
-package com.szr.android.views.activities
+package com.szr.android.views.fragments
 
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.szr.android.R
-import com.szr.android.databinding.ActivitySignInBinding
+import com.szr.android.databinding.FragmentSignInBinding
 import com.szr.android.signin.SignInFormState
 import com.szr.android.signin.SignInResult
 import com.szr.android.signin.SignInViewModel
 import com.szr.android.views.PasswordResetDialog
-import kotlinx.android.synthetic.main.activity_sign_in.*
+import kotlinx.android.synthetic.main.fragment_sign_in.*
 
-class SignInActivity : AppCompatActivity() {
+class SignInFragment : Fragment() {
 
-    private lateinit var signInViewModel: SignInViewModel
+    private val signInViewModel by viewModels<SignInViewModel>()
 
     private val signInFormStateObserver: Observer<SignInFormState> = Observer {
         val loginState = it ?: return@Observer
@@ -55,7 +57,7 @@ class SignInActivity : AppCompatActivity() {
         when (action) {
             is SignInViewModel.Action.DisplayMessage -> {
                 Toast.makeText(
-                    applicationContext,
+                    requireContext(),
                     action.message,
                     Toast.LENGTH_SHORT
                 ).show()
@@ -64,28 +66,36 @@ class SignInActivity : AppCompatActivity() {
                 // Display dialog prompting user to enter email for password reset
                 PasswordResetDialog().apply {
                     callback = { email -> signInViewModel.sendResetPasswordEmail(email = email) }
-                }.show(supportFragmentManager, "PasswordResetDialog")
+                }.show(requireFragmentManager(), "PasswordResetDialog")
             }
             SignInViewModel.Action.HideSpinner -> loading.visibility = View.GONE
             SignInViewModel.Action.DisplaySpinner -> loading.visibility = View.VISIBLE
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        val binding: ActivitySignInBinding = DataBindingUtil.setContentView(
-            this,
-            R.layout.activity_sign_in
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val binding: FragmentSignInBinding = DataBindingUtil.setContentView(
+            requireActivity(),
+            R.layout.fragment_sign_in
         )
 
-        signInViewModel = ViewModelProviders.of(this).get(SignInViewModel::class.java).apply {
-            signInFormState.observe(this@SignInActivity, signInFormStateObserver)
-            signInResult.observe(this@SignInActivity, signInResultObserver)
-            action.observe(this@SignInActivity, actionObserver)
+        signInViewModel.apply {
+            signInFormState.observe(this@SignInFragment, signInFormStateObserver)
+            signInResult.observe(this@SignInFragment, signInResultObserver)
+            action.observe(this@SignInFragment, actionObserver)
         }
 
         binding.viewModel = signInViewModel
+
+        return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         email.afterTextChanged {
             signInViewModel.loginDataChanged(
@@ -125,12 +135,11 @@ class SignInActivity : AppCompatActivity() {
     }
 
     private fun navigateToMainScreen() {
-        startActivity(Intent(this, MainActivity::class.java))
-        finish()
+        findNavController().navigate(R.id.action_signInFragment_to_nearbyUsersFragment)
     }
 
     private fun showLoginFailed(message: Int) {
-        Toast.makeText(applicationContext, message, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 }
 

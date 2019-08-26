@@ -1,18 +1,20 @@
-package com.szr.android.views.activities
+package com.szr.android.views
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
-import com.szr.android.R
+import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.szr.android.R
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -24,8 +26,8 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.sign_out -> {
                 FirebaseAuth.getInstance().signOut()
-                startActivity(Intent(this, SignInActivity::class.java))
-                finish()
+                findNavController(R.id.nav_host_fragment)
+                    .navigate(R.id.action_nearbyUsersFragment_to_signInFragment)
                 true
             }
             else -> super.onOptionsItemSelected(item)
