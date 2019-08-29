@@ -6,7 +6,8 @@ buildscript {
         libraries = [
                 androidx            : [
                         espresso_core   : '3.2.0',
-                        junit           : '1.1.1'
+                        junit           : '1.1.1',
+                        nav_version        : '2.2.0-alpha01'
                 ],
                 firebase_auth       : "19.0.0",
                 firebase_dl         : "19.0.0",

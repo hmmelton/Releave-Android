@@ -23,6 +23,14 @@ android {
     dataBinding {
         enabled = true
     }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 repositories {
@@ -50,6 +58,9 @@ dependencies {
     // Jetpack
     implementation "androidx.lifecycle:lifecycle-extensions:${libraries.lifecycle_version}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libraries.lifecycle_version}"
+    implementation "androidx.navigation:navigation-fragment-ktx:${libraries.androidx.nav_version}"
+    implementation "androidx.navigation:navigation-ui-ktx:${libraries.androidx.nav_version}"
+
     implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
 
