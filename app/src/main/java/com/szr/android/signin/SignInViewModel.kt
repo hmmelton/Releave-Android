@@ -1,6 +1,5 @@
 package com.szr.android.signin
 
-import android.util.Log
 import android.util.Patterns
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
@@ -139,9 +138,6 @@ class SignInViewModel(
             if (task.isSuccessful) {
                 _action.value = Action.DisplayMessage(message = R.string.password_reset_email_sent)
             } else {
-                task.exception?.let {
-                    Log.e("SignInViewModel", it.toString())
-                }
                 _action.value = Action.DisplayMessage(message = R.string.password_reset_email_error)
             }
         }

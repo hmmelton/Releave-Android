@@ -78,9 +78,11 @@ class SignInFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val binding: FragmentSignInBinding = DataBindingUtil.setContentView(
-            requireActivity(),
-            R.layout.fragment_sign_in
+        val binding: FragmentSignInBinding = DataBindingUtil.inflate(
+            inflater,
+            R.layout.fragment_sign_in,
+            container,
+            false
         )
 
         signInViewModel.apply {
@@ -115,10 +117,7 @@ class SignInFragment : Fragment() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        signInViewModel.login(
-                            email.text.toString(),
-                            password.text.toString()
-                        )
+                        signInViewModel.login(email.text.toString(), password.text.toString())
                 }
                 false
             }
