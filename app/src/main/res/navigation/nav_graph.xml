@@ -29,6 +29,12 @@
             app:destination="@id/nearbyUsersFragment"
             app:popUpTo="@id/splashScreenFragment"
             app:popUpToInclusive="true"/>
+        <deepLink
+            android:id="@+id/deepLinkVerifyEmail"
+            app:uri="szr-app.firebaseapp.com/verify" />
+        <deepLink
+            android:id="@+id/deepLinkResetEmail"
+            app:uri="srz-app.firebaseapp.com/reset" />
     </fragment>
     <fragment
         android:id="@+id/nearbyUsersFragment"
