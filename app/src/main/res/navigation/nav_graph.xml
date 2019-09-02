@@ -14,35 +14,31 @@
             android:id="@+id/action_splashScreenFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
         <action
-            android:id="@+id/action_splashScreenFragment_to_nearbyUsersFragment"
-            app:destination="@id/nearbyUsersFragment"
-            app:popUpTo="@id/splashScreenFragment"
-            app:popUpToInclusive="true"/>
+            android:id="@+id/action_splashScreenFragment_to_tabsContentFragment"
+            app:destination="@id/tabsContentFragment" />
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
         android:name="com.szr.android.views.fragments.SignInFragment"
         android:label="SignInFragment"
         tools:layout="@layout/fragment_sign_in">
-        <action
-            android:id="@+id/action_signInFragment_to_nearbyUsersFragment"
-            app:destination="@id/nearbyUsersFragment"
-            app:popUpTo="@id/splashScreenFragment"
-            app:popUpToInclusive="true"/>
         <deepLink
             android:id="@+id/deepLinkVerifyEmail"
             app:uri="szr-app.firebaseapp.com/verify" />
         <deepLink
             android:id="@+id/deepLinkResetEmail"
             app:uri="srz-app.firebaseapp.com/reset" />
+        <action
+            android:id="@+id/action_signInFragment_to_tabsContentFragment"
+            app:destination="@id/tabsContentFragment" />
     </fragment>
     <fragment
-        android:id="@+id/nearbyUsersFragment"
-        android:name="com.szr.android.views.fragments.NearbyUsersFragment"
-        android:label="NearbyUsersFragment"
-        tools:layout="@layout/fragment_nearby_users">
+        android:id="@+id/tabsContentFragment"
+        android:name="com.szr.android.views.fragments.TabsContentFragment"
+        android:label="TabsContentFragment"
+        tools:layout="@layout/fragment_tabs_content">
         <action
-            android:id="@+id/action_nearbyUsersFragment_to_signInFragment"
+            android:id="@+id/action_tabsContentFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
     </fragment>
 </navigation>

@@ -26,7 +26,7 @@ class SplashScreenFragment : Fragment() {
 
         // If user is logged in, navigate to main screen, else navigate to login
         val destination = if (auth.currentUser != null && auth.currentUser?.isEmailVerified == true) {
-            R.id.action_splashScreenFragment_to_nearbyUsersFragment
+            R.id.action_splashScreenFragment_to_tabsContentFragment
         } else {
             R.id.action_splashScreenFragment_to_signInFragment
         }

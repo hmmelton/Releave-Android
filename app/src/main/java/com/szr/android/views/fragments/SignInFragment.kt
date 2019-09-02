@@ -134,7 +134,7 @@ class SignInFragment : Fragment() {
     }
 
     private fun navigateToMainScreen() {
-        findNavController().navigate(R.id.action_signInFragment_to_nearbyUsersFragment)
+        findNavController().navigate(R.id.action_signInFragment_to_tabsContentFragment)
     }
 
     private fun showLoginFailed(message: Int) {
