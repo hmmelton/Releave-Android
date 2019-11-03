@@ -1,4 +1,4 @@
-package com.szr.android.views.fragments
+package com.szr.android.signin
 
 import android.os.Bundle
 import android.text.Editable
@@ -16,9 +16,6 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import com.szr.android.R
 import com.szr.android.databinding.FragmentSignInBinding
-import com.szr.android.signin.SignInFormState
-import com.szr.android.signin.SignInResult
-import com.szr.android.signin.SignInViewModel
 import com.szr.android.views.PasswordResetDialog
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 

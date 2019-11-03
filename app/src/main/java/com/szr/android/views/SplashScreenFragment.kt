@@ -1,4 +1,4 @@
-package com.szr.android.views.fragments
+package com.szr.android.views
 
 import android.os.Bundle
 import android.view.LayoutInflater

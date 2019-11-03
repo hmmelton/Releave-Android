@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="com.szr.android.views.fragments.SplashScreenFragment"
+        android:name="com.szr.android.views.SplashScreenFragment"
         android:label="Splashscreen"
         tools:layout="@layout/fragment_splash_screen">
         <action
@@ -19,7 +19,7 @@
     </fragment>
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.szr.android.views.fragments.SignInFragment"
+        android:name="com.szr.android.signin.SignInFragment"
         android:label="SignInFragment"
         tools:layout="@layout/fragment_sign_in">
         <deepLink
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/tabsContentFragment"
-        android:name="com.szr.android.views.fragments.TabsContentFragment"
+        android:name="com.szr.android.views.tabscontent.TabsContentFragment"
         android:label="TabsContentFragment"
         tools:layout="@layout/fragment_tabs_content">
         <action
