@@ -1,6 +1,6 @@
 package com.szr.android.signin
 
-import android.util.Patterns
+import androidx.core.util.PatternsCompat
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
@@ -10,10 +10,10 @@ import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.szr.android.DeepLinkUrls
 import com.szr.android.R
 import com.szr.android.models.NotifiableObservable
 import com.szr.android.models.NotifiableObservableImpl
-import com.szr.android.utils.DeepLinks
 
 class SignInViewModel(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
@@ -102,7 +102,7 @@ class SignInViewModel(
 
         // Create continuation link to send user back to app after email verification
         val actionCodeSettings = ActionCodeSettings.newBuilder()
-            .setUrl(DeepLinks.EMAIL_VERIFICATION_DEEP_LINK)
+            .setUrl(DeepLinkUrls.EMAIL_VERIFICATION_DEEP_LINK)
             .setAndroidPackageName("com.szr.android", true, null)
             .build()
 
@@ -129,7 +129,7 @@ class SignInViewModel(
         _action.value = Action.DisplaySpinner
 
         val actionCodeSettings = ActionCodeSettings.newBuilder()
-            .setUrl(DeepLinks.EMAIL_RESET_DEEP_LINK)
+            .setUrl(DeepLinkUrls.EMAIL_RESET_DEEP_LINK)
             .setAndroidPackageName("com.szr.android", true, null)
             .build()
 
@@ -156,7 +156,7 @@ class SignInViewModel(
     }
 
     // A placeholder username validation check
-    private fun isEmailValid(username: String) = Patterns.EMAIL_ADDRESS.matcher(username).matches()
+    private fun isEmailValid(username: String) = PatternsCompat.EMAIL_ADDRESS.matcher(username).matches()
 
     // A placeholder password validation check
     private fun isPasswordValid(password: String): Boolean {
