@@ -13,7 +13,11 @@ buildscript {
                 firebase_database   : "19.2.0",
                 firebase_dl         : "19.0.0",
                 ktlint              : "0.20.0",
-                lifecycle_version   : '2.1.0'
+                lifecycle_version   : '2.1.0',
+                reactive            : [
+                        android : '2.1.1',
+                        java    : '2.2.14'
+                ]
         ]
     }
     repositories {

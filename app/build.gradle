@@ -57,6 +57,10 @@ dependencies {
     implementation "com.google.firebase:firebase-dynamic-links:${libraries.firebase_dl}"
     implementation "com.google.firebase:firebase-database:${libraries.firebase_database}"
 
+    // ReactiveX
+    implementation "io.reactivex.rxjava2:rxandroid:${libraries.reactive.android}"
+    implementation "io.reactivex.rxjava2:rxjava:${libraries.reactive.java}"
+
     // Jetpack
     implementation "androidx.lifecycle:lifecycle-extensions:${libraries.lifecycle_version}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libraries.lifecycle_version}"
