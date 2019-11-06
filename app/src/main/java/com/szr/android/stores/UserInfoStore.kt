@@ -89,12 +89,16 @@ class UserInfoStore @Inject constructor(
     fun get() = Maybe.create<UserInfo> { emitter ->
         getFromLocalStorage()?.let { userInfo ->  emitter.onSuccess(userInfo) }
 
+        // This listener will fire when it is first connected
         database.addValueEventListener(object : ValueEventListener {
             override fun onCancelled(e: DatabaseError) {
+                database.removeEventListener(this)
                 emitter.onError(e.toException())
             }
 
             override fun onDataChange(data: DataSnapshot) {
+                database.removeEventListener(this)
+
                 val userInfo = data.value as? UserInfo
 
                 if (userInfo == null) {
