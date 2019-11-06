@@ -2,6 +2,7 @@ package com.szr.android.stores
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -9,6 +10,7 @@ import com.google.firebase.database.ValueEventListener
 import com.szr.android.models.UserInfo
 import io.reactivex.Maybe
 import io.reactivex.Single
+import javax.inject.Inject
 
 /**
  * This class is used to keep track of additional user info, beyond the basic name, email, etc
@@ -18,10 +20,10 @@ import io.reactivex.Single
  * @param preferences SharedPreferences file used to store user data locally
  * @param userId ID of current user
  */
-class UserInfoStore(
+class UserInfoStore @Inject constructor(
     private val preferences: SharedPreferences,
     databaseReference: DatabaseReference,
-    private val userId: String
+    user: FirebaseUser?
 ) {
 
     companion object {
@@ -34,7 +36,12 @@ class UserInfoStore(
         private const val KEY_BLOCKED_USER_IDS = "com.szr.android.blocked_user_ids"
     }
 
-    private val database = databaseReference.child(USER_TABLE_REFERENCE).child(userId)
+    private val database: DatabaseReference
+
+    init {
+        requireNotNull(user) { "User cannot be null" }
+        database = databaseReference.child(USER_TABLE_REFERENCE).child(user.uid)
+    }
 
     @SuppressLint("ApplySharedPref")
     fun set(value: UserInfo): Single<Boolean> {

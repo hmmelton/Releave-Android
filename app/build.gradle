@@ -61,11 +61,26 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:${libraries.reactive.android}"
     implementation "io.reactivex.rxjava2:rxjava:${libraries.reactive.java}"
 
+    // Dagger
+    implementation "com.google.dagger:dagger:${libraries.dagger}"
+    implementation "com.google.dagger:dagger-android:${libraries.dagger}"
+    implementation "com.google.dagger:dagger-android-support:${libraries.dagger}"
+    kapt "com.google.dagger:dagger-compiler:${libraries.dagger}"
+    kapt "com.google.dagger:dagger-android-processor:${libraries.dagger}"
+
     // Jetpack
     implementation "androidx.lifecycle:lifecycle-extensions:${libraries.lifecycle_version}"
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:${libraries.lifecycle_version}"
     implementation "androidx.navigation:navigation-fragment-ktx:${libraries.androidx.nav_version}"
     implementation "androidx.navigation:navigation-ui-ktx:${libraries.androidx.nav_version}"
+    implementation "androidx.preference:preference-ktx:${libraries.androidx.preferences}"
+
+    // JAX-B dependencies for JDK 9+
+    implementation "javax.xml.bind:jaxb-api:${libraries.jaxb}"
+    implementation "com.sun.xml.bind:jaxb-core:${libraries.jaxb}"
+    implementation "com.sun.xml.bind:jaxb-impl:${libraries.jaxb}"
+
+    implementation "javax.activation:activation:${libraries.javax_activation}"
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
@@ -73,6 +88,12 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation "androidx.test.ext:junit:${libraries.androidx.junit}"
     androidTestImplementation "androidx.test.espresso:espresso-core:${libraries.androidx.espresso_core}"
+}
+
+gradle.projectsEvaluated {
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << "-Xmaxerrs" << "500"
+    }
 }
 
 task('ktlint', type: JavaExec, group: 'verification') {
