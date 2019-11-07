@@ -9,21 +9,29 @@ class MyProfileViewModel(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
 ) : ViewModel() {
 
-    private val _shouldSignOut = MutableLiveData<Boolean>()
+    enum class ButtonAction {
+        EDIT_PROFILE,
+        SETTINGS,
+        SIGN_OUT
+    }
+
+    private val _buttonAction = MutableLiveData<ButtonAction>()
 
     /**
-     * [LiveData] that emits true [Boolean] if the user hits the sign out button.
+     * [LiveData] that emits appropriate [ButtonAction] if the user hits a button.
      */
-    val shouldSignOut: LiveData<Boolean> = _shouldSignOut
+    val buttonAction: LiveData<ButtonAction> = _buttonAction
 
     fun onEditMyProfileClicked() {
+        _buttonAction.postValue(ButtonAction.EDIT_PROFILE)
     }
 
     fun onSettingsClicked() {
+        _buttonAction.postValue(ButtonAction.SETTINGS)
     }
 
     fun onSignOutClicked() {
         auth.signOut()
-        _shouldSignOut.postValue(true)
+        _buttonAction.postValue(ButtonAction.SIGN_OUT)
     }
 }
