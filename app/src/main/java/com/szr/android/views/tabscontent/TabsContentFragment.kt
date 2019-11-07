@@ -23,8 +23,7 @@ class TabsContentFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        adapter =
-            TabsContentPagerAdapter(fm = childFragmentManager)
+        adapter = TabsContentPagerAdapter(fm = childFragmentManager)
         pager.adapter = adapter
         pager.setCurrentItem(1, false)
     }

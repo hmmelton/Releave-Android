@@ -4,7 +4,11 @@ import com.szr.android.App
 import dagger.Component
 import dagger.android.support.AndroidSupportInjectionModule
 
-@Component(modules = [AppModule::class, AndroidSupportInjectionModule::class])
+@Component(modules = [
+    AppModule::class,
+    MainActivityModule::class,
+    AndroidSupportInjectionModule::class
+])
 interface AppComponent {
     fun inject(app: App)
 }
