@@ -1,4 +1,4 @@
-package com.szr.android.profile
+package com.szr.android.profile.myprofile
 
 
 import android.os.Bundle
@@ -13,7 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 
 import com.szr.android.R
-import com.szr.android.profile.MyProfileViewModel.ButtonAction
+import com.szr.android.profile.myprofile.MyProfileViewModel.ButtonAction
 import com.szr.android.databinding.FragmentMyProfileBinding
 
 /**

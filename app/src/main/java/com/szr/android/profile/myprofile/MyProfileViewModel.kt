@@ -1,4 +1,4 @@
-package com.szr.android.profile
+package com.szr.android.profile.myprofile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
