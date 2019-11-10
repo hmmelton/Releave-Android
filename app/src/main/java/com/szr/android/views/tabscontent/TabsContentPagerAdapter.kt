@@ -3,7 +3,7 @@ package com.szr.android.views.tabscontent
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.szr.android.nearbyusers.NearbyUsersFragment
-import com.szr.android.profile.MyProfileFragment
+import com.szr.android.profile.myprofile.MyProfileFragment
 
 class TabsContentPagerAdapter(fm: FragmentManager) :
     FragmentPagerAdapter(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
