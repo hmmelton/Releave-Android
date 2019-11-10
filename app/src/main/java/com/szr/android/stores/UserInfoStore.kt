@@ -2,15 +2,12 @@ package com.szr.android.stores
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.*
 import com.szr.android.models.UserInfo
 import io.reactivex.Maybe
 import io.reactivex.Single
 import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * This class is used to keep track of additional user info, beyond the basic name, email, etc
@@ -20,10 +17,10 @@ import javax.inject.Inject
  * @param preferences SharedPreferences file used to store user data locally
  * @param userId ID of current user
  */
+@Singleton
 class UserInfoStore @Inject constructor(
     private val preferences: SharedPreferences,
-    databaseReference: DatabaseReference,
-    user: FirebaseUser?
+    rootDatabaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
 ) {
 
     companion object {
@@ -36,61 +33,13 @@ class UserInfoStore @Inject constructor(
         private const val KEY_BLOCKED_USER_IDS = "com.szr.android.blocked_user_ids"
     }
 
-    private val database: DatabaseReference
+    private val database = rootDatabaseReference.child(USER_TABLE_REFERENCE)
 
-    init {
-        requireNotNull(user) { "User cannot be null" }
-        database = databaseReference.child(USER_TABLE_REFERENCE).child(user.uid)
-    }
-
-    @SuppressLint("ApplySharedPref")
-    fun set(value: UserInfo): Single<Boolean> {
-        getFromLocalStorage()?.let { clear() }
-
-        return Single.create<Boolean> { emitter ->
-            database.setValue(value).addOnCompleteListener { task ->
-
-                // If task was successful, save to local storage and return true. Otherwise, return
-                // false for failure.
-                if (task.isSuccessful) {
-                    preferences.edit()
-                        .putString(KEY_SCREEN_NAME, value.screenName)
-                        .putInt(KEY_AGE, value.age)
-                        .putString(KEY_BIO, value.bio)
-                        .putString(KEY_IMAGE_RES, value.imageRes)
-                        .putStringSet(KEY_BLOCKED_USER_IDS, value.blockedUserIds)
-                        .commit()
-                    emitter.onSuccess(true)
-                } else {
-                    emitter.onSuccess(false)
-                }
-            }
-        }
-    }
-
-    @SuppressLint("ApplySharedPref")
-    fun update(value: UserInfo) = Single.create<Boolean> { emitter ->
-        database.setValue(value).addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                preferences.edit()
-                    .putString(KEY_SCREEN_NAME, value.screenName)
-                    .putInt(KEY_AGE, value.age)
-                    .putString(KEY_BIO, value.screenName)
-                    .putString(KEY_IMAGE_RES, value.screenName)
-                    .putString(KEY_BLOCKED_USER_IDS, value.screenName)
-                    .commit()
-                emitter.onSuccess(true)
-            } else {
-                emitter.onSuccess(false)
-            }
-        }
-    }
-
-    fun get() = Maybe.create<UserInfo> { emitter ->
+    fun get(userId: String) = Maybe.create<UserInfo> { emitter ->
         getFromLocalStorage()?.let { userInfo ->  emitter.onSuccess(userInfo) }
 
         // This listener will fire when it is first connected
-        database.addValueEventListener(object : ValueEventListener {
+        database.child(userId).addValueEventListener(object : ValueEventListener {
             override fun onCancelled(e: DatabaseError) {
                 database.removeEventListener(this)
                 emitter.onError(e.toException())
@@ -111,17 +60,30 @@ class UserInfoStore @Inject constructor(
     }
 
     @SuppressLint("ApplySharedPref")
-    fun clear() = preferences.edit()
-            .remove(KEY_SCREEN_NAME)
-            .remove(KEY_AGE)
-            .remove(KEY_BIO)
-            .remove(KEY_IMAGE_RES)
-            .remove(KEY_BLOCKED_USER_IDS)
-            .commit()
+    fun set(value: UserInfo, userId: String) =  Single.create<Boolean> { emitter ->
+        database.child(userId).setValue(value).addOnCompleteListener { task ->
+
+            // If task was successful, save to local storage and return true. Otherwise, return
+            // false for failure.
+            if (task.isSuccessful) {
+                preferences.edit()
+                    .putString(KEY_SCREEN_NAME, value.screenName)
+                    .putInt(KEY_AGE, value.age)
+                    .putString(KEY_BIO, value.bio)
+                    .putString(KEY_IMAGE_RES, value.imageRes)
+                    .putStringSet(KEY_BLOCKED_USER_IDS, value.blockedUserIds)
+                    .commit()
+
+                emitter.onSuccess(true)
+            } else {
+                emitter.onSuccess(false)
+            }
+        }
+    }
 
     @SuppressLint("ApplySharedPref")
-    fun delete() = Single.create<Boolean> { emitter ->
-        database.removeValue().addOnCompleteListener { task ->
+    fun delete(userId: String) = Single.create<Boolean> { emitter ->
+        database.child(userId).removeValue().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 preferences.edit()
                     .remove(KEY_SCREEN_NAME)
@@ -130,6 +92,7 @@ class UserInfoStore @Inject constructor(
                     .remove(KEY_IMAGE_RES)
                     .remove(KEY_BLOCKED_USER_IDS)
                     .commit()
+
                 emitter.onSuccess(true)
             } else {
                 emitter.onSuccess(false)

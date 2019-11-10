@@ -1,6 +1,7 @@
 package com.szr.android
 
 import android.app.Application
+import com.szr.android.dagger.AppModule
 import com.szr.android.dagger.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -18,6 +19,9 @@ class App : Application(), HasAndroidInjector {
     }
 
     private fun createDaggerInjections() {
-        DaggerAppComponent.create().inject(this)
+        DaggerAppComponent.builder()
+            .appModule(AppModule(context = this))
+            .build()
+            .inject(this)
     }
 }
