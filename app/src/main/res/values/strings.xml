@@ -12,9 +12,6 @@
     <string name="error_sign_in">Error signing in</string>
     <string name="error_invalid_credentials">Invalid credentials</string>
 
-    <!-- Menu -->
-    <string name="menu_sign_out">Sign out</string>
-
     <!-- Email confirmation -->
     <string name="confirm_email">Please check your email for a confirmation</string>
     <string name="resend_verification_email">Resend verification email</string>
