@@ -1,9 +1,9 @@
 package com.szr.android.models
 
 data class UserInfo(
-    val screenName: String = "",
-    val age: Int = 0,
-    val bio: String = "",
-    val imageRes: String = "",
-    val blockedUserIds: Set<String> = emptySet()
+    var screenName: String = "",
+    var age: Int = 0,
+    var bio: String = "",
+    var imageRes: String = "",
+    var blockedUserIds: Set<String> = emptySet()
 )

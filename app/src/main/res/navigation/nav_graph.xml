@@ -40,5 +40,12 @@
         <action
             android:id="@+id/action_tabsContentFragment_to_signInFragment"
             app:destination="@id/signInFragment" />
+        <action
+            android:id="@+id/action_tabsContentFragment_to_editMyProfileFragment"
+            app:destination="@id/editMyProfileFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/editMyProfileFragment"
+        android:name="com.szr.android.profile.editmyprofile.EditMyProfileFragment"
+        android:label="EditMyProfileFragment" />
 </navigation>

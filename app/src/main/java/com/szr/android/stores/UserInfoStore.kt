@@ -6,6 +6,7 @@ import com.google.firebase.database.*
 import com.szr.android.models.UserInfo
 import io.reactivex.Maybe
 import io.reactivex.Single
+import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -36,6 +37,7 @@ class UserInfoStore @Inject constructor(
     private val database = rootDatabaseReference.child(USER_TABLE_REFERENCE)
 
     fun get(userId: String) = Maybe.create<UserInfo> { emitter ->
+        if (userId.isEmpty()) emitter.onError(IllegalArgumentException("User ID cannot be empty"))
         getFromLocalStorage()?.let { userInfo ->  emitter.onSuccess(userInfo) }
 
         // This listener will fire when it is first connected

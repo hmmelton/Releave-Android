@@ -32,20 +32,6 @@ class SignInViewModel(
     private val _action = MutableLiveData<Action>()
     val action: LiveData<Action> = _action
 
-    /**
-     * This sealed class is used to send actionable notifications back to Activity.
-     */
-    sealed class Action {
-
-        class DisplayMessage(val message: Int) : Action()
-
-        object DisplayPasswordResetDialog : Action()
-
-        object HideSpinner : Action()
-
-        object DisplaySpinner : Action()
-    }
-
     init {
         (observable as? NotifiableObservableImpl)?.sender = this
     }
@@ -163,4 +149,19 @@ class SignInViewModel(
         // TODO: make some actual requirements
         return password.length > 8
     }
+
+    /**
+     * This sealed class is used to send actionable notifications back to Activity.
+     */
+    sealed class Action {
+
+        class DisplayMessage(val message: Int) : Action()
+
+        object DisplayPasswordResetDialog : Action()
+
+        object HideSpinner : Action()
+
+        object DisplaySpinner : Action()
+    }
+
 }

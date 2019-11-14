@@ -11,6 +11,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 
 import com.szr.android.R
 import com.szr.android.profile.myprofile.MyProfileViewModel.ButtonAction
@@ -31,9 +32,9 @@ class MyProfileFragment : Fragment() {
     private val shouldSignOutObserver: Observer<ButtonAction> =
         Observer { action ->
             when (action) {
-                ButtonAction.EDIT_PROFILE -> {}
+                ButtonAction.EDIT_PROFILE -> navToEditProfile()
                 ButtonAction.SETTINGS -> {}
-                ButtonAction.SIGN_OUT -> findNavController().popBackStack()
+                ButtonAction.SIGN_OUT -> signOut()
                 else -> Log.wtf(TAG, "Unrecognized button action: {$action, ${action.name}}")
             }
         }
@@ -53,5 +54,16 @@ class MyProfileFragment : Fragment() {
         binding.viewModel = viewModel
 
         return binding.root
+    }
+
+    private fun navToEditProfile() {
+        findNavController().navigate(R.id.action_tabsContentFragment_to_editMyProfileFragment)
+    }
+
+    private fun navToSettings() {}
+
+    private fun signOut() {
+        FirebaseAuth.getInstance().signOut()
+        findNavController().popBackStack()
     }
 }

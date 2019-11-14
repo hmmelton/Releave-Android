@@ -2,6 +2,8 @@ package com.szr.android
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import dagger.android.AndroidInjection
 
 class MainActivity : AppCompatActivity() {
@@ -14,6 +16,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        finish()
+        findNavController(R.id.nav_host_fragment)
     }
 }

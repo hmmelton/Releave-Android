@@ -23,15 +23,15 @@ class MyProfileViewModel(
     val buttonAction: LiveData<ButtonAction> = _buttonAction
 
     fun onEditMyProfileClicked() {
-        _buttonAction.postValue(ButtonAction.EDIT_PROFILE)
+        _buttonAction.value = ButtonAction.EDIT_PROFILE
     }
 
     fun onSettingsClicked() {
-        _buttonAction.postValue(ButtonAction.SETTINGS)
+        _buttonAction.value = ButtonAction.SETTINGS
     }
 
     fun onSignOutClicked() {
         auth.signOut()
-        _buttonAction.postValue(ButtonAction.SIGN_OUT)
+        _buttonAction.value = ButtonAction.SIGN_OUT
     }
 }
