@@ -31,7 +31,7 @@ class EditMyProfileViewModel @Inject constructor(
             field = value
         }
 
-    var age: String = MINIMUM_AGE.toString()
+    var age: String = ""
         @Bindable get
         set(value) {
             field = value
