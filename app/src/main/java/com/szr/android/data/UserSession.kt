@@ -1,12 +1,15 @@
-package com.szr.android.stores
+package com.szr.android.data
 
 import android.annotation.SuppressLint
 import android.content.SharedPreferences
-import com.google.firebase.database.*
-import com.szr.android.models.UserInfo
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.szr.android.data.models.UserInfo
 import io.reactivex.Maybe
 import io.reactivex.Single
-import java.lang.IllegalArgumentException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -19,15 +22,15 @@ import javax.inject.Singleton
  * @param userId ID of current user
  */
 @Singleton
-class UserInfoStore @Inject constructor(
+class UserSession @Inject constructor(
     private val preferences: SharedPreferences,
-    rootDatabaseReference: DatabaseReference = FirebaseDatabase.getInstance().reference
+    private val auth: FirebaseAuth,
+    rootDatabaseReference: DatabaseReference
 ) {
 
     companion object {
         private const val USER_TABLE_REFERENCE = "user_info"
 
-        private const val KEY_USER_INFO = "com.szr.android.user_info"
         private const val KEY_SCREEN_NAME = "com.szr.android.screen_name"
         private const val KEY_AGE = "com.szr.android.age"
         private const val KEY_BIO = "com.szr.android.bio"
@@ -36,8 +39,10 @@ class UserInfoStore @Inject constructor(
     }
 
     private val database = rootDatabaseReference.child(USER_TABLE_REFERENCE)
+    private val userId: String
+        get() = auth.currentUser?.uid ?: ""
 
-    fun syncUserInfo(userId: String) = Maybe.create<UserInfo> { emitter ->
+    fun syncUserInfo() = Maybe.create<UserInfo> { emitter ->
         if (userId.isEmpty()) emitter.onError(IllegalArgumentException("User ID cannot be empty"))
 
         // This listener will fire when it is first connected
@@ -62,7 +67,7 @@ class UserInfoStore @Inject constructor(
     }
 
     @SuppressLint("ApplySharedPref")
-    fun set(value: UserInfo, userId: String) =  Single.create<Boolean> { emitter ->
+    fun setUserInfo(value: UserInfo) =  Single.create<Boolean> { emitter ->
         database.child(userId).setValue(value).addOnCompleteListener { task ->
 
             // If task was successful, save to local storage and return true. Otherwise, return
@@ -84,7 +89,7 @@ class UserInfoStore @Inject constructor(
     }
 
     @SuppressLint("ApplySharedPref")
-    fun delete(userId: String) = Single.create<Boolean> { emitter ->
+    fun deleteAccount() = Single.create<Boolean> { emitter ->
         database.child(userId).removeValue().addOnCompleteListener { task ->
             if (task.isSuccessful) {
                 preferences.edit()
@@ -102,7 +107,7 @@ class UserInfoStore @Inject constructor(
         }
     }
 
-    fun getFromLocalStorage(): UserInfo {
+    fun getUserInfo(): UserInfo {
         val screenName = preferences.getString(KEY_SCREEN_NAME, "") ?: ""
         val age = preferences.getInt(KEY_AGE, 0)
         val bio = preferences.getString(KEY_BIO, "") ?: ""
