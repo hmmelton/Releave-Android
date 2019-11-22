@@ -27,6 +27,7 @@ class UserInfoStore @Inject constructor(
     companion object {
         private const val USER_TABLE_REFERENCE = "user_info"
 
+        private const val KEY_USER_INFO = "com.szr.android.user_info"
         private const val KEY_SCREEN_NAME = "com.szr.android.screen_name"
         private const val KEY_AGE = "com.szr.android.age"
         private const val KEY_BIO = "com.szr.android.bio"
@@ -36,9 +37,8 @@ class UserInfoStore @Inject constructor(
 
     private val database = rootDatabaseReference.child(USER_TABLE_REFERENCE)
 
-    fun get(userId: String) = Maybe.create<UserInfo> { emitter ->
+    fun syncUserInfo(userId: String) = Maybe.create<UserInfo> { emitter ->
         if (userId.isEmpty()) emitter.onError(IllegalArgumentException("User ID cannot be empty"))
-        getFromLocalStorage()?.let { userInfo ->  emitter.onSuccess(userInfo) }
 
         // This listener will fire when it is first connected
         database.child(userId).addValueEventListener(object : ValueEventListener {
@@ -102,16 +102,13 @@ class UserInfoStore @Inject constructor(
         }
     }
 
-    private fun getFromLocalStorage(): UserInfo? {
-        val screenName = preferences.getString(KEY_SCREEN_NAME, "")
+    fun getFromLocalStorage(): UserInfo {
+        val screenName = preferences.getString(KEY_SCREEN_NAME, "") ?: ""
         val age = preferences.getInt(KEY_AGE, 0)
-        val bio = preferences.getString(KEY_BIO, "")
-        val imageRes = preferences.getString(KEY_IMAGE_RES, "")
+        val bio = preferences.getString(KEY_BIO, "") ?: ""
+        val imageRes = preferences.getString(KEY_IMAGE_RES, "") ?: ""
         val blockedUserIds = preferences.getStringSet(KEY_BLOCKED_USER_IDS, null)
-
-        if (screenName == null || age == 0 || bio == null || imageRes == null || blockedUserIds == null) {
-            return null
-        }
+            ?: emptySet()
 
         return UserInfo(
             screenName = screenName,
