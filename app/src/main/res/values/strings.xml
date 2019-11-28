@@ -39,4 +39,5 @@
 
     <!-- Snackbar -->
     <string name="snackbar_age_too_low">Age too low</string>
+    <string name="snackbar_error_saving_info">Error saving information</string>
 </resources>
