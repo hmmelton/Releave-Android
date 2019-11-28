@@ -11,17 +11,21 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.szr.android.R
 import com.szr.android.databinding.FragmentSignInBinding
 import com.szr.android.views.PasswordResetDialog
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_sign_in.*
+import javax.inject.Inject
 
 class SignInFragment : Fragment() {
 
-    private val signInViewModel by viewModels<SignInViewModel>()
+    @Inject
+    lateinit var viewModelFactory: SignInViewModel.Factory
+    private lateinit var viewModel: SignInViewModel
 
     private val signInFormStateObserver: Observer<SignInFormState> = Observer {
         val loginState = it ?: return@Observer
@@ -62,12 +66,24 @@ class SignInFragment : Fragment() {
             SignInViewModel.Action.DisplayPasswordResetDialog -> {
                 // Display dialog prompting user to enter email for password reset
                 PasswordResetDialog().apply {
-                    callback = { email -> signInViewModel.sendResetPasswordEmail(email = email) }
+                    callback = { email -> viewModel.sendResetPasswordEmail(email = email) }
                 }.show(requireFragmentManager(), "PasswordResetDialog")
             }
             SignInViewModel.Action.HideSpinner -> loading.visibility = View.GONE
             SignInViewModel.Action.DisplaySpinner -> loading.visibility = View.VISIBLE
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        AndroidSupportInjection.inject(this)
+        viewModel = ViewModelProviders
+            .of(this, viewModelFactory)[SignInViewModel::class.java]
+            .apply {
+                signInFormState.observe(this@SignInFragment, signInFormStateObserver)
+                signInResult.observe(this@SignInFragment, signInResultObserver)
+                action.observe(this@SignInFragment, actionObserver)
+            }
     }
 
     override fun onCreateView(
@@ -82,13 +98,7 @@ class SignInFragment : Fragment() {
             false
         )
 
-        signInViewModel.apply {
-            signInFormState.observe(this@SignInFragment, signInFormStateObserver)
-            signInResult.observe(this@SignInFragment, signInResultObserver)
-            action.observe(this@SignInFragment, actionObserver)
-        }
-
-        binding.viewModel = signInViewModel
+        binding.viewModel = viewModel
 
         return binding.root
     }
@@ -97,7 +107,7 @@ class SignInFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         email.afterTextChanged {
-            signInViewModel.loginDataChanged(
+            viewModel.loginDataChanged(
                 email.text.toString(),
                 password.text.toString()
             )
@@ -105,7 +115,7 @@ class SignInFragment : Fragment() {
 
         password.apply {
             afterTextChanged {
-                signInViewModel.loginDataChanged(
+                viewModel.loginDataChanged(
                     email.text.toString(),
                     password.text.toString()
                 )
@@ -114,20 +124,20 @@ class SignInFragment : Fragment() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        signInViewModel.login(email.text.toString(), password.text.toString())
+                        viewModel.login(email.text.toString(), password.text.toString())
                 }
                 false
             }
 
             login.setOnClickListener {
-                signInViewModel.login(email.text.toString(), password.text.toString())
+                viewModel.login(email.text.toString(), password.text.toString())
             }
         }
     }
 
     override fun onStart() {
         super.onStart()
-        signInViewModel.start()
+        viewModel.start()
     }
 
     private fun navigateToMainScreen() {
