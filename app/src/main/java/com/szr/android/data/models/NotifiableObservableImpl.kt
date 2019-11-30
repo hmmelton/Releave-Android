@@ -1,4 +1,4 @@
-package com.szr.android.models
+package com.szr.android.data.models
 
 import androidx.databinding.Observable
 import androidx.databinding.PropertyChangeRegistry

@@ -7,12 +7,22 @@ buildscript {
                 androidx            : [
                         espresso_core   : '3.2.0',
                         junit           : '1.1.1',
-                        nav_version        : '2.2.0-alpha01'
+                        nav_version     : '2.2.0-alpha01',
+                        preferences     : '1.1.0'
                 ],
-                firebase_auth       : "19.0.0",
+                dagger              : "2.25.2",
+                firebase_auth       : "19.1.0",
+                firebase_database   : "19.2.0",
                 firebase_dl         : "19.0.0",
+                gson                : "2.8.6",
+                javax_activation    : "1.1.1",
+                jaxb                : "2.2.11",
                 ktlint              : "0.20.0",
-                lifecycle_version   : '2.0.0'
+                lifecycle_version   : '2.1.0',
+                reactive            : [
+                        android : '2.1.1',
+                        java    : '2.2.14'
+                ]
         ]
     }
     repositories {
@@ -21,9 +31,9 @@ buildscript {
         
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:3.5.0'
+        classpath 'com.android.tools.build:gradle:3.5.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath 'com.google.gms:google-services:4.3.0'
+        classpath 'com.google.gms:google-services:4.3.2'
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
     }
