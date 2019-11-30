@@ -11,10 +11,11 @@ buildscript {
                         preferences     : '1.1.0'
                 ],
                 dagger              : "2.25.2",
-                firebase_auth       : "19.1.0",
-                firebase_database   : "19.2.0",
-                firebase_dl         : "19.0.0",
-                gson                : "2.8.6",
+                firebase            : [
+                        auth        : "19.2.0",
+                        dynamiclink : "19.0.0",
+                        firestore   : "21.3.0"
+                ],
                 javax_activation    : "1.1.1",
                 jaxb                : "2.2.11",
                 ktlint              : "0.20.0",

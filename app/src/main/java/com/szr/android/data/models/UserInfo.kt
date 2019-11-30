@@ -1,15 +1,34 @@
 package com.szr.android.data.models
 
-import com.google.gson.annotations.SerializedName
 import java.io.Serializable
 
 data class UserInfo(
-    @SerializedName("screen_name")
     var screenName: String = "",
     var age: Int = 0,
     var bio: String = "",
-    @SerializedName("image_res")
     var imageRes: String = "",
-    @SerializedName("blocked_user_ids")
     var blockedUserIds: Set<String> = emptySet()
-) : Serializable
+) : Serializable {
+
+    @Suppress("UNCHECKED_CAST")
+    constructor(map: Map<String, Any>) : this(
+        screenName = map["screen_name"] as? String ?: "",
+        age = map["age"] as? Int ?: 0,
+        bio = map["bio"] as? String ?: "",
+        imageRes = map["image_res"] as? String ?: "",
+        blockedUserIds = map["blocked_user_ids"] as? Set<String> ?: emptySet()
+    )
+
+    fun toMap() = mapOf(
+        "screen_name" to screenName,
+        "age" to age,
+        "bio" to bio,
+        "image_res" to imageRes,
+        "blocked_user_ids" to blockedUserIds.toList()
+    )
+
+    override fun toString(): String {
+        return "{ screenName: $screenName, age: $age, bio: $bio, imageRes: $imageRes," +
+                "blockedUserIds: $blockedUserIds }"
+    }
+}
