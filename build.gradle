@@ -14,6 +14,7 @@ buildscript {
                 firebase_auth       : "19.1.0",
                 firebase_database   : "19.2.0",
                 firebase_dl         : "19.0.0",
+                gson                : "2.8.6",
                 javax_activation    : "1.1.1",
                 jaxb                : "2.2.11",
                 ktlint              : "0.20.0",

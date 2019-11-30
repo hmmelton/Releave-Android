@@ -7,6 +7,7 @@ import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
+import com.google.gson.GsonBuilder
 import com.szr.android.data.models.UserInfo
 import io.reactivex.Maybe
 import io.reactivex.Single
@@ -42,6 +43,8 @@ class UserSession @Inject constructor(
     private val userId: String
         get() = auth.currentUser?.uid ?: ""
 
+    private val gson = GsonBuilder().create()
+
     fun syncUserInfo() = Maybe.create<UserInfo> { emitter ->
         if (userId.isEmpty()) emitter.onError(IllegalArgumentException("User ID cannot be empty"))
 
@@ -55,11 +58,12 @@ class UserSession @Inject constructor(
             override fun onDataChange(data: DataSnapshot) {
                 database.removeEventListener(this)
 
-                val userInfo = data.value as? UserInfo
+                val userInfoJson = data.value as? String
 
-                if (userInfo == null) {
+                if (userInfoJson == null) {
                     emitter.onComplete()
                 } else {
+                    val userInfo = fromJson(userInfoJson)
                     emitter.onSuccess(userInfo)
                 }
             }
@@ -68,7 +72,8 @@ class UserSession @Inject constructor(
 
     @SuppressLint("ApplySharedPref")
     fun setUserInfo(value: UserInfo) =  Single.create<Boolean> { emitter ->
-        database.child(userId).setValue(value).addOnCompleteListener { task ->
+        val userInfoJson = toJson(value)
+        database.child(userId).setValue(userInfoJson).addOnCompleteListener { task ->
 
             // If task was successful, save to local storage and return true. Otherwise, return
             // false for failure.
@@ -123,4 +128,9 @@ class UserSession @Inject constructor(
             blockedUserIds = blockedUserIds
         )
     }
+
+    private fun toJson(userInfo: UserInfo) = gson.toJson(userInfo)
+
+    private fun fromJson(userInfoJson: String)
+            = gson.fromJson<UserInfo>(userInfoJson, UserInfo::class.java)
 }

@@ -76,13 +76,18 @@ class EditMyProfileViewModel @Inject constructor(
         userSession.setUserInfo(userInfo)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { successful ->
-                if (successful) {
-                    _action.value = Action.SAVED
-                } else {
+            .subscribe(
+                { successful ->
+                    if (successful) {
+                        _action.value = Action.SAVED
+                    } else {
+                        _action.value = Action.ERROR_SAVING
+                    }
+                },
+                {
                     _action.value = Action.ERROR_SAVING
                 }
-            }
+            )
             .addTo(disposables)
     }
 
