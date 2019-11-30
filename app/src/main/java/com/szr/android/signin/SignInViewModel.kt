@@ -177,7 +177,6 @@ class SignInViewModel @Inject constructor(
             auth.signOut()
             _signInResult.value = SignInResult.Error(R.string.error_sign_in)
         }
-        .doOnComplete { _signInResult.value = SignInResult.Success }
 
     // A placeholder username validation check
     private fun isEmailValid(username: String) = PatternsCompat.EMAIL_ADDRESS.matcher(username).matches()
