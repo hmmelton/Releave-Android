@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.content.SharedPreferences
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.gson.GsonBuilder
 import com.szr.android.data.models.UserInfo
 import io.reactivex.Maybe
 import io.reactivex.Single
@@ -40,15 +39,23 @@ class UserSession @Inject constructor(
     private val userId: String
         get() = auth.currentUser?.uid ?: ""
 
-    private val gson = GsonBuilder().create()
-
+    @SuppressLint("ApplySharedPref")
     fun syncUserInfo() = Maybe.create<UserInfo> { emitter ->
         if (userId.isEmpty()) emitter.onError(IllegalArgumentException("User ID cannot be empty"))
 
         // This listener will fire when it is first connected
         collection.document(userId).get().addOnSuccessListener { snapshot ->
-            snapshot.data?.let {
-                emitter.onSuccess(UserInfo(it))
+            snapshot.data?.let { map ->
+                val info = UserInfo(map)
+                preferences.edit()
+                    .putString(KEY_SCREEN_NAME, info.screenName)
+                    .putInt(KEY_AGE, info.age)
+                    .putString(KEY_BIO, info.bio)
+                    .putString(KEY_IMAGE_RES, info.imageRes)
+                    .putStringSet(KEY_BLOCKED_USER_IDS, info.blockedUserIds)
+                    .commit()
+
+                emitter.onSuccess(info)
             } ?: run {
                 emitter.onComplete()
             }

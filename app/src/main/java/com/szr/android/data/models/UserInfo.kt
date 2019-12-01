@@ -13,7 +13,7 @@ data class UserInfo(
     @Suppress("UNCHECKED_CAST")
     constructor(map: Map<String, Any>) : this(
         screenName = map["screen_name"] as? String ?: "",
-        age = map["age"] as? Int ?: 0,
+        age = (map["age"] as? Long)?.toInt() ?: 100,
         bio = map["bio"] as? String ?: "",
         imageRes = map["image_res"] as? String ?: "",
         blockedUserIds = map["blocked_user_ids"] as? Set<String> ?: emptySet()

@@ -139,17 +139,21 @@ class SignInViewModel @Inject constructor(
 
     private fun handleSignIn() {
         if (auth.currentUser?.isEmailVerified == true) {
-            fetchUserInfo()
-                .toSingle()
-                .flatMap { info -> userSession.setUserInfo(info) }
-                .subscribe { successful ->
-                    if (successful) {
+            userSession.syncUserInfo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                    {
                         _signInResult.value = SignInResult.Success
-                    } else {
+                    },
+                    {
                         auth.signOut()
                         _signInResult.value = SignInResult.Error(R.string.error_sign_in)
+                    },
+                    {
+                        _signInResult.value = SignInResult.Success
                     }
-                }
+                )
                 .addTo(disposables)
         } else {
             // Trigger the layout to display the email verification screen
