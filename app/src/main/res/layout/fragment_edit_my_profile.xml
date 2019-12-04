@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.szr.android.profile.editmyprofile.EditMyProfileViewModel" />
+            type="com.releave.android.profile.editmyprofile.EditMyProfileViewModel" />
     </data>
 
     <ScrollView

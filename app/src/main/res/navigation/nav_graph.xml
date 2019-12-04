@@ -7,45 +7,34 @@
 
     <fragment
         android:id="@+id/splashScreenFragment"
-        android:name="com.szr.android.SplashScreenFragment"
+        android:name="com.releave.android.fragments.SplashScreenFragment"
         android:label="Splashscreen"
         tools:layout="@layout/fragment_splash_screen">
         <action
-            android:id="@+id/action_splashScreenFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
+            android:id="@+id/action_splashScreenFragment_to_mainFragment"
+            app:destination="@id/mainFragment"/>
         <action
-            android:id="@+id/action_splashScreenFragment_to_tabsContentFragment"
-            app:destination="@id/tabsContentFragment" />
+            android:id="@+id/action_splashScreenFragment_to_signInFragment"
+            app:destination="@id/signInFragment"/>
     </fragment>
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.releave.android.fragments.MainFragment"
+        android:label="Main"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_mainFragment_to_signInFragment"
+            app:destination="@id/signInFragment"/>
+    </fragment>
+
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.szr.android.signin.SignInFragment"
-        android:label="SignInFragment"
-        tools:layout="@layout/fragment_sign_in">
-        <deepLink
-            android:id="@+id/deepLinkVerifyEmail"
-            app:uri="szr-app.firebaseapp.com/verify" />
-        <deepLink
-            android:id="@+id/deepLinkResetEmail"
-            app:uri="srz-app.firebaseapp.com/reset" />
+        android:name="com.releave.android.signin.SignInFragment"
+        android:label="Main"
+        tools:layout="@layout/fragment_main">
         <action
-            android:id="@+id/action_signInFragment_to_tabsContentFragment"
-            app:destination="@id/tabsContentFragment" />
+            android:id="@+id/action_signInFragment_to_mainFragment"
+            app:destination="@id/mainFragment"/>
     </fragment>
-    <fragment
-        android:id="@+id/tabsContentFragment"
-        android:name="com.szr.android.views.tabscontent.TabsContentFragment"
-        android:label="TabsContentFragment"
-        tools:layout="@layout/fragment_tabs_content">
-        <action
-            android:id="@+id/action_tabsContentFragment_to_signInFragment"
-            app:destination="@id/signInFragment" />
-        <action
-            android:id="@+id/action_tabsContentFragment_to_editMyProfileFragment"
-            app:destination="@id/editMyProfileFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/editMyProfileFragment"
-        android:name="com.szr.android.profile.editmyprofile.EditMyProfileFragment"
-        android:label="EditMyProfileFragment" />
 </navigation>

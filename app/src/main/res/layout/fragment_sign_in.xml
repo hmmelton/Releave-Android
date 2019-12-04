@@ -8,7 +8,7 @@
 
         <variable
             name="viewModel"
-            type="com.szr.android.signin.SignInViewModel" />
+            type="com.releave.android.signin.SignInViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

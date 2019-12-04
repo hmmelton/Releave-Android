@@ -6,7 +6,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.szr.android.profile.myprofile.MyProfileViewModel" />
+            type="com.releave.android.profile.myprofile.MyProfileViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
