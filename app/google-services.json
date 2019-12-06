@@ -8,46 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:746863863854:android:3319e52ac7857306",
-        "android_client_info": {
-          "package_name": "com.hmmelton.releave"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "746863863854-tg99llo8kvc455pefn0sppnlsq0jct3f.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.hmmelton.releave",
-            "certificate_hash": "dfaac484ac22ee6c52fb360e8043e53c575571e7"
-          }
-        },
-        {
-          "client_id": "746863863854-rc16ip9sb4f73bcgarc26g6dc07ac5s1.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDEpI82W6K3lk3qX7XxxHYnUmLH9qPYWpY"
-        },
-        {
-          "current_key": "AIzaSyAvVNMUDd4mMYj5HPnAFvm8yrOHazjw_kQ"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "746863863854-rc16ip9sb4f73bcgarc26g6dc07ac5s1.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:746863863854:android:f4af06a504453606df97bf",
         "android_client_info": {
           "package_name": "com.releave.android"
@@ -68,9 +28,6 @@
         }
       ],
       "api_key": [
-        {
-          "current_key": "AIzaSyDEpI82W6K3lk3qX7XxxHYnUmLH9qPYWpY"
-        },
         {
           "current_key": "AIzaSyAvVNMUDd4mMYj5HPnAFvm8yrOHazjw_kQ"
         }

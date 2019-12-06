@@ -33,6 +33,12 @@
         android:name="com.releave.android.signin.SignInFragment"
         android:label="Main"
         tools:layout="@layout/fragment_main">
+        <deepLink
+            android:id="@+id/deepLinkVerifyEmail"
+            app:uri="releave.firebaseapp.com/verify" />
+        <deepLink
+            android:id="@+id/deepLinkResetEmail"
+            app:uri="releave.firebaseapp.com/reset" />
         <action
             android:id="@+id/action_signInFragment_to_mainFragment"
             app:destination="@id/mainFragment"/>

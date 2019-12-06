@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ProfileTemplate</string>
+    <string name="app_name">Releave</string>
 
     <!-- Login -->
     <string name="title_activity_sign_in">Sign in</string>
@@ -27,7 +27,4 @@
 
     <!-- My profile -->
     <string name="btn_sign_out">Sign out</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

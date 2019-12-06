@@ -76,6 +76,11 @@ class SignInViewModel @Inject constructor(
                     _signInResult.value =
                         SignInResult.Error(message = R.string.error_invalid_credentials)
                 }
+                else -> {
+                    // Some other error occurred
+                    _action.value = Action.HideSpinner
+                    _signInResult.value = SignInResult.Error(message = R.string.error_sign_in)
+                }
             }
         }
     }

@@ -28,9 +28,9 @@ class UserSession @Inject constructor(
     companion object {
         private const val USER_TABLE_REFERENCE = "user_info"
 
-        private const val KEY_SCREEN_NAME = "com.template.android.screen_name"
-        private const val KEY_AGE = "com.template.android.age"
-        private const val KEY_BIO = "com.template.android.bio"
+        private const val KEY_SCREEN_NAME = "com.releave.android.screen_name"
+        private const val KEY_AGE = "com.releave.android.age"
+        private const val KEY_BIO = "com.releave.android.bio"
     }
 
     private val collection = rootDatabaseReference.collection(USER_TABLE_REFERENCE)
