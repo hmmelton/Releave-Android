@@ -23,8 +23,6 @@ import javax.inject.Inject
 
 class SignInFragment : Fragment() {
 
-    @Inject
-    lateinit var viewModelFactory: SignInViewModel.Factory
     private lateinit var viewModel: SignInViewModel
 
     private val signInFormStateObserver: Observer<SignInFormState> = Observer {
@@ -76,9 +74,8 @@ class SignInFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
         viewModel = ViewModelProviders
-            .of(this, viewModelFactory)[SignInViewModel::class.java]
+            .of(this)[SignInViewModel::class.java]
             .apply {
                 signInFormState.observe(this@SignInFragment, signInFormStateObserver)
                 signInResult.observe(this@SignInFragment, signInResultObserver)

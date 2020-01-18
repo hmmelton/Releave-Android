@@ -134,13 +134,13 @@
             android:textColor="#000000"
             android:layout_marginTop="32dp"
             android:onClick="@{() -> viewModel.sendEmailVerification()}"
-            app:layout_constraintBottom_toTopOf="@id/sign_out"
+            app:layout_constraintBottom_toTopOf="@id/menuSignOut"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/confirm_email" />
 
         <Button
-            android:id="@+id/sign_out"
+            android:id="@+id/menuSignOut"
             style="@style/Widget.AppCompat.Button.Borderless.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -157,7 +157,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:visibility="@{viewModel.shouldShowEmailScreen ? View.VISIBLE : View.GONE}"
-            app:constraint_referenced_ids="confirm_email,resend_email,sign_out"
+            app:constraint_referenced_ids="confirm_email,resend_email,menuSignOut"
             tools:visibility="gone"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

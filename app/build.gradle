@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'kotlin-android-extensions'
@@ -54,6 +55,7 @@ dependencies {
 
     // Firebase
     implementation "com.google.firebase:firebase-auth:${libraries.firebase.auth}"
+    implementation "com.google.firebase:firebase-analytics:${libraries.firebase.analytics}"
     implementation "com.google.firebase:firebase-dynamic-links:${libraries.firebase.dynamiclink}"
     implementation "com.google.firebase:firebase-firestore:${libraries.firebase.firestore}"
 
@@ -110,5 +112,3 @@ task('ktlintFormat', type: JavaExec, group: 'formatting') {
     main = 'com.github.shyiko.ktlint.Main'
     args '-F', 'src/**/*.kt'
 }
-
-apply plugin: 'com.google.gms.google-services'

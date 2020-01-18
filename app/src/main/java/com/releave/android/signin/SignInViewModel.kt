@@ -13,18 +13,13 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.releave.android.DeepLinkUrls
 import com.releave.android.R
-import com.releave.android.addTo
-import com.releave.android.data.UserSession
 import com.releave.android.data.models.NotifiableObservable
 import com.releave.android.data.models.NotifiableObservableImpl
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class SignInViewModel @Inject constructor(
+class SignInViewModel constructor(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val userSession: UserSession,
     observable: NotifiableObservable = NotifiableObservableImpl()
 ) : ViewModel(), NotifiableObservable by observable {
 
@@ -63,26 +58,27 @@ class SignInViewModel @Inject constructor(
 
     fun login(email: String, password: String) {
         _action.value = Action.DisplaySpinner
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-            when {
-                task.isSuccessful -> handleSignIn()
-                task.exception is FirebaseAuthInvalidUserException -> {
-                    // If user does not exist, register
-                    registerNewUser(email = email, password = password)
-                }
-                task.exception is FirebaseAuthInvalidCredentialsException -> {
-                    // Password was incorrect
-                    _action.value = Action.HideSpinner
-                    _signInResult.value =
-                        SignInResult.Error(message = R.string.error_invalid_credentials)
-                }
-                else -> {
-                    // Some other error occurred
-                    _action.value = Action.HideSpinner
-                    _signInResult.value = SignInResult.Error(message = R.string.error_sign_in)
+        auth.signInWithEmailAndPassword(email, password)
+            .addOnCompleteListener { task ->
+                when {
+                    task.isSuccessful -> handleSignIn()
+                    task.exception is FirebaseAuthInvalidUserException -> {
+                        // If user does not exist, register
+                        registerNewUser(email = email, password = password)
+                    }
+                    task.exception is FirebaseAuthInvalidCredentialsException -> {
+                        // Password was incorrect
+                        _action.value = Action.HideSpinner
+                        _signInResult.value =
+                            SignInResult.Error(message = R.string.error_invalid_credentials)
+                    }
+                    else -> {
+                        // Some other error occurred
+                        _action.value = Action.HideSpinner
+                        _signInResult.value = SignInResult.Error(message = R.string.error_sign_in)
+                    }
                 }
             }
-        }
     }
 
     fun loginDataChanged(username: String, password: String) {
@@ -144,22 +140,7 @@ class SignInViewModel @Inject constructor(
 
     private fun handleSignIn() {
         if (auth.currentUser?.isEmailVerified == true) {
-            userSession.syncUserInfo()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(
-                    {
-                        _signInResult.value = SignInResult.Success
-                    },
-                    {
-                        auth.signOut()
-                        _signInResult.value = SignInResult.Error(R.string.error_sign_in)
-                    },
-                    {
-                        _signInResult.value = SignInResult.Success
-                    }
-                )
-                .addTo(disposables)
+            _signInResult.value = SignInResult.Success
         } else {
             // Trigger the layout to display the email verification screen
             _signInResult.value = SignInResult.EmailNotVerified
@@ -178,14 +159,6 @@ class SignInViewModel @Inject constructor(
             }
         }
     }
-
-    private fun fetchUserInfo() = userSession.syncUserInfo()
-        .subscribeOn(Schedulers.io())
-        .observeOn(AndroidSchedulers.mainThread())
-        .doOnError {
-            auth.signOut()
-            _signInResult.value = SignInResult.Error(R.string.error_sign_in)
-        }
 
     // A placeholder username validation check
     private fun isEmailValid(username: String) = PatternsCompat.EMAIL_ADDRESS.matcher(username).matches()
@@ -211,9 +184,9 @@ class SignInViewModel @Inject constructor(
     }
 
     @Suppress("UNCHECKED_CAST")
-    class Factory(private val userSession: UserSession) : ViewModelProvider.Factory {
+    class Factory : ViewModelProvider.Factory {
         override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return SignInViewModel(userSession = userSession) as T
+            return SignInViewModel() as T
         }
     }
 }

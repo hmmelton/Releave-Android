@@ -27,4 +27,7 @@
 
     <!-- My profile -->
     <string name="btn_sign_out">Sign out</string>
+
+    <!-- Menu -->
+    <string name="menu_item_sign_out">Sign out</string>
 </resources>
