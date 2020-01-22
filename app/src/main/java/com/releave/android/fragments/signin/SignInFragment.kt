@@ -1,4 +1,4 @@
-package com.releave.android.signin
+package com.releave.android.fragments.signin
 
 import android.os.Bundle
 import android.text.Editable
@@ -17,9 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.releave.android.R
 import com.releave.android.databinding.FragmentSignInBinding
 import com.releave.android.views.PasswordResetDialog
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_sign_in.*
-import javax.inject.Inject
 
 class SignInFragment : Fragment() {
 

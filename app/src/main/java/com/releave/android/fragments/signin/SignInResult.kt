@@ -1,4 +1,4 @@
-package com.releave.android.signin
+package com.releave.android.fragments.signin
 
 /**
  * Class used to signal whether login request was successful or not

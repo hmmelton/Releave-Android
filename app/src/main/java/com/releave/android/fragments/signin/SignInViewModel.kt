@@ -1,4 +1,4 @@
-package com.releave.android.signin
+package com.releave.android.fragments.signin
 
 import androidx.core.util.PatternsCompat
 import androidx.databinding.Bindable
@@ -16,7 +16,6 @@ import com.releave.android.R
 import com.releave.android.data.models.NotifiableObservable
 import com.releave.android.data.models.NotifiableObservableImpl
 import io.reactivex.disposables.CompositeDisposable
-import javax.inject.Inject
 
 class SignInViewModel constructor(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),

@@ -35,6 +35,7 @@ android {
 }
 
 repositories {
+    mavenCentral()
     jcenter()
 }
 
@@ -58,6 +59,8 @@ dependencies {
     implementation "com.google.firebase:firebase-analytics:${libraries.firebase.analytics}"
     implementation "com.google.firebase:firebase-dynamic-links:${libraries.firebase.dynamiclink}"
     implementation "com.google.firebase:firebase-firestore:${libraries.firebase.firestore}"
+
+    implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:${libraries.mapbox}"
 
     // ReactiveX
     implementation "io.reactivex.rxjava2:rxandroid:${libraries.reactive.android}"

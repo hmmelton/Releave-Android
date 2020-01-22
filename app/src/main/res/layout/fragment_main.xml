@@ -3,7 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:mapbox="http://schemas.android.com/apk/res-auto"
     tools:context=".fragments.MainFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <com.mapbox.mapboxsdk.maps.MapView
+        android:id="@+id/mapView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        mapbox:mapbox_cameraZoom="16"
+        mapbox:mapbox_cameraZoomMin="14"/>
 </FrameLayout>
