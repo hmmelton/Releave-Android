@@ -8,7 +8,8 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
-    <style name="CustomAlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="android:textColor">@color/colorAccent</item>
+    <style name="CustomToolbarStyle" parent="ThemeOverlay.AppCompat.ActionBar">
+        <item name="android:tint">@color/textColorPrimary</item>
+        <item name="android:textColorPrimary">@color/textColorPrimary</item>
     </style>
 </resources>
