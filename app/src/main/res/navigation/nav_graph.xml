@@ -24,7 +24,7 @@
 
     <fragment
         android:id="@+id/mainFragment"
-        android:name="com.releave.android.fragments.MainFragment"
+        android:name="com.releave.android.fragments.main.MainFragment"
         android:label="Main"
         tools:layout="@layout/fragment_main">
         <action
@@ -34,7 +34,7 @@
 
     <fragment
         android:id="@+id/signInFragment"
-        android:name="com.releave.android.signin.SignInFragment"
+        android:name="com.releave.android.fragments.signin.SignInFragment"
         android:label="Main"
         tools:layout="@layout/fragment_main">
         <deepLink

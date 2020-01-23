@@ -1,9 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragments.MainFragment">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragments.main.MainFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-</FrameLayout>
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.releave.android.fragments.main.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.mapbox.mapboxsdk.maps.MapView
+            android:id="@+id/mapView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.areLocationPermissionsGranted ? View.VISIBLE : View.GONE}"
+            app:mapbox_cameraZoom="16"
+            app:mapbox_cameraZoomMin="14" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/gpsImage"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:src="@drawable/ic_gps_off"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintBottom_toTopOf="@id/gpsText"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+            app:layout_constraintStart_toEndOf="@id/leftGuidline"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/gpsText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center"
+            android:text="This app cannot operate without location permissions"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/rightGuideline"
+            app:layout_constraintStart_toEndOf="@id/leftGuidline"
+            app:layout_constraintTop_toBottomOf="@id/gpsImage" />
+
+        <androidx.constraintlayout.widget.Group
+            android:id="@+id/gpsMissingGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="@{!viewModel.areLocationPermissionsGranted ? View.VISIBLE : View.GONE}"
+            tools:visibility="visible"
+            app:constraint_referenced_ids="gpsImage,gpsText" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/leftGuidline"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.30" />
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/rightGuideline"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.70" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -1,6 +1,7 @@
 package com.releave.android
 
 import android.app.Application
+import com.mapbox.mapboxsdk.Mapbox
 import com.releave.android.dagger.AppModule
 import com.releave.android.dagger.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
@@ -16,6 +17,7 @@ class App : Application(), HasAndroidInjector {
     override fun onCreate() {
         super.onCreate()
         createDaggerInjections()
+        Mapbox.getInstance(this, getString(R.string.mapbox_access_key))
     }
 
     private fun createDaggerInjections() {

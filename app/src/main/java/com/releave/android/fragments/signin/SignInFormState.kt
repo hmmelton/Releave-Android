@@ -1,4 +1,4 @@
-package com.releave.android.signin
+package com.releave.android.fragments.signin
 
 /**
  * Data validation state of the login form.

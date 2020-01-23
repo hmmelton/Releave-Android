@@ -30,4 +30,11 @@
 
     <!-- Menu -->
     <string name="menu_item_sign_out">Sign out</string>
+
+    <string name="mapbox_access_key">
+        pk.eyJ1IjoiaG1tZWx0b24iLCJhIjoiY2s1ajY0bTczMDAwazNvcWxjcWFhMmhwZSJ9.zWdyOhGLXHtai1gZPhx84Q
+    </string>
+
+    <!-- Dialogs -->
+    <string name="alert_must_give_location_permission">Please grant location permissions in settings</string>
 </resources>
