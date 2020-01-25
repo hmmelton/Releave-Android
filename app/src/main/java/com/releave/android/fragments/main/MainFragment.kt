@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
@@ -30,7 +31,9 @@ private const val TAG = "MainFragment"
 /**
  * A simple [Fragment] subclass.
  */
-class MainFragment : Fragment() {
+class MainFragment(
+    private val databaseReference: FirebaseFirestore = FirebaseFirestore.getInstance()
+) : Fragment() {
 
     private val permissionsManager: PermissionsManager by lazy {
         PermissionsManager(permissionsListener)
