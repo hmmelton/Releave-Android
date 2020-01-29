@@ -1,8 +1,8 @@
 package com.releave.android
 
 import android.app.Application
+import com.google.android.libraries.places.api.Places
 import com.mapbox.mapboxsdk.Mapbox
-import com.releave.android.dagger.AppModule
 import com.releave.android.dagger.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasAndroidInjector
@@ -16,14 +16,14 @@ class App : Application(), HasAndroidInjector {
 
     override fun onCreate() {
         super.onCreate()
-        createDaggerInjections()
+        initializeDagger()
         Mapbox.getInstance(this, getString(R.string.mapbox_access_key))
+        Places.initialize(this, getString(R.string.places_api_key))
     }
 
-    private fun createDaggerInjections() {
-        DaggerAppComponent.builder()
-            .appModule(AppModule(context = this))
-            .build()
+    private fun initializeDagger() {
+        DaggerAppComponent.factory()
+            .create(this)
             .inject(this)
     }
 }
