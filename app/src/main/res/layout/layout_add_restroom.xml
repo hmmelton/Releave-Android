@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="secondaryViewModel"
+            type="com.releave.android.fragments.main.MainViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/centerGuideline"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.5"/>
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/nearbyPlaceSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/standard_margin"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/isLockedTv"
+            style="@style/AddRestroomCheckboxTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_is_locked"
+            app:layout_constraintBottom_toTopOf="@id/isSingleOccupancyTv"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/centerGuideline"
+            app:layout_constraintTop_toBottomOf="@id/nearbyPlaceSpinner" />
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/standard_margin"
+            app:layout_constraintBottom_toBottomOf="@id/isLockedTv"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/isSingleOccupancyTv"
+            style="@style/AddRestroomCheckboxTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_is_single_occupancy"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/centerGuideline"
+            app:layout_constraintTop_toBottomOf="@id/isLockedTv"
+            app:layout_constraintBottom_toTopOf="@id/isGenderNeutral"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/standard_margin"
+            app:layout_constraintBottom_toBottomOf="@id/isSingleOccupancyTv"
+            app:layout_constraintRight_toRightOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/isGenderNeutral"
+            style="@style/AddRestroomCheckboxTextView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@string/label_is_gender_neutral"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/centerGuideline"
+            app:layout_constraintTop_toBottomOf="@id/isSingleOccupancyTv"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatCheckBox
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/standard_margin"
+            app:layout_constraintBottom_toBottomOf="@id/isGenderNeutral"
+            app:layout_constraintRight_toRightOf="parent"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

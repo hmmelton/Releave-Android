@@ -34,7 +34,21 @@
     <string name="mapbox_access_key">
         pk.eyJ1IjoiaG1tZWx0b24iLCJhIjoiY2s1ajY0bTczMDAwazNvcWxjcWFhMmhwZSJ9.zWdyOhGLXHtai1gZPhx84Q
     </string>
+    <string name="places_api_key">AIzaSyDEpI82W6K3lk3qX7XxxHYnUmLH9qPYWpY</string>
 
     <!-- Dialogs -->
     <string name="alert_must_give_location_permission">Please grant location permissions in settings</string>
+    <string name="snackbar_no_nearby_places_found">No nearby places found</string>
+    <string name="snackbar_error_fetching_nearby_places">Error fetching nearby places</string>
+
+    <!-- Add restroom -->
+    <string name="label_place">Location info</string>
+    <string name="label_new_restroom_details">Location details</string>
+    <string name="label_is_locked">Requires key or code</string>
+    <string name="label_is_single_occupancy">Single occupancy</string>
+    <string name="label_is_gender_neutral">Gender neutral</string>
+    <string name="label_rating">Rating</string>
+
+    <!-- Buttons -->
+    <string name="btn_submit">Submit</string>
 </resources>
