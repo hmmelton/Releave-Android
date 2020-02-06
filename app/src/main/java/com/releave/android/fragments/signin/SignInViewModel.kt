@@ -6,15 +6,14 @@ import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.ActionCodeSettings
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.releave.android.DeepLinkUrls
 import com.releave.android.R
-import com.releave.android.data.models.NotifiableObservable
-import com.releave.android.data.models.NotifiableObservableImpl
+import com.releave.android.data.NotifiableObservable
+import com.releave.android.data.NotifiableObservableImpl
 import io.reactivex.disposables.CompositeDisposable
 
 class SignInViewModel constructor(

@@ -82,8 +82,8 @@ class PermissionsManager(var listener: PermissionsListener?) {
     /**
      * You should call this method from your activity onRequestPermissionsResult.
      *
-     * @param requestCode  The request code passed in requestPermissions(android.app.Activity, String[], int)
-     * @param permissions  The requested permissions. Never null.
+     * @param requestCode The request code passed in requestPermissions(android.app.Activity, String[], int)
+     * @param permissions The requested permissions. Never null.
      * @param grantResults The grant results for the corresponding permissions which is either
      * PERMISSION_GRANTED or PERMISSION_DENIED. Never null.
      */

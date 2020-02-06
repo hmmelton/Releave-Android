@@ -1,6 +1,5 @@
 package com.releave.android.fragments.main
 
-
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -10,35 +9,37 @@ import android.view.*
 import androidx.appcompat.app.AlertDialog
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.google.android.libraries.places.api.model.Place
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.mapbox.mapboxsdk.location.LocationComponentActivationOptions
 import com.mapbox.mapboxsdk.location.modes.CameraMode
 import com.mapbox.mapboxsdk.location.modes.RenderMode
 import com.mapbox.mapboxsdk.maps.MapboxMap
 import com.mapbox.mapboxsdk.maps.Style
-
 import com.releave.android.R
 import com.releave.android.databinding.FragmentMainBinding
 import com.releave.android.tools.PermissionsListener
 import com.releave.android.tools.PermissionsManager
+import com.releave.android.views.AddRestroomDialog
+import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_main.*
+import javax.inject.Inject
+import kotlin.math.hypot
 
 private const val TAG = "MainFragment"
 
 /**
  * A simple [Fragment] subclass.
  */
-class MainFragment(
-    private val databaseReference: FirebaseFirestore = FirebaseFirestore.getInstance()
-) : Fragment() {
+class MainFragment : Fragment() {
 
     private val permissionsManager: PermissionsManager by lazy {
         PermissionsManager(permissionsListener)
     }
-    private lateinit var viewModel: MainViewModel
 
     private val permissionsListener = object : PermissionsListener {
         override fun onExplanationNeeded(permissionsToExplain: List<String>) {
@@ -56,14 +57,36 @@ class MainFragment(
         }
     }
 
+    /**
+     * Observer for fetching user nearby locations
+     */
+    private val fetchNearbyPlacesResultObserver = Observer<FetchNearbyPlacesResult> { result ->
+        when (result) {
+            is FetchNearbyPlacesResult.Success -> handleFetchNearbyPlacesSuccess(result.places)
+            is FetchNearbyPlacesResult.Error -> handleFetchNearbyPlacesFailure()
+        }
+    }
+
+    @Inject
+    lateinit var viewModelFactory: MainViewModel.Factory
+    private lateinit var viewModel: MainViewModel
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidSupportInjection.inject(this)
         setHasOptionsMenu(true)
-        viewModel = ViewModelProviders.of(this)[MainViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)
+            .get(MainViewModel::class.java).apply {
+                fetchNearbyPlacesResult.observe(
+                    this@MainFragment,
+                    fetchNearbyPlacesResultObserver
+                )
+            }
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val binding: FragmentMainBinding = DataBindingUtil.inflate(
@@ -149,8 +172,12 @@ class MainFragment(
         permissionsManager.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+    /**
+     * Location-related functions
+     */
+
     private fun setUpMap() {
-        mapView.getMapAsync {  map ->
+        mapView.getMapAsync { map ->
             map.setStyle(Style.MAPBOX_STREETS) { style ->
                 enableLocationComponent(map, style)
             }
@@ -193,4 +220,22 @@ class MainFragment(
         }
         .setNegativeButton(android.R.string.cancel, null)
         .create()
+
+    /**
+     * Observer handler functions
+     */
+
+    private fun handleFetchNearbyPlacesSuccess(places: List<Place>) {
+        AddRestroomDialog(places).show(parentFragmentManager, "restrooms")
+    }
+
+    private fun handleFetchNearbyPlacesFailure() {
+        Snackbar
+            .make(
+                requireView(),
+                R.string.snackbar_error_fetching_nearby_places,
+                Snackbar.LENGTH_LONG
+            )
+            .show()
+    }
 }
