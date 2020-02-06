@@ -50,7 +50,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.annotation:annotation:1.1.0'
-    implementation 'androidx.lifecycle:lifecycle-extensions:2.1.0'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     ktlint "com.github.shyiko:ktlint:${libraries.ktlint}"
 
@@ -61,6 +61,7 @@ dependencies {
     implementation "com.google.firebase:firebase-firestore:${libraries.firebase.firestore}"
 
     implementation "com.mapbox.mapboxsdk:mapbox-android-sdk:${libraries.mapbox}"
+    implementation "com.google.android.libraries.places:places:${libraries.places}"
 
     // ReactiveX
     implementation "io.reactivex.rxjava2:rxandroid:${libraries.reactive.android}"
